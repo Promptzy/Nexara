@@ -139,24 +139,3 @@ Zenjira connects to your Jira instance and provides:
 * **Week 14**: Set up CI/CD pipelines, Docker image optimization, Kubernetes manifests
 * **Week 15**: Implement monitoring (Prometheus, Grafana), error tracking (Sentry), logging
 * **Week 16**: Final QA, documentation in Notion/Swagger, beta release, collect feedback
-
----
-
-## 📖 Contribution & Setup
-
-1. **Clone repo**: `git clone https://github.com/your-org/zenjira.git`
-2. **Install dependencies**:
-
-   * Frontend: `cd frontend && npm install`
-   * Backend: `cd backend && npm install` (or `pip install -r requirements.txt`)
-3. **Configure environment**: Copy `.env.example` to `.env` and fill in Jira, OpenAI, DB, Redis credentials
-4. **Run services**:
-
-   * `docker-compose up` to start backend, frontend, Redis, PostgreSQL, and n8n
-5. **Access**: Frontend at `http://localhost:3000`, n8n at `http://localhost:5678`
-
----
-
-## 📬 Feedback & Support
-
-For issues or feature requests, please open an issue on GitHub or reach out via Slack channel **#zenjira-support**.
