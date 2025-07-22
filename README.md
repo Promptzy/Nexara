@@ -1,36 +1,42 @@
 # Zenjira
 
-**Zenjira** is an AI-powered Jira automation platform that helps agile teams streamline workflows, automate repetitive tasks, and gain smart insights through a unified web interface.
+**Zenjira** is a smart web-based platform (not just an extension) that connects with Jira to help development teams **automate tasks**, **use AI to plan and manage sprints**, and **gain valuable insights** — all through an easy-to-use dashboard.
 
 ---
 
 ## 🚀 Project Overview
 
-Zenjira connects to your Jira instance and provides:
+Zenjira is like a personal AI assistant for Jira teams. It helps save time and reduce manual work by offering:
 
-* **No-code automation** via n8n
-* **AI-driven assistance** (sprint planning, ticket summarization) using OpenAI GPT‑4, LangChain, and Hugging Face
-* **Real-time dashboards** and reports
-* **Deep DevOps integrations** (GitHub/GitLab, CI/CD)
+* **No-code automation** using n8n (just drag and drop rules!)
+* **AI features** like ticket summarization and sprint planning with GPT‑4
+* **Live dashboards** and visual tools like Gantt charts
+* **Deep integrations** with GitHub/GitLab, Slack, CI/CD tools, and more
+
+It’s built as a full **web application** — not just a browser extension — meaning teams log into Zenjira just like any other SaaS platform to get started.
+
+---
 
 ## ✨ Features
 
 ### Core Features
 
-* **Automation Designer:** Drag-and-drop rule builder in n8n for triggers (issue events, time-based) and actions (transitions, comments, notifications).
-* **AI Sprint Planner:** GPT‑4 generates optimal sprint backlogs, estimates capacity, and flags risk of over-commitment.
-* **Smart Ticket Summaries:** Auto-generate concise summaries and recommended action items for long issue descriptions.
-* **ChatOps Bot:** Interact via Slack/Teams with natural-language commands (e.g., "Show me blockers in current sprint").
-* **Developer Workload Balancer:** Visualize and auto-balance assignments to prevent bottlenecks and burnout.
+* **Automation Designer**: Use n8n's drag-and-drop editor to automate Jira events like task transitions or sending Slack notifications.
+* **AI Sprint Planner**: GPT‑4 helps generate sprints based on team capacity and priorities.
+* **Smart Ticket Summaries**: Instantly summarize long issue descriptions with AI.
+* **ChatOps Bot**: Use Slack or Microsoft Teams to ask things like "What are today's blockers?"
+* **Developer Load Balancer**: Distribute tasks more evenly to avoid burnout.
 
 ### Advanced Features
 
-* **Semantic Issue Search:** Embeddings from Hugging Face enable context-aware search across issue history and comments.
-* **Test Case Generator:** AI creates suggested test scenarios from bug reports.
-* **Retrospective Insights:** Automated retrospective reports that analyze velocity, blockers, and recurring issues.
-* **Calendar & Gantt Views:** Visualize project timelines, due dates, and sprint milestones in an interactive calendar or Gantt chart.
-* **Multi-Project Heatmap:** Dependency heatmap showing cross-project issue links and blocker hotspots.
-* **Automated Release Notes:** Generate draft release notes based on completed issues and PR merge data.
+* **Semantic Search**: Use Hugging Face models to search Jira issues based on meaning, not just keywords.
+* **AI Test Case Generator**: Turn bug reports into suggested test cases.
+* **Retrospective Insights**: Get reports on what worked and what didn’t after every sprint.
+* **Gantt and Calendar Views**: Visual tools to see due dates, timelines, and sprint plans.
+* **Cross-Project Heatmap**: Identify bottlenecks and dependencies between multiple projects.
+* **Auto Release Notes**: Generate release notes from closed issues and merged pull requests.
+
+---
 
 ## 🛠️ Tech Stack
 
@@ -44,98 +50,94 @@ Zenjira connects to your Jira instance and provides:
 ### Backend
 
 * **Runtime & Framework**: Node.js + Express (or Python + Django + DRF)
-* **API Layer**: REST endpoints (or GraphQL via Apollo)
-* **Security**: Atlassian OAuth2 for Jira, JWT for sessions
-* **Job Queue**: BullMQ (Redis) or Celery (Redis/RabbitMQ)
+* **API Layer**: REST (or GraphQL via Apollo)
+* **Security**: Jira OAuth2, JWT
+* **Job Queue**: BullMQ or Celery (with Redis)
 
 ### Database & Cache
 
-* **Primary Database**: PostgreSQL
-* **Caching & Broker**: Redis
+* **DB**: PostgreSQL
+* **Cache**: Redis
 
 ### AI / ML
 
-* **LLM**: OpenAI GPT‑4 (via API)
-* **Orchestration**: LangChain
-* **Embeddings & Models**: Hugging Face Transformers for semantic search
+* **LLM**: OpenAI GPT‑4
+* **Pipeline**: LangChain
+* **Models**: Hugging Face Transformers
 
 ### Automation Engine
 
-* **n8n** for low‑code workflows and event-driven automations
+* **Low-code Automation**: n8n
 
 ### Integrations
 
-* **Jira REST API** (OAuth2)
-* **VCS Hooks**: GitHub, GitLab, Bitbucket webhooks
-* **ChatOps**: Slack & Microsoft Teams bots
+* **Jira API**
+* **VCS**: GitHub, GitLab, Bitbucket
+* **Chat**: Slack, Microsoft Teams
 
-### CI/CD
+### CI/CD & DevOps
 
-* **Pipeline Tools**: GitHub Actions (or CircleCI/Jenkins)
-* **Tasks**: Linting, unit/integration testing, Docker builds
-
-### Containerization & Orchestration
-
-* **Containers**: Docker
-* **Orchestration**: Kubernetes (EKS/GKE) or Docker Swarm
+* **CI Tools**: GitHub Actions, CircleCI, or Jenkins
+* **Containerization**: Docker
+* **Orchestration**: Kubernetes or Docker Swarm
 * **Ingress**: Nginx or Traefik
 
-### Hosting & Infrastructure
+### Hosting & Infra
 
 * **Cloud**: AWS (EC2, RDS, EKS) or Vercel/Netlify
-* **Secrets**: AWS Secrets Manager or HashiCorp Vault
+* **Secrets**: AWS Secrets Manager or Vault
 
 ### Monitoring & Logging
 
-* **Metrics**: Prometheus + Grafana
-* **Error Tracking**: Sentry
-* **Log Aggregation**: ELK Stack (Elasticsearch, Logstash, Kibana)
+* **Monitoring**: Prometheus + Grafana
+* **Errors**: Sentry
+* **Logs**: ELK Stack
 
 ### Testing
 
-* **Unit/Integration**: Jest (or PyTest)
-* **E2E**: Cypress (or Playwright)
-* **API**: Postman
+* **Unit/Integration**: Jest or PyTest
+* **E2E**: Cypress or Playwright
+* **API Testing**: Postman
 
-### Design & Documentation
+### Design & Docs
 
 * **Design**: Figma
 * **Docs**: Notion or Confluence
-* **API Specs**: Swagger / OpenAPI
+* **API Docs**: Swagger/OpenAPI
 
 ### Analytics & Feedback
 
-* **User Analytics**: Mixpanel or Google Analytics
-* **Feedback Widget**: In-app (e.g., Userback)
+* **Analytics**: Mixpanel or Google Analytics
+* **Feedback**: Userback or custom in-app widget
 
 ---
 
-## 📅 4-Month Timeline
+## 📅 4-Month Development Timeline
 
-### Month 1: Foundations & Planning
+### Month 1 – Planning & Setup
 
-* **Week 1**: Finalize requirements, define MVP scope, set up project repo & Jira board
-* **Week 2**: Wireframes & UI designs in Figma, establish design system
-* **Week 3**: Scaffold Next.js frontend, install Tailwind, set up Express/Django backend
-* **Week 4**: Integrate Jira OAuth2, configure PostgreSQL & Redis, initial Docker setup
+* Finalize project requirements & define MVP scope
+* Design wireframes and UI in Figma
+* Scaffold frontend (Next.js + Tailwind) and backend (Express/Django)
+* Set up PostgreSQL, Redis, Docker, and Jira OAuth2 auth
 
-### Month 2: Core MVP Features
+### Month 2 – Core Features
 
-* **Week 5**: Build n8n workflows for basic Jira automations (issue transitions, notifications)
-* **Week 6**: Develop issue viewer & rule-builder UI, backend endpoints
-* **Week 7**: Integrate OpenAI GPT‑4 for ticket summarization and sprint suggestions
-* **Week 8**: Implement Slack bot with basic ChatOps commands
+* Create n8n workflows for basic automations (e.g., auto-assign, notify)
+* Build rule-builder UI and issue viewer
+* Integrate GPT‑4 for ticket summaries and sprint planning
+* Develop Slack bot for ChatOps commands
 
-### Month 3: Advanced Integrations & AI
+### Month 3 – Advanced AI & Integrations
 
-* **Week 9**: Add Hugging Face embeddings for semantic search over issues
-* **Week 10**: GitHub/GitLab webhook handling and CI/CD status automations
-* **Week 11**: Expand AI features: retrospective generator, test-case creation
-* **Week 12**: Multi-project dashboard, Gantt/timeline view
+* Add Hugging Face for semantic issue search
+* Connect GitHub/GitLab for pull request insights and CI/CD hooks
+* Implement retrospective reports and test-case generator
+* Build multi-project dashboards and timeline views
 
-### Month 4: Testing, Hardening & Launch
+### Month 4 – Testing, Launch & Monitoring
 
-* **Week 13**: Write unit/integration tests (Jest/PyTest), E2E scripts (Cypress)
-* **Week 14**: Set up CI/CD pipelines, Docker image optimization, Kubernetes manifests
-* **Week 15**: Implement monitoring (Prometheus, Grafana), error tracking (Sentry), logging
-* **Week 16**: Final QA, documentation in Notion/Swagger, beta release, collect feedback
+* Write unit, integration, and E2E tests
+* Set up CI/CD pipelines, optimize Docker images, deploy to Kubernetes
+* Add observability: Prometheus, Sentry, and ELK logging
+* Prepare final documentation, perform QA, and release public beta
