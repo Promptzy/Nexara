@@ -1,17 +1,3 @@
-<div align="center">
-## 🎯 Why Zenjira?
-
-Zenjira serves as your team's AI-powered productivity multiplier, designed to eliminate manual overhead and optimize development workflows:
-
-| **Challenge** | **Zenjira Solution** |
-|---------------|---------------------|
-| 🔄 Manual task routing | **Intelligent automation** with drag-and-drop workflow builder |
-| 📊 Sprint planning complexity | **AI-driven sprint optimization** using GPT-4 analysis |
-| 🔍 Information silos | **Unified dashboard** with real-time insights and visualizations |
-| ⏰ Administrative overhead | **Automated integrations** across your entire toolchain |
-
-**Architecture**: Built as a comprehensive SaaS platform (not a browser extension), enabling seamless team collaboration and enterprise-level scalability.ira
-
 ### AI-Powered Jira Management Platform
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
