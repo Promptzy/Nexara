@@ -1,13 +1,7 @@
-/**
- * Footer Component
 
- */
 import React from "react";
+import Link from "next/link";
 import { Github, Twitter, Linkedin } from "lucide-react";
-
-/**
- * Responsive, accessible footer for Zenjira.
- **/
 export default function Footer() {
   return (
     <footer
@@ -20,9 +14,9 @@ export default function Footer() {
         <nav aria-label="Footer Navigation" className="space-y-2">
           <span className="font-semibold text-lg">Navigation</span>
           <ul className="space-y-1">
-            <li><a href="/about" className="hover:underline focus:outline-none focus:ring-2 focus:ring-primary rounded">About</a></li>
-            <li><a href="/features" className="hover:underline focus:outline-none focus:ring-2 focus:ring-primary rounded">Features</a></li>
-            <li><a href="/contact" className="hover:underline focus:outline-none focus:ring-2 focus:ring-primary rounded">Contact</a></li>
+            <li><Link href="/about" className="hover:underline focus:outline-none focus:ring-2 focus:ring-primary rounded">About</Link></li>
+            <li><Link href="/features" className="hover:underline focus:outline-none focus:ring-2 focus:ring-primary rounded">Features</Link></li>
+            <li><Link href="/contact" className="hover:underline focus:outline-none focus:ring-2 focus:ring-primary rounded">Contact</Link></li>
           </ul>
         </nav>
         {/* Social Icons */}
@@ -70,7 +64,6 @@ export default function Footer() {
         {/* Copyright */}
         <div className="flex flex-col justify-end items-start md:items-end text-xs text-muted-foreground">
           <span>&copy; {new Date().getFullYear()} Zenjira. All rights reserved.</span>
-          <span className="mt-2">Built with <a href="https://ui.shadcn.com/" target="_blank" rel="noopener noreferrer" className="hover:underline text-primary">shadcn/ui</a></span>
         </div>
       </div>
     </footer>
