@@ -1,6 +1,31 @@
-# Zenjira
+<div align="center">
+## 🎯 Why Zenjira?
 
-**Zenjira** is a smart web-based platform (not just an extension) that connects with Jira to help development teams **automate tasks**, **use AI to plan and manage sprints**, and **gain valuable insights** — all through an easy-to-use dashboard.
+Zenjira serves as your team's AI-powered productivity multiplier, designed to eliminate manual overhead and optimize development workflows:
+
+| **Challenge** | **Zenjira Solution** |
+|---------------|---------------------|
+| 🔄 Manual task routing | **Intelligent automation** with drag-and-drop workflow builder |
+| 📊 Sprint planning complexity | **AI-driven sprint optimization** using GPT-4 analysis |
+| 🔍 Information silos | **Unified dashboard** with real-time insights and visualizations |
+| ⏰ Administrative overhead | **Automated integrations** across your entire toolchain |
+
+**Architecture**: Built as a comprehensive SaaS platform (not a browser extension), enabling seamless team collaboration and enterprise-level scalability.ira
+
+### AI-Powered Jira Management Platform
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Slack](https://img.shields.io/badge/slack-join%20community-blueviolet.svg)](https://join.slack.com/t/promptzy/shared_invite/zt-3acy22kkh-R~nMYTl7op_MF5UaLnwdsA)
+[![TypeScript](https://img.shields.io/badge/typescript-4.9+-blue.svg)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/next.js-13+-black.svg)](https://nextjs.org/)
+
+*Intelligent automation and AI-driven insights for modern development teams*
+
+---
+
+</div>
+
+**Zenjira** is an enterprise-grade web platform that revolutionizes Jira workflow management through intelligent automation, AI-powered sprint planning, and comprehensive analytics — delivered via an intuitive, centralized dashboard.
 
 ---
 
@@ -38,106 +63,132 @@ It’s built as a full **web application** — not just a browser extension — 
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠 Technology Stack
 
-### Frontend
+<details>
+<summary><strong>Frontend Architecture</strong></summary>
 
-* **Framework**: Next.js (React)
-* **Styling**: Tailwind CSS
-* **UI Components**: shadcn/ui or Material‑UI
-* **State Management**: Redux Toolkit or React Query
+| Technology | Purpose | Version |
+|------------|---------|---------|
+| **Next.js** | React Framework | 13+ |
+| **TypeScript** | Type Safety | 4.9+ |
+| **Tailwind CSS** | Styling System | 3.x |
+| **shadcn/ui** | Component Library | Latest |
+| **Redux Toolkit** | State Management | 1.9+ |
 
-### Backend
+</details>
 
-* **Runtime & Framework**: Node.js + Express (or Python + Django + DRF)
-* **API Layer**: REST (or GraphQL via Apollo)
-* **Security**: Jira OAuth2, JWT
-* **Job Queue**: BullMQ or Celery (with Redis)
+<details>
+<summary><strong>Backend Infrastructure</strong></summary>
 
-### Database & Cache
+| Technology | Purpose | Implementation |
+|------------|---------|----------------|
+| **Node.js + Express** | Runtime & API Framework | REST/GraphQL |
+| **PostgreSQL** | Primary Database | 14+ |
+| **Redis** | Caching & Sessions | 7+ |
+| **BullMQ** | Job Queue System | Latest |
+| **JWT + OAuth2** | Authentication | Jira Integration |
 
-* **DB**: PostgreSQL
-* **Cache**: Redis
+</details>
 
-### AI / ML
+<details>
+<summary><strong>AI & Machine Learning</strong></summary>
 
-* **LLM**: OpenAI GPT‑4
-* **Pipeline**: LangChain
-* **Models**: Hugging Face Transformers
+| Service | Purpose | Provider |
+|---------|---------|----------|
+| **GPT-4** | Natural Language Processing | OpenAI |
+| **LangChain** | AI Pipeline Management | Community |
+| **Hugging Face** | Semantic Search Models | Transformers |
 
-### Automation Engine
+</details>
 
-* **Low-code Automation**: n8n
+<details>
+<summary><strong>DevOps & Infrastructure</strong></summary>
 
-### Integrations
+| Technology | Purpose | Environment |
+|------------|---------|-------------|
+| **Docker** | Containerization | All |
+| **Kubernetes** | Orchestration | Production |
+| **GitHub Actions** | CI/CD Pipeline | All |
+| **AWS EKS** | Managed Kubernetes | Production |
+| **Prometheus + Grafana** | Monitoring & Metrics | Production |
 
-* **Jira API**
-* **VCS**: GitHub, GitLab, Bitbucket
-* **Chat**: Slack, Microsoft Teams
-
-### CI/CD & DevOps
-
-* **CI Tools**: GitHub Actions, CircleCI, or Jenkins
-* **Containerization**: Docker
-* **Orchestration**: Kubernetes or Docker Swarm
-* **Ingress**: Nginx or Traefik
-
-### Hosting & Infra
-
-* **Cloud**: AWS (EC2, RDS, EKS) or Vercel/Netlify
-* **Secrets**: AWS Secrets Manager or Vault
-
-### Monitoring & Logging
-
-* **Monitoring**: Prometheus + Grafana
-* **Errors**: Sentry
-* **Logs**: ELK Stack
-
-### Testing
-
-* **Unit/Integration**: Jest or PyTest
-* **E2E**: Cypress or Playwright
-* **API Testing**: Postman
-
-### Design & Docs
-
-* **Design**: Figma
-* **Docs**: Notion or Confluence
-* **API Docs**: Swagger/OpenAPI
-
-### Analytics & Feedback
-
-* **Analytics**: Mixpanel or Google Analytics
-* **Feedback**: Userback or custom in-app widget
+</details>
 
 ---
 
-## 📅 4-Month Development Timeline
+## 💬 Community & Support
 
-### Month 1 – Planning & Setup
+<div align="center">
 
-* Finalize project requirements & define MVP scope
-* Design wireframes and UI in Figma
-* Scaffold frontend (Next.js + Tailwind) and backend (Express/Django)
-* Set up PostgreSQL, Redis, Docker, and Jira OAuth2 auth
+### Join Our Developer Community
 
-### Month 2 – Core Features
+[![Slack Community](https://img.shields.io/badge/Slack-Join%20Community-4A154B?style=for-the-badge&logo=slack&logoColor=white)](https://join.slack.com/t/promptzy/shared_invite/zt-3acy22kkh-R~nMYTl7op_MF5UaLnwdsA)
 
-* Create n8n workflows for basic automations (e.g., auto-assign, notify)
-* Build rule-builder UI and issue viewer
-* Integrate GPT‑4 for ticket summaries and sprint planning
-* Develop Slack bot for ChatOps commands
+Connect with fellow developers, get technical support, and stay updated on the latest features and releases.
 
-### Month 3 – Advanced AI & Integrations
+</div>
 
-* Add Hugging Face for semantic issue search
-* Connect GitHub/GitLab for pull request insights and CI/CD hooks
-* Implement retrospective reports and test-case generator
-* Build multi-project dashboards and timeline views
+---
 
-### Month 4 – Testing, Launch & Monitoring
+## � Development Roadmap
 
-* Write unit, integration, and E2E tests
-* Set up CI/CD pipelines, optimize Docker images, deploy to Kubernetes
-* Add observability: Prometheus, Sentry, and ELK logging
-* Prepare final documentation, perform QA, and release public beta
+<div align="center">
+
+### 4-Month Sprint to Production
+
+</div>
+
+```mermaid
+gantt
+    title Zenjira Development Timeline
+    dateFormat  MM-DD
+    section Phase 1
+    Requirements & Setup    :active, p1, 08-01, 08-31
+    section Phase 2  
+    Core Features          :p2, 09-01, 09-30
+    section Phase 3
+    AI & Integrations      :p3, 10-01, 10-31
+    section Phase 4
+    Testing & Launch       :p4, 11-01, 11-30
+```
+
+### 🗓 **Phase 1: Foundation** *(Month 1)*
+- [ ] **Architecture Design** - System design and technical specifications
+- [ ] **UI/UX Design** - Figma wireframes and design system
+- [ ] **Infrastructure Setup** - Docker, PostgreSQL, Redis, authentication
+- [ ] **Development Environment** - CI/CD pipelines and tooling
+
+### 🔧 **Phase 2: Core Platform** *(Month 2)*
+- [ ] **Automation Engine** - n8n integration and workflow builder
+- [ ] **Jira Integration** - OAuth2, issue management, real-time sync
+- [ ] **AI Features** - GPT-4 integration for summaries and planning
+- [ ] **ChatOps Bot** - Slack/Teams integration for team communication
+
+### 🤖 **Phase 3: Intelligence Layer** *(Month 3)*
+- [ ] **Semantic Search** - Hugging Face model integration
+- [ ] **VCS Integration** - GitHub/GitLab pull request insights
+- [ ] **Advanced Analytics** - Retrospectives and performance metrics
+- [ ] **Visual Dashboards** - Gantt charts and project heatmaps
+
+### 🚀 **Phase 4: Production Ready** *(Month 4)*
+- [ ] **Quality Assurance** - Comprehensive testing suite (Jest, Cypress)
+- [ ] **Performance Optimization** - Load testing and optimization
+- [ ] **Monitoring & Observability** - Prometheus, Sentry, logging
+- [ ] **Documentation & Launch** - API docs, user guides, beta release
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+**Built with ❤️ by the Zenjira Team**
+
+*Transforming development workflows, one sprint at a time.*
+
+</div>
