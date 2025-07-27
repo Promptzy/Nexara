@@ -16,7 +16,7 @@ export default function Footer() {
             <span className="text-2xl font-bold">Zenjira</span>
           </div>
           <p className="text-sm text-[#bdbdc7] max-w-xs">
-            With lots of unique blocks, you can easily build a page without coding. Build your next landing page.
+            Zenjira is an enterprise-grade web platform that revolutionizes Jira workflow management through intelligent automation, AI-powered sprint planning, and comprehensive analytics — delivered via an intuitive, centralized dashboard.
           </p>
           <div className="flex gap-4 mt-2">
             <a
@@ -65,8 +65,6 @@ export default function Footer() {
           <ul className="space-y-3 text-sm">
             <li><Link href="/about">About us</Link></li>
             <li><Link href="/contact">Contact us</Link></li>
-            <li><Link href="/careers">Careers</Link></li>
-            <li><Link href="/press">Press</Link></li>
           </ul>
         </div>
         {/* Product */}
@@ -75,8 +73,6 @@ export default function Footer() {
           <ul className="space-y-3 text-sm">
             <li><Link href="/features">Features</Link></li>
             <li><Link href="/pricing">Pricing</Link></li>
-            <li><Link href="/news">News</Link></li>
-            <li><Link href="/help">Help desk</Link></li>
             <li><Link href="/support">Support</Link></li>
           </ul>
         </div>
