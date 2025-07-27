@@ -112,7 +112,7 @@ export default function Footer() {
               <Link href="/terms">Terms & Conditions</Link>
             </li>
             <li>
-              . <Link href="/return">Return Policy</Link>.{' '}
+              <Link href="/return">Return Policy</Link>
             </li>
           </ul>
         </div>
