@@ -10,6 +10,8 @@
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:frontend": "cd frontend && npm run start",
     "start:backend": "cd backend && npm start",
+    "format": "prettier --write .",
+    "prepare": "husky install",
     "build": "npm run build:frontend",
     "build:frontend": "cd frontend && npm run build",
     "install:all": "npm install && npm run install:frontend && npm run install:backend",
@@ -22,7 +24,14 @@
     "clean:backend": "cd backend && rm -rf node_modules"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^8.0.0",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.6.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "prettier --write"
   },
   "keywords": [
     "jira",

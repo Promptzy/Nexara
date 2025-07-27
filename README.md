@@ -5,7 +5,7 @@
 [![TypeScript](https://img.shields.io/badge/typescript-4.9+-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/next.js-13+-black.svg)](https://nextjs.org/)
 
-*Intelligent automation and AI-driven insights for modern development teams*
+_Intelligent automation and AI-driven insights for modern development teams_
 
 ---
 
@@ -19,10 +19,10 @@
 
 Zenjira is like a personal AI assistant for Jira teams. It helps save time and reduce manual work by offering:
 
-* **No-code automation** using n8n (just drag and drop rules!)
-* **AI features** like ticket summarization and sprint planning with GPT‑4
-* **Live dashboards** and visual tools like Gantt charts
-* **Deep integrations** with GitHub/GitLab, Slack, CI/CD tools, and more
+- **No-code automation** using n8n (just drag and drop rules!)
+- **AI features** like ticket summarization and sprint planning with GPT‑4
+- **Live dashboards** and visual tools like Gantt charts
+- **Deep integrations** with GitHub/GitLab, Slack, CI/CD tools, and more
 
 It’s built as a full **web application** — not just a browser extension — meaning teams log into Zenjira just like any other SaaS platform to get started.
 
@@ -32,20 +32,20 @@ It’s built as a full **web application** — not just a browser extension — 
 
 ### Core Features
 
-* **Automation Designer**: Use n8n's drag-and-drop editor to automate Jira events like task transitions or sending Slack notifications.
-* **AI Sprint Planner**: GPT‑4 helps generate sprints based on team capacity and priorities.
-* **Smart Ticket Summaries**: Instantly summarize long issue descriptions with AI.
-* **ChatOps Bot**: Use Slack or Microsoft Teams to ask things like "What are today's blockers?"
-* **Developer Load Balancer**: Distribute tasks more evenly to avoid burnout.
+- **Automation Designer**: Use n8n's drag-and-drop editor to automate Jira events like task transitions or sending Slack notifications.
+- **AI Sprint Planner**: GPT‑4 helps generate sprints based on team capacity and priorities.
+- **Smart Ticket Summaries**: Instantly summarize long issue descriptions with AI.
+- **ChatOps Bot**: Use Slack or Microsoft Teams to ask things like "What are today's blockers?"
+- **Developer Load Balancer**: Distribute tasks more evenly to avoid burnout.
 
 ### Advanced Features
 
-* **Semantic Search**: Use Hugging Face models to search Jira issues based on meaning, not just keywords.
-* **AI Test Case Generator**: Turn bug reports into suggested test cases.
-* **Retrospective Insights**: Get reports on what worked and what didn’t after every sprint.
-* **Gantt and Calendar Views**: Visual tools to see due dates, timelines, and sprint plans.
-* **Cross-Project Heatmap**: Identify bottlenecks and dependencies between multiple projects.
-* **Auto Release Notes**: Generate release notes from closed issues and merged pull requests.
+- **Semantic Search**: Use Hugging Face models to search Jira issues based on meaning, not just keywords.
+- **AI Test Case Generator**: Turn bug reports into suggested test cases.
+- **Retrospective Insights**: Get reports on what worked and what didn’t after every sprint.
+- **Gantt and Calendar Views**: Visual tools to see due dates, timelines, and sprint plans.
+- **Cross-Project Heatmap**: Identify bottlenecks and dependencies between multiple projects.
+- **Auto Release Notes**: Generate release notes from closed issues and merged pull requests.
 
 ---
 
@@ -54,50 +54,50 @@ It’s built as a full **web application** — not just a browser extension — 
 <details>
 <summary><strong>Frontend Architecture</strong></summary>
 
-| Technology | Purpose | Version |
-|------------|---------|---------|
-| **Next.js** | React Framework | 13+ |
-| **TypeScript** | Type Safety | 4.9+ |
-| **Tailwind CSS** | Styling System | 3.x |
-| **shadcn/ui** | Component Library | Latest |
-| **Redux Toolkit** | State Management | 1.9+ |
+| Technology        | Purpose           | Version |
+| ----------------- | ----------------- | ------- |
+| **Next.js**       | React Framework   | 13+     |
+| **TypeScript**    | Type Safety       | 4.9+    |
+| **Tailwind CSS**  | Styling System    | 3.x     |
+| **shadcn/ui**     | Component Library | Latest  |
+| **Redux Toolkit** | State Management  | 1.9+    |
 
 </details>
 
 <details>
 <summary><strong>Backend Infrastructure</strong></summary>
 
-| Technology | Purpose | Implementation |
-|------------|---------|----------------|
-| **Node.js + Express** | Runtime & API Framework | REST/GraphQL |
-| **PostgreSQL** | Primary Database | 14+ |
-| **Redis** | Caching & Sessions | 7+ |
-| **BullMQ** | Job Queue System | Latest |
-| **JWT + OAuth2** | Authentication | Jira Integration |
+| Technology            | Purpose                 | Implementation   |
+| --------------------- | ----------------------- | ---------------- |
+| **Node.js + Express** | Runtime & API Framework | REST/GraphQL     |
+| **PostgreSQL**        | Primary Database        | 14+              |
+| **Redis**             | Caching & Sessions      | 7+               |
+| **BullMQ**            | Job Queue System        | Latest           |
+| **JWT + OAuth2**      | Authentication          | Jira Integration |
 
 </details>
 
 <details>
 <summary><strong>AI & Machine Learning</strong></summary>
 
-| Service | Purpose | Provider |
-|---------|---------|----------|
-| **GPT-4** | Natural Language Processing | OpenAI |
-| **LangChain** | AI Pipeline Management | Community |
-| **Hugging Face** | Semantic Search Models | Transformers |
+| Service          | Purpose                     | Provider     |
+| ---------------- | --------------------------- | ------------ |
+| **GPT-4**        | Natural Language Processing | OpenAI       |
+| **LangChain**    | AI Pipeline Management      | Community    |
+| **Hugging Face** | Semantic Search Models      | Transformers |
 
 </details>
 
 <details>
 <summary><strong>DevOps & Infrastructure</strong></summary>
 
-| Technology | Purpose | Environment |
-|------------|---------|-------------|
-| **Docker** | Containerization | All |
-| **Kubernetes** | Orchestration | Production |
-| **GitHub Actions** | CI/CD Pipeline | All |
-| **AWS EKS** | Managed Kubernetes | Production |
-| **Prometheus + Grafana** | Monitoring & Metrics | Production |
+| Technology               | Purpose              | Environment |
+| ------------------------ | -------------------- | ----------- |
+| **Docker**               | Containerization     | All         |
+| **Kubernetes**           | Orchestration        | Production  |
+| **GitHub Actions**       | CI/CD Pipeline       | All         |
+| **AWS EKS**              | Managed Kubernetes   | Production  |
+| **Prometheus + Grafana** | Monitoring & Metrics | Production  |
 
 </details>
 
@@ -131,7 +131,7 @@ gantt
     dateFormat  MM-DD
     section Phase 1
     Requirements & Setup    :active, p1, 08-01, 08-31
-    section Phase 2  
+    section Phase 2
     Core Features          :p2, 09-01, 09-30
     section Phase 3
     AI & Integrations      :p3, 10-01, 10-31
@@ -139,25 +139,29 @@ gantt
     Testing & Launch       :p4, 11-01, 11-30
 ```
 
-### 🗓 **Phase 1: Foundation** *(Month 1)*
+### 🗓 **Phase 1: Foundation** _(Month 1)_
+
 - [ ] **Architecture Design** - System design and technical specifications
 - [ ] **UI/UX Design** - Figma wireframes and design system
 - [ ] **Infrastructure Setup** - Docker, PostgreSQL, Redis, authentication
 - [ ] **Development Environment** - CI/CD pipelines and tooling
 
-### 🔧 **Phase 2: Core Platform** *(Month 2)*
+### 🔧 **Phase 2: Core Platform** _(Month 2)_
+
 - [ ] **Automation Engine** - n8n integration and workflow builder
 - [ ] **Jira Integration** - OAuth2, issue management, real-time sync
 - [ ] **AI Features** - GPT-4 integration for summaries and planning
 - [ ] **ChatOps Bot** - Slack/Teams integration for team communication
 
-### 🤖 **Phase 3: Intelligence Layer** *(Month 3)*
+### 🤖 **Phase 3: Intelligence Layer** _(Month 3)_
+
 - [ ] **Semantic Search** - Hugging Face model integration
 - [ ] **VCS Integration** - GitHub/GitLab pull request insights
 - [ ] **Advanced Analytics** - Retrospectives and performance metrics
 - [ ] **Visual Dashboards** - Gantt charts and project heatmaps
 
-### 🚀 **Phase 4: Production Ready** *(Month 4)*
+### 🚀 **Phase 4: Production Ready** _(Month 4)_
+
 - [ ] **Quality Assurance** - Comprehensive testing suite (Jest, Cypress)
 - [ ] **Performance Optimization** - Load testing and optimization
 - [ ] **Monitoring & Observability** - Prometheus, Sentry, logging
@@ -175,12 +179,14 @@ gantt
 ### Installation & Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/your-org/zenjira.git
    cd zenjira
    ```
 
 2. **Install dependencies**
+
    ```bash
    # Install all dependencies (root, frontend, and backend)
    npm run install:all
@@ -201,6 +207,7 @@ gantt
 ### Development Commands
 
 #### 🎨 **Frontend (Next.js)**
+
 ```bash
 cd frontend
 
@@ -218,6 +225,7 @@ npm run lint
 ```
 
 #### ⚙️ **Backend (Express API)**
+
 ```bash
 cd backend
 
@@ -232,6 +240,7 @@ curl http://localhost:5000/health
 ```
 
 #### 🔄 **Full Stack Development**
+
 ```bash
 # Option 1: Run both frontend and backend simultaneously (recommended)
 npm run dev        # Runs both servers with auto-reload
@@ -240,19 +249,19 @@ npm run dev        # Runs both servers with auto-reload
 # Terminal 1: Start backend
 npm run dev:backend
 
-# Terminal 2: Start frontend  
+# Terminal 2: Start frontend
 npm run dev:frontend
 ```
 
 ### API Endpoints
 
-| Endpoint | Method | Description |
-|----------|---------|-------------|
-| `/health` | GET | Server health check |
-| `/api/test` | GET | API connectivity test |
-| `/api/jira/projects` | GET | List Jira projects *(coming soon)* |
-| `/api/automation/workflows` | GET | Automation workflows *(coming soon)* |
-| `/api/ai/summarize` | POST | AI-powered summarization *(coming soon)* |
+| Endpoint                    | Method | Description                              |
+| --------------------------- | ------ | ---------------------------------------- |
+| `/health`                   | GET    | Server health check                      |
+| `/api/test`                 | GET    | API connectivity test                    |
+| `/api/jira/projects`        | GET    | List Jira projects _(coming soon)_       |
+| `/api/automation/workflows` | GET    | Automation workflows _(coming soon)_     |
+| `/api/ai/summarize`         | POST   | AI-powered summarization _(coming soon)_ |
 
 ### Development URLs
 
@@ -272,6 +281,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built with ❤️ by the Zenjira Team**
 
-*Transforming development workflows, one sprint at a time.*
+_Transforming development workflows, one sprint at a time._
 
 </div>

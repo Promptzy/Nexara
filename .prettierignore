@@ -1,0 +1,7 @@
+node_modules
+.next
+build
+dist
+coverage
+public/**/*.svg
+public/**/*.png
