@@ -10,7 +10,7 @@ interface AnimationConfig {
 }
 
 interface AnimationReturn {
-  ref: React.RefObject<HTMLElement>
+  ref: React.RefObject<HTMLDivElement>
   className: string
   isVisible: boolean
 }
@@ -27,7 +27,7 @@ export function useSlideIn(config: AnimationConfig = {}): AnimationReturn {
     threshold = 0.1
   } = config
 
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export function useScaleFadeIn(config: AnimationConfig = {}): AnimationReturn {
     threshold = 0.1
   } = config
 
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {

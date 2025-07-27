@@ -38,12 +38,18 @@ describe('Features Component', () => {
     render(<Features />)
     
     // Check for specific feature titles
-    expect(screen.getByText('No-Code Automation')).toBeInTheDocument()
-    expect(screen.getByText('AI Sprint Planning')).toBeInTheDocument()
-    expect(screen.getByText('Smart Summaries')).toBeInTheDocument()
-    expect(screen.getByText('ChatOps Integration')).toBeInTheDocument()
-    expect(screen.getByText('Advanced Analytics')).toBeInTheDocument()
+    expect(screen.getByText('Automation Designer')).toBeInTheDocument()
+    expect(screen.getByText('AI Sprint Planner')).toBeInTheDocument()
+    expect(screen.getByText('Smart Ticket Summaries')).toBeInTheDocument()
+    expect(screen.getByText('ChatOps Bot')).toBeInTheDocument()
+    expect(screen.getByText('Developer Load Balancer')).toBeInTheDocument()
     expect(screen.getByText('Semantic Search')).toBeInTheDocument()
+    expect(screen.getByText('AI Test Case Generator')).toBeInTheDocument()
+    expect(screen.getByText('Retrospective Insights')).toBeInTheDocument()
+    expect(screen.getByText('Gantt and Calendar Views')).toBeInTheDocument()
+    expect(screen.getByText('Cross-Project Heatmap')).toBeInTheDocument()
+    expect(screen.getByText('Auto Release Notes')).toBeInTheDocument()
+    expect(screen.getByText('Advanced Analytics')).toBeInTheDocument()
   })
 
   it('renders the call-to-action button', () => {
@@ -68,7 +74,7 @@ describe('Features Component', () => {
     render(<Features />)
     
     const grid = screen.getByRole('list', { name: 'Product features' })
-    expect(grid).toHaveClass('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3')
+    expect(grid).toHaveClass('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'xl:grid-cols-4')
   })
 })
 

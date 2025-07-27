@@ -199,6 +199,7 @@ describe("Features Component", () => {
 grid-cols-1              /* Default: 1 column */
 md:grid-cols-2          /* Tablet: 2 columns */
 lg:grid-cols-3          /* Desktop: 3 columns */
+xl:grid-cols-4          /* Large Desktop: 4 columns */
 
 /* Spacing adjustments */
 gap-6 md:gap-8          /* Responsive gaps */

@@ -15,7 +15,10 @@ import {
   Workflow,
   Target,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  FileText,
+  TrendingUp,
+  Map
 } from 'lucide-react'
 import FeatureCard, { FeatureCardProps } from './FeatureCard'
 import { cn } from '@/lib/utils'
@@ -31,39 +34,75 @@ interface Feature extends Omit<FeatureCardProps, 'icon'> {
 const features: Feature[] = [
   {
     icon: Workflow,
-    title: "No-Code Automation",
-    description: "Drag-and-drop workflow builder powered by n8n. Automate Jira tasks without writing a single line of code.",
+    title: "Automation Designer",
+    description: "Use n8n's drag-and-drop editor to automate Jira events like task transitions or sending Slack notifications.",
     gradient: "bg-gradient-to-r from-blue-500 to-cyan-500"
   },
   {
     icon: Brain,
-    title: "AI Sprint Planning",
-    description: "GPT-4 powered sprint planning that considers team capacity, priorities, and historical data for optimal results.",
+    title: "AI Sprint Planner",
+    description: "GPT‑4 helps generate sprints based on team capacity and priorities for optimal planning.",
     gradient: "bg-gradient-to-r from-purple-500 to-pink-500"
   },
   {
     icon: Sparkles,
-    title: "Smart Summaries",
-    description: "Instantly summarize complex tickets and requirements using advanced AI to save time and improve clarity.",
+    title: "Smart Ticket Summaries",
+    description: "Instantly summarize long issue descriptions with AI to save time and improve clarity.",
     gradient: "bg-gradient-to-r from-amber-500 to-orange-500"
   },
   {
     icon: MessageSquare,
-    title: "ChatOps Integration",
-    description: "Seamlessly integrate with Slack and Teams. Get updates, create tickets, and manage workflows from chat.",
+    title: "ChatOps Bot",
+    description: "Use Slack or Microsoft Teams to ask things like 'What are today's blockers?' and get instant answers.",
     gradient: "bg-gradient-to-r from-green-500 to-emerald-500"
   },
   {
-    icon: BarChart3,
-    title: "Advanced Analytics",
-    description: "Comprehensive dashboards with Gantt charts, burndown reports, and team performance insights.",
-    gradient: "bg-gradient-to-r from-indigo-500 to-blue-500"
+    icon: Target,
+    title: "Developer Load Balancer",
+    description: "Distribute tasks more evenly to avoid burnout and optimize team productivity.",
+    gradient: "bg-gradient-to-r from-rose-500 to-pink-500"
   },
   {
     icon: Search,
     title: "Semantic Search",
-    description: "Find issues by meaning, not just keywords. Powered by Hugging Face transformers for intelligent search.",
+    description: "Use Hugging Face models to search Jira issues based on meaning, not just keywords.",
     gradient: "bg-gradient-to-r from-teal-500 to-cyan-500"
+  },
+  {
+    icon: Bot,
+    title: "AI Test Case Generator",
+    description: "Turn bug reports into suggested test cases automatically using machine learning.",
+    gradient: "bg-gradient-to-r from-cyan-500 to-blue-500"
+  },
+  {
+    icon: TrendingUp,
+    title: "Retrospective Insights",
+    description: "Get reports on what worked and what didn't after every sprint with AI-powered analysis.",
+    gradient: "bg-gradient-to-r from-violet-500 to-purple-500"
+  },
+  {
+    icon: Calendar,
+    title: "Gantt and Calendar Views",
+    description: "Visual tools to see due dates, timelines, and sprint plans in interactive formats.",
+    gradient: "bg-gradient-to-r from-emerald-500 to-teal-500"
+  },
+  {
+    icon: Map,
+    title: "Cross-Project Heatmap",
+    description: "Identify bottlenecks and dependencies between multiple projects with visual insights.",
+    gradient: "bg-gradient-to-r from-orange-500 to-red-500"
+  },
+  {
+    icon: FileText,
+    title: "Auto Release Notes",
+    description: "Generate release notes from closed issues and merged pull requests automatically.",
+    gradient: "bg-gradient-to-r from-indigo-500 to-blue-500"
+  },
+  {
+    icon: BarChart3,
+    title: "Advanced Analytics",
+    description: "Comprehensive dashboards with burndown reports, team performance insights, and metrics.",
+    gradient: "bg-gradient-to-r from-slate-500 to-gray-600"
   }
 ]
 
@@ -108,7 +147,7 @@ const Features: React.FC = () => {
 
         {/* Features Grid */}
         <div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mb-12 md:mb-16"
           role="list"
           aria-label="Product features"
         >
