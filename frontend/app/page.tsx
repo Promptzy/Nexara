@@ -1,8 +1,11 @@
 import React from 'react'
+import Features from '../components/Features'
 
 const page = () => {
   return (
-    <div>page</div>
+    <main className="min-h-screen">
+      <Features />
+    </main>
   )
 }
 
