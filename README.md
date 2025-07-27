@@ -165,6 +165,103 @@ gantt
 
 ---
 
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Node.js** 18+ and **npm** (or **yarn**)
+- **Git** for version control
+
+### Installation & Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-org/zenjira.git
+   cd zenjira
+   ```
+
+2. **Install dependencies**
+   ```bash
+   # Install all dependencies (root, frontend, and backend)
+   npm run install:all
+
+   # Or install individually:
+   # Frontend: cd frontend && npm install
+   # Backend: cd backend && npm install
+   ```
+
+3. **Environment setup**
+   ```bash
+   # Copy environment file and configure
+   cd backend
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+### Development Commands
+
+#### 🎨 **Frontend (Next.js)**
+```bash
+cd frontend
+
+# Start development server with Turbopack
+npm run dev        # Runs on http://localhost:3000
+
+# Build for production
+npm run build
+
+# Start production server
+npm run start
+
+# Run linting
+npm run lint
+```
+
+#### ⚙️ **Backend (Express API)**
+```bash
+cd backend
+
+# Start development server with auto-reload
+npm run dev        # Runs on http://localhost:5000
+
+# Start production server
+npm start
+
+# Check API health
+curl http://localhost:5000/health
+```
+
+#### 🔄 **Full Stack Development**
+```bash
+# Option 1: Run both frontend and backend simultaneously (recommended)
+npm run dev        # Runs both servers with auto-reload
+
+# Option 2: Run individually in separate terminals
+# Terminal 1: Start backend
+npm run dev:backend
+
+# Terminal 2: Start frontend  
+npm run dev:frontend
+```
+
+### API Endpoints
+
+| Endpoint | Method | Description |
+|----------|---------|-------------|
+| `/health` | GET | Server health check |
+| `/api/test` | GET | API connectivity test |
+| `/api/jira/projects` | GET | List Jira projects *(coming soon)* |
+| `/api/automation/workflows` | GET | Automation workflows *(coming soon)* |
+| `/api/ai/summarize` | POST | AI-powered summarization *(coming soon)* |
+
+### Development URLs
+
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:5000
+- **API Health Check**: http://localhost:5000/health
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
