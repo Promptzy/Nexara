@@ -13,7 +13,7 @@ jobs:
   merge:
     runs-on: ubuntu-latest
     steps:
-      - name: Check if user is authorized
+      - name: Merge pull request
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -28,41 +28,18 @@ jobs:
             const slashCommand = github.event.client_payload.slash_command;
             const actor = slashCommand.actor;
             
-            // Get authorized users from secret or use default
-            const authorizedUsersSecret = '${{ secrets.MERGE_AUTHORIZED_USERS }}' || '';
-            const authorizedUsers = authorizedUsersSecret 
-              ? authorizedUsersSecret.split(',').map(u => u.trim())
-              : ['va16hav07']; // Fallback to repository owner
-            
-            console.log(`Checking authorization for user: ${actor}`);
-            console.log(`Authorized users: ${authorizedUsers.join(', ')}`);
-            
-            if (!authorizedUsers.includes(actor)) {
+            // Simple authorization check - only allow va16hav07
+            if (actor !== 'va16hav07') {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: slashCommand.issue.number,
-                body: `❌ @${actor}, you are not authorized to merge. Only ${authorizedUsers.join(', ')} can use the /merge command.`
+                body: `❌ @${actor}, you are not authorized to merge. Only va16hav07 can use the /merge command.`
               });
               core.setFailed(`User ${actor} is not authorized to merge.`);
               return;
             }
             
-            console.log(`✅ User ${actor} is authorized to merge.`);
-      
-      - name: Merge pull request
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            // Check if this is a valid slash command dispatch event
-            if (!github.event.client_payload || !github.event.client_payload.slash_command) {
-              console.log('❌ This workflow should only be triggered by slash command dispatch events');
-              core.setFailed('Invalid event trigger - expected slash command dispatch');
-              return;
-            }
-            
-            const slashCommand = github.event.client_payload.slash_command;
             const issue = slashCommand.issue;
             if (!issue.pull_request) {
               await github.rest.issues.createComment({
@@ -89,7 +66,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: prNumber,
-                body: `✅ Pull request merged successfully by @${slashCommand.actor}.`
+                body: `✅ Pull request merged successfully by @${actor}.`
               });
             } catch (error) {
               await github.rest.issues.createComment({

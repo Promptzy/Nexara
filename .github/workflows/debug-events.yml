@@ -1,0 +1,34 @@
+name: Debug Event Handler
+
+on:
+  repository_dispatch:
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug event information
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log('=== DEBUG EVENT INFORMATION ===');
+            console.log('Event name:', github.event_name);
+            console.log('Event action:', github.event.action);
+            console.log('Repository dispatch type:', github.event.type || 'Not specified');
+            
+            if (github.event.client_payload) {
+              console.log('Client payload exists');
+              console.log('Client payload:', JSON.stringify(github.event.client_payload, null, 2));
+              
+              if (github.event.client_payload.slash_command) {
+                console.log('Slash command detected');
+                console.log('Command:', github.event.client_payload.slash_command.command);
+                console.log('Actor:', github.event.client_payload.slash_command.actor);
+              } else {
+                console.log('No slash_command in client_payload');
+              }
+            } else {
+              console.log('❌ No client_payload found in event');
+              console.log('Available event properties:', Object.keys(github.event));
+            }
