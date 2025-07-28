@@ -5,9 +5,11 @@
 ### 1. Create Personal Access Token (REQUIRED for Organizations)
 Organization repositories need a Personal Access Token for repository dispatch actions:
 
+**IMPORTANT**: You must create this token and add it as a repository secret named `PAT_TOKEN`
+
 1. Go to GitHub Settings → Developer settings → Personal access tokens → Fine-grained tokens
 2. Click "Generate new token"
-3. Select your organization and repository
+3. Select your organization (`Promptzy`) and repository (`Zenjira`)
 4. Set expiration (recommend 1 year)
 5. Grant the following permissions:
    - **Repository permissions:**
@@ -16,13 +18,34 @@ Organization repositories need a Personal Access Token for repository dispatch a
      - Pull requests: Write
      - Metadata: Read
      - Actions: Write (for repository_dispatch)
+     - Administration: Read (sometimes needed for org repos)
 
 6. Copy the generated token
 
+**Alternative**: If fine-grained tokens don't work, try a classic token with `repo` and `workflow` scopes.
+
+**Creating a Classic Token (Alternative method):**
+1. Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
+2. Click "Generate new token" → "Generate new token (classic)"
+3. Select scopes:
+   - `repo` (Full control of private repositories)
+   - `workflow` (Update GitHub Action workflows)
+4. Click "Generate token"
+5. Copy the token immediately (you won't see it again)
+
 ### 2. Add Repository Secrets (REQUIRED)
 Go to your repository Settings → Secrets and variables → Actions and add:
-- `PAT_TOKEN`: The Personal Access Token you just created
+- `PAT_TOKEN`: The Personal Access Token you just created (**THIS IS CRITICAL**)
 - `MERGE_AUTHORIZED_USERS`: Comma-separated list of GitHub usernames who can merge (e.g., "va16hav07,another-user")
+
+**To add the PAT_TOKEN secret:**
+1. Go to https://github.com/Promptzy/Zenjira/settings/secrets/actions
+2. Click "New repository secret"
+3. Name: `PAT_TOKEN`
+4. Value: Paste your Personal Access Token
+5. Click "Add secret"
+
+**Verification**: After adding the secret, you should see `PAT_TOKEN` listed in your repository secrets.
 
 ### 3. Organization/Repository Settings
 Configure permissions at both levels:
@@ -75,12 +98,18 @@ Even if someone modifies the workflow file, they cannot:
 ## Troubleshooting
 
 ### "Resource not accessible by integration" Error
-This error typically occurs in organization repositories when:
-1. The `PAT_TOKEN` secret is not set
-2. The Personal Access Token doesn't have sufficient permissions
-3. Organization settings restrict GitHub Actions permissions
+This error occurs because the `PAT_TOKEN` secret is either:
+1. **Not set** - You haven't created the `PAT_TOKEN` repository secret
+2. **Invalid** - The Personal Access Token doesn't have sufficient permissions
+3. **Wrong type** - Try using a classic token instead of fine-grained
 
-**Solution**: Follow steps 1-3 above to create and configure the PAT token properly.
+**Step-by-step fix:**
+1. ✅ Create a Personal Access Token (see step 1 above)
+2. ✅ Add it as repository secret named `PAT_TOKEN` (see step 2 above)
+3. ✅ Test it by running the "Test PAT Token" workflow manually
+4. ✅ Try your slash command again
+
+**Quick test**: Go to Actions tab → "Test PAT Token" workflow → "Run workflow" to verify your token works.
 
 ### Bot Reacts but Commands Don't Work
 If the bot adds a reaction to your slash command but the command doesn't execute:
