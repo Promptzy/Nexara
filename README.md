@@ -316,6 +316,11 @@ npm run format:check
 Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) to understand the expected behavior in this community.
 
 
+## Community Guidelines
+
+📜 Please review our [Community Guidelines](./COMMUNITY_GUIDELINES.md) before contributing.
+
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
