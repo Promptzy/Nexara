@@ -27,7 +27,8 @@ jobs:
             
             const slashCommand = context.payload.client_payload.slash_command;
             const args = slashCommand.args.unnamed;
-            const user = args && args.length > 0 ? args[0] : null;
+            // Extract the first argument - could be in arg1 or all
+            const user = args.arg1 || args.all || null;
             
             console.log('✅ Slash command detected');
             console.log('Command:', slashCommand.command);
