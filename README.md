@@ -158,32 +158,33 @@ gantt
     title Zenjira Development Timeline
     dateFormat  MM-DD
     section Phase 1
-    Requirements & Setup    :active, p1, 08-01, 08-31
+    Jira Clone Foundation    :active, p1, 08-01, 08-31
     section Phase 2  
-    Core Features          :p2, 09-01, 09-30
+    Automation & AI          :p2, 09-01, 09-30
     section Phase 3
-    AI & Integrations      :p3, 10-01, 10-31
+    Advanced Features        :p3, 10-01, 10-31
     section Phase 4
-    Testing & Launch       :p4, 11-01, 11-30
+    Testing & Launch         :p4, 11-01, 11-30
 ```
 
-### 🗓 **Phase 1: Foundation** *(Month 1)*
-- [ ] **Architecture Design** - System design and technical specifications
-- [ ] **UI/UX Design** - Figma wireframes and design system
-- [ ] **Infrastructure Setup** - Docker, PostgreSQL, Redis, authentication
-- [ ] **Development Environment** - CI/CD pipelines and tooling
+### 🗓 **Phase 1: Jira Clone Foundation** *(Month 1)*
+- [ ] **Core Jira Clone** - Build basic project management features (issues, boards, sprints)
+- [ ] **User Management** - Authentication, user roles, and permissions
+- [ ] **Issue Management** - Create, edit, assign, and track issues with status workflows
+- [ ] **Project Boards** - Kanban boards and basic sprint functionality
+- [ ] **Infrastructure Setup** - Docker, PostgreSQL, Redis, and development environment
 
-### 🔧 **Phase 2: Core Platform** *(Month 2)*
-- [ ] **Automation Engine** - n8n integration and workflow builder
-- [ ] **Jira Integration** - OAuth2, issue management, real-time sync
-- [ ] **AI Features** - GPT-4 integration for summaries and planning
-- [ ] **ChatOps Bot** - Slack/Teams integration for team communication
+### 🔧 **Phase 2: Automation & Intelligence** *(Month 2)*
+- [ ] **Automation Engine** - n8n integration and workflow builder for custom automations
+- [ ] **External Jira Integration** - OAuth2 connection to existing Jira instances for migration/sync
+- [ ] **AI Features** - GPT-4 integration for intelligent summaries and planning assistance
+- [ ] **ChatOps Bot** - Slack/Teams integration for team communication and notifications
 
-### 🤖 **Phase 3: Intelligence Layer** *(Month 3)*
-- [ ] **Semantic Search** - Hugging Face model integration
-- [ ] **VCS Integration** - GitHub/GitLab pull request insights
-- [ ] **Advanced Analytics** - Retrospectives and performance metrics
-- [ ] **Visual Dashboards** - Gantt charts and project heatmaps
+### 🤖 **Phase 3: Advanced Features** *(Month 3)*
+- [ ] **Semantic Search** - Hugging Face model integration for intelligent issue discovery
+- [ ] **VCS Integration** - GitHub/GitLab pull request insights and code-to-issue linking
+- [ ] **Advanced Analytics** - Sprint retrospectives and team performance metrics
+- [ ] **Visual Dashboards** - Gantt charts, burndown charts, and cross-project heatmaps
 
 ### 🚀 **Phase 4: Production Ready** *(Month 4)*
 - [ ] **Quality Assurance** - Comprehensive testing suite (Jest, Cypress)
