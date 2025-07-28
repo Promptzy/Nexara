@@ -1,6 +1,4 @@
 frontend:
-  - changed-files:
-      - any-glob-to-any-file: 'frontend/**'
+  - any: ['frontend/**']
 backend:
-  - changed-files:
-      - any-glob-to-any-file: 'backend/**'
+  - any: ['backend/**']
