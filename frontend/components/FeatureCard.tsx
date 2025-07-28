@@ -46,13 +46,13 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
             <div className="text-xs text-gray-400 mb-2">DigitalToken.js</div>
             <div className="font-mono text-sm space-y-1">
               <div className="text-gray-400">1. <span className="text-blue-400">// addNumbersToToken</span></div>
-              <div className="text-gray-400">2. <span className="text-purple-400">function</span> <span className="text-yellow-400">addNumbersToToken</span><span className="text-white">(</span><span className="text-orange-400">num1</span><span className="text-white">, </span><span className="text-orange-400">num2</span><span className="text-white">) {</span></div>
+              <div className="text-gray-400">2. <span className="text-purple-400">function</span> <span className="text-yellow-400">addNumbersToToken</span><span className="text-white">(</span><span className="text-orange-400">num1</span><span className="text-white">, </span><span className="text-orange-400">num2</span><span className="text-white">) {'{'}</span></div>
               <div className="text-gray-400">3. &nbsp;&nbsp;<span className="text-purple-400">let</span> <span className="text-blue-300">sum</span> <span className="text-white">= </span><span className="text-orange-400">num1</span> <span className="text-white">+ </span><span className="text-orange-400">num2</span><span className="text-white">;</span></div>
-              <div className="text-gray-400">4. &nbsp;&nbsp;<span className="text-purple-400">let</span> <span className="text-blue-300">token</span> <span className="text-white">= {</span></div>
+              <div className="text-gray-400">4. &nbsp;&nbsp;<span className="text-purple-400">let</span> <span className="text-blue-300">token</span> <span className="text-white">= {'{'}</span></div>
               <div className="text-gray-400">5. &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-green-400">value:</span> <span className="text-blue-300">sum</span><span className="text-white">,</span></div>
               <div className="text-gray-400">6. &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-green-400">value:</span> <span className="text-blue-300">sum</span><span className="text-white">,</span></div>
               <div className="text-gray-400">7. &nbsp;&nbsp;<span className="text-purple-400">return</span> <span className="text-blue-300">token</span><span className="text-white">;</span></div>
-              <div className="text-gray-400">8. <span className="text-white">}</span></div>
+              <div className="text-gray-400">8. <span className="text-white">{'}'}</span></div>
             </div>
           </div>
         )}
