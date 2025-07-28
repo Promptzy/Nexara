@@ -13,16 +13,67 @@ jobs:
   size-label:
     runs-on: ubuntu-latest
     steps:
-      - name: Add size label
-        uses: pascalgn/size-label-action@v0.4.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check PR size
+        uses: actions/github-script@v7
         with:
-          sizes: >
-            {
-              "0": "size: XS",
-              "10": "size: S", 
-              "50": "size: M",
-              "200": "size: L",
-              "500": "size: XL"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const pull_number = context.issue.number;
+            
+            // Get PR details
+            const pr = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number
+            });
+            
+            const additions = pr.data.additions;
+            const deletions = pr.data.deletions;
+            const changes = additions + deletions;
+            
+            console.log(`PR has ${changes} total changes (${additions} additions, ${deletions} deletions)`);
+            
+            // Determine size label
+            let sizeLabel;
+            if (changes <= 10) {
+              sizeLabel = 'size: XS';
+            } else if (changes <= 50) {
+              sizeLabel = 'size: S';
+            } else if (changes <= 200) {
+              sizeLabel = 'size: M';
+            } else if (changes <= 500) {
+              sizeLabel = 'size: L';
+            } else {
+              sizeLabel = 'size: XL';
             }
+            
+            console.log(`Applying label: ${sizeLabel}`);
+            
+            // Remove existing size labels
+            const existingLabels = await github.rest.issues.listLabelsOnIssue({
+              owner,
+              repo,
+              issue_number: pull_number
+            });
+            
+            const sizeLabels = existingLabels.data.filter(label => 
+              label.name.startsWith('size:')
+            );
+            
+            for (const label of sizeLabels) {
+              await github.rest.issues.removeLabel({
+                owner,
+                repo,
+                issue_number: pull_number,
+                name: label.name
+              });
+            }
+            
+            // Add new size label
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: pull_number,
+              labels: [sizeLabel]
+            });
