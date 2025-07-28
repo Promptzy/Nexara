@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Features component is a responsive, animated section that showcases the core functionalities of the Zenjira platform. It uses react-bits for smooth scroll-triggered animations and ShadCN UI components for consistent styling.
+The Features component is a modern, responsive section that showcases the core functionalities of the Zenjira platform. It features a clean design inspired by contemporary UI patterns with a dark theme and interactive elements.
 
 ## Components
 
@@ -13,14 +13,14 @@ The main Features component that renders the entire features section.
 **Location:** `components/Features.tsx`
 
 **Features:**
-- Responsive grid layout (1 column on mobile, 2 on tablet, 3 on desktop)
-- Scroll-triggered animations using react-bits
-- Accessibility support with ARIA labels
-- Gradient backgrounds and hover effects
+- Responsive grid layout (1 column on mobile, 2+1 layout on desktop)
+- Modern gradient backgrounds
+- Clean typography and spacing
+- Zenjira-specific feature content
 
 ### FeatureCard (Sub-component)
 
-Individual feature card component that displays an icon, title, and description.
+Individual feature card component that displays an icon, title, description, and action button.
 
 **Location:** `components/FeatureCard.tsx`
 
@@ -30,7 +30,8 @@ interface FeatureCardProps {
   icon: LucideIcon        // Lucide React icon component
   title: string          // Feature title
   description: string    // Feature description
-  gradient: string       // Tailwind gradient classes
+  action: string         // Action button text
+  hasCodePreview?: boolean // Show code preview (optional)
   className?: string     // Optional additional CSS classes
 }
 ```
@@ -51,182 +52,212 @@ export default function HomePage() {
 }
 ```
 
-### Adding a New Feature
+### Feature Configuration
 
-To add a new feature to the features array:
-
-1. Import the desired icon from `lucide-react`
-2. Add a new feature object to the `features` array in `Features.tsx`
+The features are configured in the main component:
 
 ```tsx
-import { NewIcon } from 'lucide-react'
-
-const features: Feature[] = [
-  // ... existing features
+const features = [
   {
-    icon: NewIcon,
-    title: "New Feature Title",
-    description: "Description of the new feature and its benefits.",
-    gradient: "bg-gradient-to-r from-color-500 to-color-600"
+    icon: Bot,
+    title: "AI-Powered Automation",
+    description: "Transform your Jira workflow with intelligent automation...",
+    action: "Explore automation"
+  },
+  {
+    icon: BarChart3,
+    title: "Advanced Analytics",
+    description: "Get deep insights into your team's performance...",
+    action: "View analytics"
+  },
+  {
+    icon: Workflow,
+    title: "Seamless Integration",
+    description: "Connect Zenjira with your existing tools...",
+    action: "See integrations",
+    hasCodePreview: true
   }
 ]
 ```
 
-### Customizing Animations
-
-The component uses react-bits hooks for animations:
-
-```tsx
-// Header animation
-const headerAnimation = useSlideIn({ 
-  direction: 'up', 
-  duration: 600 
-})
-
-// Staggered card animations
-const cardAnimation = useSlideIn({ 
-  direction: 'up', 
-  duration: 500, 
-  delay: index * 100 
-})
-
-// CTA animation
-const ctaAnimation = useScaleFadeIn({ 
-  duration: 500, 
-  delay: 300 
-})
-```
-
 ## Styling
 
-### Design Tokens
+### Design System
 
-The component uses ShadCN UI design tokens:
+The component uses a modern design system:
 
-- `bg-background` - Main background color
-- `text-foreground` - Primary text color
-- `text-muted-foreground` - Secondary text color
-- `border-border` - Border colors
-- `bg-card` - Card background
+- **Colors**: Slate color palette with blue-purple-pink gradients
+- **Typography**: Bold headings with readable body text
+- **Spacing**: Consistent 8px grid system
+- **Effects**: Backdrop blur, shadows, and smooth transitions
 
-### Responsive Breakpoints
-
-- **Mobile (default):** 1 column grid
-- **Tablet (md):** 2 column grid
-- **Desktop (lg):** 3 column grid
-
-### Gradient Colors
-
-Each feature uses a unique gradient for visual distinction:
+### Key Classes
 
 ```css
-bg-gradient-to-r from-blue-500 to-cyan-500
-bg-gradient-to-r from-purple-500 to-pink-500
-bg-gradient-to-r from-amber-500 to-orange-500
-/* ... etc */
+/* Card styling */
+bg-slate-800/60 backdrop-blur-sm
+border border-slate-700/50
+rounded-2xl p-8
+
+/* Icon styling */
+bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500
+shadow-lg shadow-purple-500/25
+
+/* Interactive states */
+hover:border-slate-600/50
+group-hover:text-blue-100
+```
+
+## Interactive Elements
+
+### Code Preview
+
+The integration feature includes an interactive code preview:
+
+```tsx
+{hasCodePreview && (
+  <div className="bg-slate-900/90 rounded-xl p-5 mb-6">
+    {/* Terminal-style header */}
+    <div className="flex items-center justify-between mb-3">
+      <div className="text-xs text-slate-400 font-medium">integration.js</div>
+      <div className="flex space-x-1">
+        {/* Traffic light buttons */}
+      </div>
+    </div>
+    {/* Syntax highlighted code */}
+  </div>
+)}
+```
+
+### Action Buttons
+
+Each card includes an interactive action button with arrow animation:
+
+```tsx
+<button className="text-slate-300 hover:text-blue-400 transition-colors duration-200 text-left font-medium flex items-center group/btn">
+  {action}
+  <svg className="w-4 h-4 ml-2 transform group-hover/btn:translate-x-1 transition-transform duration-200">
+    {/* Arrow icon */}
+  </svg>
+</button>
+```
+
+## Responsive Design
+
+### Layout Strategy
+
+- **Mobile (default)**: Single column layout
+- **Desktop (lg+)**: 2-column top row + full-width bottom card
+
+### Grid Implementation
+
+```tsx
+<div className="space-y-8">
+  {/* Top Row - Two Cards */}
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <FeatureCard {...features[0]} />
+    <FeatureCard {...features[1]} />
+  </div>
+  
+  {/* Bottom Row - Single Large Card */}
+  <div className="w-full">
+    <FeatureCard {...features[2]} />
+  </div>
+</div>
 ```
 
 ## Accessibility
 
-### ARIA Labels
+### Implementation
 
-- Section has `role="region"` with `aria-labelledby`
-- Features grid has `role="list"` with descriptive label
-- Each feature card has `role="listitem"`
-- CTA button has descriptive `aria-label`
+- Semantic HTML structure with proper headings
+- Keyboard navigation support for interactive elements
+- Sufficient color contrast ratios
+- Screen reader friendly content structure
 
-### Keyboard Navigation
+### Best Practices
 
-- All interactive elements are keyboard accessible
-- Focus indicators are visible
-- Proper tab order is maintained
+- Use descriptive button text
+- Maintain logical tab order
+- Provide alternative text context through proper markup
 
-### Screen Reader Support
+## Performance
 
-- Semantic HTML structure
-- Descriptive headings hierarchy
-- Alternative text for icons (handled by Lucide React)
+### Optimization
 
-## Performance Considerations
+1. **Minimal Dependencies**: Only Lucide React for icons
+2. **Efficient CSS**: Tailwind's utility-first approach
+3. **Component Structure**: Clean, performant React components
 
-### Optimization Techniques
+### Bundle Impact
 
-1. **Minimal DOM Nodes:** Efficient component structure
-2. **Optimized Animations:** Uses CSS transforms and opacity
-3. **Lazy Loading:** Animations trigger only when in viewport
-4. **Memoization:** Consider using `React.memo` for FeatureCard if needed
-
-### Bundle Size
-
-Dependencies added:
-- `react-bits`: ~15KB (animations)
 - `lucide-react`: ~2KB per icon (tree-shakeable)
-- `@shadcn/ui`: Minimal impact (uses existing Tailwind)
+- No additional animation libraries
+- Tailwind CSS utilities only
 
 ## Testing
 
 ### Test Coverage
 
-The component includes comprehensive tests:
+The component includes tests for:
 
 - Component rendering
 - Content verification
-- Accessibility attributes
-- Responsive classes
-- Animation hooks (mocked)
+- Responsive behavior
+- Interactive elements
 
-### Running Tests
+### Example Test
 
-```bash
-npm run test Features.test.tsx
+```tsx
+describe('Features Component', () => {
+  it('renders all feature cards', () => {
+    render(<Features />)
+    
+    expect(screen.getByText('AI-Powered Automation')).toBeInTheDocument()
+    expect(screen.getByText('Advanced Analytics')).toBeInTheDocument()
+    expect(screen.getByText('Seamless Integration')).toBeInTheDocument()
+  })
+})
 ```
 
-### Test Scenarios
+## Customization
 
-1. **Visual Tests:** Correct layout across screen sizes
-2. **Animation Tests:** Scroll trigger functionality
-3. **Accessibility Tests:** ARIA labels and keyboard navigation
-4. **Responsive Tests:** Grid layout changes
+### Adding Features
+
+To add a new feature:
+
+1. Import the desired icon from `lucide-react`
+2. Add to the features array with required properties
+3. Optionally enable code preview with `hasCodePreview: true`
+
+### Styling Modifications
+
+The component uses Tailwind classes that can be easily customized:
+
+- Modify gradient colors in icon backgrounds
+- Adjust spacing and sizing with Tailwind utilities
+- Change hover effects and transitions
 
 ## Browser Support
 
-- **Modern Browsers:** Full support with animations
-- **Legacy Browsers:** Graceful degradation (animations may not work)
-- **Mobile Browsers:** Optimized touch interactions
-
-## Future Enhancements
-
-### Potential Improvements
-
-1. **Dynamic Content:** Load features from CMS or API
-2. **Filtering:** Add category-based feature filtering
-3. **Detailed Views:** Modal or expandable feature details
-4. **A/B Testing:** Different layouts or content variations
-5. **Analytics:** Track feature engagement
-
-### Migration Notes
-
-If upgrading from the previous version:
-
-1. Update imports to use new component structure
-2. Replace Framer Motion with react-bits animations
-3. Update styling to use ShadCN UI tokens
-4. Add accessibility attributes if customizing
+- **Modern Browsers**: Full support with all effects
+- **Legacy Browsers**: Graceful degradation
+- **Mobile**: Optimized touch interactions
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Animations not working:** Check react-bits installation
-2. **Icons not displaying:** Verify lucide-react imports
-3. **Styling issues:** Ensure ShadCN UI is properly configured
-4. **TypeScript errors:** Check feature interface definitions
+1. **Icons not displaying**: Verify lucide-react imports
+2. **Styling issues**: Ensure Tailwind CSS is properly configured
+3. **TypeScript errors**: Check interface definitions match usage
 
-### Debug Mode
-
-Enable animation debugging:
+### Debug Tips
 
 ```tsx
-// Add to component for debugging
-console.log('Animation state:', headerAnimation)
+// Check feature data
+console.log('Features:', features)
+
+// Verify responsive breakpoints
+console.log('Screen width:', window.innerWidth)
 ```

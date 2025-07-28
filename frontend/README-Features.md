@@ -2,24 +2,22 @@
 
 ## Overview
 
-This implementation provides a comprehensive, responsive Features section for the Zenjira platform with the following key characteristics:
+This implementation provides a clean, modern Features section for the Zenjira platform inspired by contemporary design patterns:
 
-- **Modern Tech Stack**: Next.js 15, TypeScript, Tailwind CSS, ShadCN UI
-- **Smooth Animations**: Powered by react-bits for scroll-triggered effects
-- **Accessibility First**: WCAG compliant with proper ARIA labels
-- **Responsive Design**: Mobile-first approach with breakpoint optimization
-- **Modular Architecture**: Reusable components with TypeScript interfaces
+- **Modern Tech Stack**: Next.js 15, TypeScript, Tailwind CSS
+- **Minimal Dependencies**: Only essential Lucide React icons
+- **Design-Inspired**: Based on modern UI patterns with dark theme
+- **Responsive Layout**: Grid-based layout with 3 core Zenjira features
+- **Interactive Elements**: Code preview and smooth hover effects
 
 ## 🚀 Quick Start
 
 ### Installation
 
-The following dependencies are already installed:
+The following dependencies are required:
 
 ```bash
-npm install react-bits lucide-react @shadcn/ui
-npx shadcn@latest init -y
-npx shadcn@latest add card
+npm install lucide-react
 ```
 
 ### Usage
@@ -41,9 +39,7 @@ export default function HomePage() {
 ```
 components/
 ├── Features.tsx          # Main features section component
-├── FeatureCard.tsx       # Individual feature card component
-└── ui/
-    └── card.tsx         # ShadCN card component
+└── FeatureCard.tsx       # Individual feature card component
 
 types/
 └── features.ts          # TypeScript interfaces
@@ -60,36 +56,27 @@ __tests__/
 ### Responsive Grid Layout
 
 - **Mobile**: 1 column
-- **Tablet**: 2 columns
-- **Desktop**: 3 columns
-
-### Animation System
-
-Uses react-bits hooks for smooth animations:
-
-```tsx
-// Header slides up on scroll
-const headerAnimation = useSlideIn({ direction: "up", duration: 600 });
-
-// Cards animate with staggered delay
-const cardAnimation = useSlideIn({
-  direction: "up",
-  duration: 500,
-  delay: index * 100,
-});
-
-// CTA scales and fades in
-const ctaAnimation = useScaleFadeIn({ duration: 500, delay: 300 });
-```
+- **Desktop**: 2 columns (top row) + 1 full-width (bottom)
 
 ### Visual Effects
 
-- Gradient backgrounds for each feature
-- Hover animations with scale and shadow effects
-- Smooth color transitions
-- Icon scaling on hover
+- Gradient backgrounds with blue-purple-pink theme
+- Backdrop blur effects for modern glass morphism
+- Smooth hover animations with enhanced shadows
+- Interactive code preview with syntax highlighting
 
-## 🔧 Customization
+## 🔧 Core Features
+
+### 1. AI-Powered Automation
+Transform your Jira workflow with intelligent automation that learns from your team's patterns.
+
+### 2. Advanced Analytics
+Get deep insights into your team's performance with comprehensive dashboards and reports.
+
+### 3. Seamless Integration
+Connect Zenjira with your existing tools and workflows with interactive code preview.
+
+## 🎯 Customization
 
 ### Adding New Features
 
@@ -101,67 +88,34 @@ const ctaAnimation = useScaleFadeIn({ duration: 500, delay: 300 });
   icon: NewIcon,
   title: "Feature Title",
   description: "Feature description...",
-  gradient: "bg-gradient-to-r from-color-500 to-color-600"
+  action: "Action text",
+  hasCodePreview: false // optional
 }
 ```
 
 ### Styling Customization
 
-The component uses ShadCN UI design tokens:
+The component uses modern Tailwind classes:
 
 ```css
 /* Background colors */
-bg-background, bg-muted, bg-card
+bg-slate-800/60, bg-slate-900/90
 
 /* Text colors */
-text-foreground, text-muted-foreground
+text-white, text-slate-300
 
 /* Interactive states */
-hover:shadow-lg, hover:scale-105
-```
-
-### Animation Customization
-
-Modify animation parameters:
-
-```tsx
-const customAnimation = useSlideIn({
-  direction: "left", // up, down, left, right
-  duration: 800, // milliseconds
-  delay: 200, // milliseconds
-});
+hover:border-slate-600/50, group-hover:text-blue-100
 ```
 
 ## ♿ Accessibility Features
 
-### ARIA Implementation
-
-- `role="region"` for main section
-- `aria-labelledby` for section heading
-- `role="list"` and `role="listitem"` for features
-- Descriptive `aria-label` for CTA button
-
-### Keyboard Navigation
-
-- All interactive elements are focusable
-- Visible focus indicators
-- Logical tab order
-
-### Screen Reader Support
-
 - Semantic HTML structure
-- Proper heading hierarchy (h2 for main title)
-- Descriptive text for all content
+- Keyboard navigation support
+- Proper color contrast ratios
+- Screen reader friendly
 
 ## 🧪 Testing
-
-### Test Coverage
-
-- Component rendering
-- Content verification
-- Accessibility attributes
-- Responsive behavior
-- Animation hooks (mocked)
 
 ### Running Tests
 
@@ -171,23 +125,6 @@ npm run test
 
 # Run with UI
 npm run test:ui
-
-# Run once
-npm run test:run
-```
-
-### Test Structure
-
-```tsx
-describe("Features Component", () => {
-  it("renders the main heading correctly", () => {
-    // Test implementation
-  });
-
-  it("has proper accessibility attributes", () => {
-    // Accessibility tests
-  });
-});
 ```
 
 ## 📱 Responsive Behavior
@@ -197,43 +134,19 @@ describe("Features Component", () => {
 ```css
 /* Mobile First */
 grid-cols-1              /* Default: 1 column */
-md:grid-cols-2          /* Tablet: 2 columns */
-lg:grid-cols-3          /* Desktop: 3 columns */
-xl:grid-cols-4          /* Large Desktop: 4 columns */
+lg:grid-cols-2          /* Desktop: 2 columns for top row */
 
-/* Spacing adjustments */
-gap-6 md:gap-8          /* Responsive gaps */
-py-16 md:py-24          /* Responsive padding */
+/* Full width bottom card */
+w-full                  /* Integration card spans full width */
 ```
-
-### Mobile Optimizations
-
-- Touch-friendly button sizes
-- Optimized text sizing
-- Reduced animation complexity on mobile
-- Proper viewport handling
 
 ## 🚀 Performance
 
 ### Optimization Techniques
 
-1. **Minimal DOM**: Efficient component structure
+1. **Minimal Dependencies**: Only Lucide React icons
 2. **CSS Transforms**: Hardware-accelerated animations
-3. **Viewport Triggers**: Animations only when visible
-4. **Tree Shaking**: Only used Lucide icons are bundled
-
-### Bundle Impact
-
-- react-bits: ~15KB (animations)
-- lucide-react: ~2KB per icon (tree-shakeable)
-- ShadCN UI: Minimal (uses existing Tailwind)
-
-## 🔍 Browser Support
-
-- **Modern Browsers**: Full feature support
-- **Legacy Browsers**: Graceful degradation
-- **Mobile**: Optimized touch interactions
-- **Accessibility Tools**: Screen reader compatible
+3. **Efficient Structure**: Clean component hierarchy
 
 ## 🛠 Development Workflow
 
@@ -250,76 +163,15 @@ npm run test
 npm run lint
 ```
 
-### Code Quality
-
-- TypeScript for type safety
-- ESLint for code quality
-- Prettier for formatting
-- Vitest for testing
-
 ## 📈 Future Enhancements
 
 ### Planned Improvements
 
-1. **Dynamic Content**: CMS integration
-2. **Feature Filtering**: Category-based filtering
-3. **Detailed Views**: Expandable feature details
-4. **Analytics**: Engagement tracking
-5. **A/B Testing**: Layout variations
-
-### Migration Path
-
-For future updates:
-
-1. Maintain backward compatibility
-2. Provide migration guides
-3. Deprecation warnings for breaking changes
-4. Automated migration tools where possible
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Animations not working:**
-
-- Check react-bits installation
-- Verify viewport intersection
-
-**Icons not displaying:**
-
-- Confirm lucide-react imports
-- Check icon name spelling
-
-**Styling issues:**
-
-- Ensure ShadCN UI is configured
-- Verify Tailwind CSS setup
-
-**TypeScript errors:**
-
-- Check interface definitions
-- Verify import paths
-
-### Debug Tips
-
-```tsx
-// Enable animation debugging
-console.log("Animation state:", headerAnimation);
-
-// Check responsive breakpoints
-console.log("Screen size:", window.innerWidth);
-```
-
-## 📞 Support
-
-For questions or issues:
-
-1. Check the documentation in `docs/Features.md`
-2. Review test examples in `__tests__/Features.test.tsx`
-3. Examine the implementation in `components/Features.tsx`
-4. Refer to ShadCN UI documentation for styling
-5. Check react-bits documentation for animations
+1. **Dynamic Content**: API-driven feature content
+2. **Theme Variants**: Light/dark mode support
+3. **Animation Library**: Enhanced micro-interactions
+4. **Accessibility**: Enhanced screen reader support
 
 ---
 
-**Built with ❤️ for the Zenjira platform**
+**Built with modern design principles for the Zenjira platform**
