@@ -19,9 +19,9 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             // Check if this is a valid slash command dispatch event
-            if (!context.payload || !context.payload.client_payload || !context.payload.client_payload.slash_command) {
-              console.log('❌ This workflow should only be triggered by slash command dispatch events');
-              core.setFailed('Invalid event trigger - expected slash command dispatch');
+            if (!context.payload || !context.payload.client_payload) {
+              console.log('❌ This workflow should only be triggered by repository dispatch events');
+              core.setFailed('Invalid event trigger - expected repository dispatch');
               return;
             }
             
@@ -29,10 +29,11 @@ jobs:
             const args = slashCommand.args.unnamed;
             // Extract the first argument - could be in arg1 or all
             const user = args.arg1 || args.all || null;
+            const actor = context.payload.client_payload.github.payload.comment.user.login;
             
             console.log('✅ Slash command detected');
             console.log('Command:', slashCommand.command);
-            console.log('Actor:', slashCommand.actor);
+            console.log('Actor:', actor);
             console.log('Args:', args);
             
             // Get issue data from the repository dispatch event
