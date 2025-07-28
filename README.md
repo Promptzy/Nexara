@@ -262,6 +262,11 @@ npm run dev:frontend
 
 ---
 
+## 📜 Code of Conduct
+
+Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) to understand the expected behavior in this community.
+
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
