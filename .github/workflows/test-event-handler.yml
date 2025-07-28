@@ -1,0 +1,17 @@
+name: Test Event Handler
+
+on:
+  repository_dispatch:
+    types: [test-event]
+
+jobs:
+  test-handler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Handle test event
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log('Test event received successfully!');
+            console.log('Event payload:', JSON.stringify(github.event.client_payload, null, 2));

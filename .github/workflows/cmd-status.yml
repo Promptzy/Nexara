@@ -1,0 +1,218 @@
+name: Check PR Status
+
+on:
+  repository_dispatch:
+    types: [status-command]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check pull request status
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Check if this is a valid slash command dispatch event
+            if (!context.payload || !context.payload.client_payload) {
+              console.log('❌ This workflow should only be triggered by repository dispatch events');
+              core.setFailed('Invalid event trigger - expected repository dispatch');
+              return;
+            }
+            
+            const actor = context.payload.client_payload.github.payload.comment.user.login;
+            const command = context.payload.client_payload.slash_command.command;
+            
+            console.log('✅ Slash command detected');
+            console.log('Command:', command);
+            console.log('Actor:', actor);
+            
+            // Get issue data from the repository dispatch event
+            const issue = context.payload.client_payload.github.payload.issue;
+            const issueNumber = issue.number;
+            
+            if (!issue || !issueNumber) {
+              console.log('❌ Could not determine issue information');
+              core.setFailed('Missing issue information');
+              return;
+            }
+            
+            if (!issue.pull_request) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `❌ The /status command can only be used on pull requests.`
+              });
+              core.setFailed('Not a pull request');
+              return;
+            }
+            
+            const prNumber = issueNumber;
+            
+            try {
+              // Get PR details
+              const pr = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+              
+              // Get reviews
+              const reviews = await github.rest.pulls.listReviews({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+              
+              // Get requested reviewers
+              const requestedReviews = await github.rest.pulls.listRequestedReviewers({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+              
+              // Get status checks
+              const statusChecks = await github.rest.repos.getCombinedStatusForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: pr.data.head.sha
+              });
+              
+              // Build status report
+              let statusReport = `## 📊 Pull Request Status Report\n\n`;
+              
+              // Basic PR info
+              statusReport += `**PR:** #${prNumber} - ${pr.data.title}\n`;
+              statusReport += `**State:** ${pr.data.state}\n`;
+              statusReport += `**Mergeable:** ${pr.data.mergeable ? '✅ Yes' : '❌ No'}\n`;
+              statusReport += `**Mergeable State:** ${pr.data.mergeable_state}\n\n`;
+              
+              // Review status
+              statusReport += `### 👥 Review Status\n`;
+              
+              if (requestedReviews.data.users && requestedReviews.data.users.length > 0) {
+                const pendingReviewers = requestedReviews.data.users.map(user => `@${user.login}`).join(', ');
+                statusReport += `⏳ **Pending Reviews:** ${pendingReviewers}\n`;
+              } else {
+                statusReport += `✅ **No pending reviews**\n`;
+              }
+              
+              // Review summary
+              const approvedReviews = reviews.data.filter(review => review.state === 'APPROVED');
+              const changeRequests = reviews.data.filter(review => review.state === 'CHANGES_REQUESTED');
+              const dismissedReviews = reviews.data.filter(review => review.state === 'DISMISSED');
+              
+              if (approvedReviews.length > 0) {
+                const approvers = approvedReviews.map(review => `@${review.user.login}`).join(', ');
+                statusReport += `✅ **Approved by:** ${approvers}\n`;
+              }
+              
+              if (changeRequests.length > 0) {
+                const requesters = changeRequests.map(review => `@${review.user.login}`).join(', ');
+                statusReport += `❌ **Changes requested by:** ${requesters}\n`;
+              }
+              
+              if (dismissedReviews.length > 0) {
+                const dismissers = dismissedReviews.map(review => `@${review.user.login}`).join(', ');
+                statusReport += `🚫 **Dismissed by:** ${dismissers}\n`;
+              }
+              
+              statusReport += `\n`;
+              
+              // Status checks
+              statusReport += `### 🔍 Status Checks\n`;
+              
+              if (statusChecks.data.statuses && statusChecks.data.statuses.length > 0) {
+                const pendingChecks = statusChecks.data.statuses.filter(check => check.state === 'pending');
+                const successChecks = statusChecks.data.statuses.filter(check => check.state === 'success');
+                const failureChecks = statusChecks.data.statuses.filter(check => check.state === 'failure');
+                
+                if (pendingChecks.length > 0) {
+                  const pendingNames = pendingChecks.map(check => check.context).join(', ');
+                  statusReport += `⏳ **Pending:** ${pendingNames}\n`;
+                }
+                
+                if (successChecks.length > 0) {
+                  const successNames = successChecks.map(check => check.context).join(', ');
+                  statusReport += `✅ **Passing:** ${successNames}\n`;
+                }
+                
+                if (failureChecks.length > 0) {
+                  const failureNames = failureChecks.map(check => check.context).join(', ');
+                  statusReport += `❌ **Failing:** ${failureNames}\n`;
+                }
+              } else {
+                statusReport += `ℹ️ **No status checks found**\n`;
+              }
+              
+              statusReport += `\n`;
+              
+              // Merge readiness assessment
+              statusReport += `### 🎯 Merge Readiness\n`;
+              
+              let canMerge = true;
+              let issues = [];
+              
+              if (pr.data.state !== 'open') {
+                canMerge = false;
+                issues.push('PR is not open');
+              }
+              
+              if (pr.data.mergeable === false) {
+                canMerge = false;
+                issues.push('PR has conflicts');
+              }
+              
+              if (pr.data.mergeable_state === 'blocked') {
+                canMerge = false;
+                issues.push('PR is blocked by repository rules');
+              }
+              
+              if (requestedReviews.data.users && requestedReviews.data.users.length > 0) {
+                canMerge = false;
+                issues.push('Pending reviews required');
+              }
+              
+              if (changeRequests.length > 0) {
+                canMerge = false;
+                issues.push('Changes requested by reviewers');
+              }
+              
+              const failingChecks = statusChecks.data.statuses ? statusChecks.data.statuses.filter(check => check.state === 'failure') : [];
+              if (failingChecks.length > 0) {
+                canMerge = false;
+                issues.push('Status checks failing');
+              }
+              
+              if (canMerge) {
+                statusReport += `✅ **Ready to merge!** All requirements are satisfied.\n`;
+              } else {
+                statusReport += `❌ **Not ready to merge.** Issues to resolve:\n`;
+                issues.forEach(issue => {
+                  statusReport += `- ${issue}\n`;
+                });
+              }
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: statusReport
+              });
+              
+            } catch (error) {
+              console.log('Error checking PR status:', error.message);
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: `❌ Failed to check PR status: ${error.message}`
+              });
+              core.setFailed(error.message);
+            } 

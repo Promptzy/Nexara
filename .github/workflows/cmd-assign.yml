@@ -1,0 +1,84 @@
+name: Assign User
+
+on:
+  repository_dispatch:
+    types: [assign-command]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign user
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Check if this is a valid slash command dispatch event
+            if (!context.payload || !context.payload.client_payload) {
+              console.log('❌ This workflow should only be triggered by repository dispatch events');
+              console.log('Available context keys:', Object.keys(context.payload || {}));
+              core.setFailed('Invalid event trigger - expected repository dispatch');
+              return;
+            }
+            
+            // Debug: Log the full client payload structure
+            console.log('Client payload structure:', JSON.stringify(context.payload.client_payload, null, 2));
+            
+            const slashCommand = context.payload.client_payload.slash_command;
+            const args = slashCommand.args.unnamed;
+            // Extract the first argument - could be in arg1 or all
+            const user = args.arg1 || args.all || null;
+            const actor = context.payload.client_payload.github.payload.comment.user.login;
+            
+            console.log('✅ Slash command detected');
+            console.log('Command:', slashCommand.command);
+            console.log('Actor:', actor);
+            console.log('Args:', args);
+            
+            // Get issue number from the repository dispatch event
+            const issueNumber = context.payload.client_payload.github.payload.issue.number;
+            
+            if (!user) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `❌ Please mention a user to assign. Usage: \`/assign @username\``
+              });
+              core.setFailed('No user mentioned');
+              return;
+            }
+            
+            const username = user.replace(/^@/, '');
+            
+            try {
+              await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                assignees: [username]
+              });
+              
+              // Check if it's a pull request or issue
+              const isPullRequest = context.payload.client_payload.github.payload.issue.pull_request !== undefined;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `✅ Assigned @${username} to this ${isPullRequest ? 'pull request' : 'issue'}.`
+              });
+            } catch (error) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `❌ Failed to assign @${username}: ${error.message}`
+              });
+              core.setFailed(error.message);
+            }

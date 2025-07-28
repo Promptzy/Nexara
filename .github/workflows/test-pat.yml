@@ -1,0 +1,47 @@
+name: Test PAT Token
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-pat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test PAT Token Access
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PAT_TOKEN }}
+          script: |
+            console.log('Testing PAT token...');
+            try {
+              const response = await github.rest.repos.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              console.log('✅ PAT token works! Repository access successful.');
+              console.log(`Repository: ${response.data.full_name}`);
+            } catch (error) {
+              console.log('❌ PAT token failed:', error.message);
+              core.setFailed(`PAT token test failed: ${error.message}`);
+            }
+      
+      - name: Test Repository Dispatch
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PAT_TOKEN }}
+          script: |
+            console.log('Testing repository dispatch...');
+            try {
+              await github.rest.repos.createDispatchEvent({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                event_type: 'test-event',
+                client_payload: {
+                  message: 'Test dispatch event'
+                }
+              });
+              console.log('✅ Repository dispatch works!');
+            } catch (error) {
+              console.log('❌ Repository dispatch failed:', error.message);
+              core.setFailed(`Repository dispatch test failed: ${error.message}`);
+            }
