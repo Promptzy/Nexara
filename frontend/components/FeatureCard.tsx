@@ -1,15 +1,15 @@
-"use client";
+'use client'
 
-import React from "react";
-import { LucideIcon } from "lucide-react";
+import React from 'react'
+import { LucideIcon } from 'lucide-react'
 
 export interface FeatureCardProps {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-  action: string;
-  hasCodePreview?: boolean;
-  className?: string;
+  icon: LucideIcon
+  title: string
+  description: string
+  action: string
+  hasCodePreview?: boolean
+  className?: string
 }
 
 /**
@@ -22,7 +22,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   description,
   action,
   hasCodePreview = false,
-  className = "",
+  className = '',
 }) => {
   return (
     <div
@@ -46,7 +46,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
         {hasCodePreview && (
           <div className="bg-slate-900/90 rounded-xl p-5 mb-6 border border-slate-700/40 shadow-inner">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-xs text-slate-400 font-medium">test-generator.js</div>
+              <div className="text-xs text-slate-400 font-medium">
+                test-generator.js
+              </div>
               <div className="flex space-x-1">
                 <div className="w-2 h-2 rounded-full bg-red-400"></div>
                 <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
@@ -55,13 +57,16 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
             </div>
             <div className="font-mono text-sm space-y-1">
               <div className="text-slate-400">
-                1. <span className="text-green-400">// AI Test Case Generation</span>
+                1.{' '}
+                <span className="text-green-400">
+                  {/* AI Test Case Generation */}
+                </span>
               </div>
               <div className="text-slate-400">
-                2. <span className="text-purple-400">const</span>{" "}
-                <span className="text-blue-300">testCase</span>{" "}
-                <span className="text-white">=</span>{" "}
-                <span className="text-purple-400">await</span>{" "}
+                2. <span className="text-purple-400">const</span>{' '}
+                <span className="text-blue-300">testCase</span>{' '}
+                <span className="text-white">=</span>{' '}
+                <span className="text-purple-400">await</span>{' '}
                 <span className="text-blue-300">ai</span>
                 <span className="text-white">.</span>
                 <span className="text-yellow-400">generateTest</span>
@@ -72,19 +77,19 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
                 <span className="text-white">,</span>
               </div>
               <div className="text-slate-400">
-                4. &nbsp;&nbsp;{"{"}{" "}
-                <span className="text-green-400">type:</span>{" "}
-                <span className="text-green-300">'unit'</span>
-                <span className="text-white">,</span>{" "}
-                <span className="text-green-400">coverage:</span>{" "}
-                <span className="text-orange-400">90</span>{" "}
-                <span className="text-white">{"}"}</span>
+                4. &nbsp;&nbsp;{'{'}{' '}
+                <span className="text-green-400">type:</span>{' '}
+                <span className="text-green-300">&apos;unit&apos;</span>
+                <span className="text-white">,</span>{' '}
+                <span className="text-green-400">coverage:</span>{' '}
+                <span className="text-orange-400">90</span>{' '}
+                <span className="text-white">{'}'}</span>
               </div>
               <div className="text-slate-400">
                 5. <span className="text-white">);</span>
               </div>
               <div className="text-slate-400">
-                6. <span className="text-purple-400">return</span>{" "}
+                6. <span className="text-purple-400">return</span>{' '}
                 <span className="text-blue-300">testCase</span>
                 <span className="text-white">;</span>
               </div>
@@ -111,7 +116,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FeatureCard;
+export default FeatureCard

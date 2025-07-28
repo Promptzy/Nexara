@@ -1,10 +1,16 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 /* Ensure animation duration classes are available */
-.duration-300 { transition-duration: 300ms; }
-.duration-500 { transition-duration: 500ms; }
-.duration-600 { transition-duration: 600ms; }
+.duration-300 {
+  transition-duration: 300ms;
+}
+.duration-500 {
+  transition-duration: 500ms;
+}
+.duration-600 {
+  transition-duration: 600ms;
+}
 
 @custom-variant dark (&:is(.dark *));
 
