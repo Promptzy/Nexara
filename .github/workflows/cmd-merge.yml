@@ -53,13 +53,14 @@ jobs:
               return;
             }
             
-            // Simple authorization check - only allow va16hav07
-            if (actor !== 'va16hav07') {
+            // Simple authorization check - allow va16hav07 and Pranjal6955
+            const authorizedUsers = ['va16hav07', 'Pranjal6955'];
+            if (!authorizedUsers.includes(actor)) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issueNumber,
-                body: `❌ @${actor}, you are not authorized to merge. Only va16hav07 can use the /merge command.`
+                body: `❌ @${actor}, you are not authorized to merge. Only ${authorizedUsers.join(' and ')} can use the /merge command.`
               });
               core.setFailed(`User ${actor} is not authorized to merge.`);
               return;
