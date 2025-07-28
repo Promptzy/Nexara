@@ -10,31 +10,45 @@ describe('Features Component', () => {
     
     const heading = screen.getByRole('heading', { level: 2 })
     expect(heading).toBeInTheDocument()
-    expect(heading).toHaveTextContent('Features that power your development workflow')
+    expect(heading).toHaveTextContent('Everything you need to supercharge your workflow')
   })
 
-  it('renders the description text', () => {
+  it('renders the features badge', () => {
     render(<Features />)
     
-    const description = screen.getByText(/Discover how Zenjira transforms your Jira experience/)
-    expect(description).toBeInTheDocument()
+    expect(screen.getByText('✨')).toBeInTheDocument()
+    expect(screen.getByText('Features')).toBeInTheDocument()
   })
 
-  it('renders all three feature cards', () => {
+  it('renders core features section', () => {
     render(<Features />)
     
-    // Check for specific feature titles
-    expect(screen.getByText('AI-Powered Automation')).toBeInTheDocument()
-    expect(screen.getByText('Advanced Analytics')).toBeInTheDocument()
-    expect(screen.getByText('Seamless Integration')).toBeInTheDocument()
+    expect(screen.getByText('Core Features')).toBeInTheDocument()
+    expect(screen.getByText('Automation Designer')).toBeInTheDocument()
+    expect(screen.getByText('AI Sprint Planner')).toBeInTheDocument()
+    expect(screen.getByText('Smart Ticket Summaries')).toBeInTheDocument()
+    expect(screen.getByText('ChatOps Bot')).toBeInTheDocument()
+    expect(screen.getByText('Developer Load Balancer')).toBeInTheDocument()
   })
 
-  it('renders action buttons for each feature', () => {
+  it('renders advanced features section', () => {
     render(<Features />)
     
-    expect(screen.getByText('Explore automation')).toBeInTheDocument()
-    expect(screen.getByText('View analytics')).toBeInTheDocument()
-    expect(screen.getByText('See integrations')).toBeInTheDocument()
+    expect(screen.getByText('Advanced Features')).toBeInTheDocument()
+    expect(screen.getByText('Semantic Search')).toBeInTheDocument()
+    expect(screen.getByText('AI Test Case Generator')).toBeInTheDocument()
+    expect(screen.getByText('Retrospective Insights')).toBeInTheDocument()
+    expect(screen.getByText('Gantt and Calendar Views')).toBeInTheDocument()
+    expect(screen.getByText('Cross-Project Heatmap')).toBeInTheDocument()
+    expect(screen.getByText('Auto Release Notes')).toBeInTheDocument()
+  })
+
+  it('renders all 11 feature cards', () => {
+    render(<Features />)
+    
+    // Should have 5 core + 6 advanced = 11 total features
+    const featureCards = document.querySelectorAll('[class*="bg-slate-800"]')
+    expect(featureCards.length).toBe(11)
   })
 
   it('applies correct background gradient', () => {
@@ -103,17 +117,17 @@ describe('FeatureCard Component', () => {
   it('shows code preview when hasCodePreview is true', () => {
     render(<FeatureCard {...mockProps} hasCodePreview={true} />)
     
-    expect(screen.getByText('integration.js')).toBeInTheDocument()
-    expect(screen.getByText('// Zenjira API Integration')).toBeInTheDocument()
-    expect(screen.getByText('const')).toBeInTheDocument()
-    expect(screen.getByText('zenjira')).toBeInTheDocument()
+    expect(screen.getByText('test-generator.js')).toBeInTheDocument()
+    expect(screen.getByText('// AI Test Case Generation')).toBeInTheDocument()
+    expect(screen.getByText('generateTest')).toBeInTheDocument()
+    expect(screen.getByText('bugReport')).toBeInTheDocument()
   })
 
   it('does not show code preview when hasCodePreview is false', () => {
     render(<FeatureCard {...mockProps} hasCodePreview={false} />)
     
-    expect(screen.queryByText('integration.js')).not.toBeInTheDocument()
-    expect(screen.queryByText('// Zenjira API Integration')).not.toBeInTheDocument()
+    expect(screen.queryByText('test-generator.js')).not.toBeInTheDocument()
+    expect(screen.queryByText('// AI Test Case Generation')).not.toBeInTheDocument()
   })
 
   it('applies custom className when provided', () => {
