@@ -31,10 +31,12 @@ jobs:
             // Get the actor from the comment author (the person who triggered the slash command)
             const actor = context.payload.client_payload.github.payload.comment.user.login;
             const command = context.payload.client_payload.slash_command.command;
+            const args = context.payload.client_payload.slash_command.args || [];
             
             console.log('✅ Slash command detected');
             console.log('Command:', command);
             console.log('Actor:', actor);
+            console.log('Args:', args);
             
             // Verify we have all required data
             if (!actor) {
@@ -53,75 +55,56 @@ jobs:
               return;
             }
             
-            // Simple authorization check - allow Va16hav07, Pranjal6955, and the issue/PR author
-            const authorizedUsers = ['Va16hav07', 'Pranjal6955'];
-            const isAuthor = issue.user.login === actor;
-            
-            if (!authorizedUsers.includes(actor) && !isAuthor) {
+            // Check if the issue/PR is already closed
+            if (issue.state === 'closed') {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issueNumber,
-                body: `❌ @${actor}, you are not authorized to close this ${issue.pull_request ? 'pull request' : 'issue'}. Only ${authorizedUsers.join(', ')} or the author can use the /close command.`
+                body: `❌ This ${issue.pull_request ? 'pull request' : 'issue'} is already closed.`
               });
-              core.setFailed(`User ${actor} is not authorized to close.`);
+              core.setFailed('Already closed');
               return;
             }
             
-            try {
-              // Check current state
-              const currentItem = issue.pull_request 
-                ? await github.rest.pulls.get({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    pull_number: issueNumber
-                  })
-                : await github.rest.issues.get({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    issue_number: issueNumber
-                  });
-              
-              if (currentItem.data.state === 'closed') {
-                await github.rest.issues.createComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issueNumber,
-                  body: `❌ This ${issue.pull_request ? 'pull request' : 'issue'} is already closed.`
-                });
-                core.setFailed('Already closed');
-                return;
-              }
-              
-              // Close the issue or pull request
-              if (issue.pull_request) {
-                await github.rest.pulls.update({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: issueNumber,
-                  state: 'closed'
-                });
-              } else {
-                await github.rest.issues.update({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issueNumber,
-                  state: 'closed'
-                });
-              }
-              
-              // Add a comment confirming the action
-              const itemType = issue.pull_request ? 'pull request' : 'issue';
-              const reason = isAuthor ? 'by the author' : `by @${actor}`;
-              
+            // Authorization check - only allow repository owners and issue/PR authors
+            const authorizedUsers = ['Va16hav07', 'Pranjal6955'];
+            const isAuthorized = authorizedUsers.includes(actor) || issue.user.login === actor;
+            
+            if (!isAuthorized) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issueNumber,
-                body: `🔒 This ${itemType} was closed ${reason} via slash command.`
+                body: `❌ @${actor}, you can only close ${issue.pull_request ? 'pull requests' : 'issues'} that you created, or you must be a repository owner.`
+              });
+              core.setFailed('Unauthorized user');
+              return;
+            }
+            
+            // Get optional close message from args
+            const closeMessage = args.length > 0 
+              ? args.join(' ')
+              : `Closed by @${actor} via slash command`;
+            
+            try {
+              // Close the issue or pull request
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                state: 'closed'
               });
               
-              console.log(`✅ Successfully closed ${itemType} #${issueNumber}`);
+              // Add a comment explaining why it was closed
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `🔒 ${closeMessage}`
+              });
+              
+              console.log(`✅ Successfully closed ${issue.pull_request ? 'PR' : 'issue'} #${issueNumber} by ${actor}`);
               
             } catch (error) {
               console.log('Close error:', error.message);
@@ -131,6 +114,8 @@ jobs:
               // Handle specific error cases
               if (error.message.includes('permission')) {
                 errorMessage = `❌ @${actor}, you don't have permission to close this ${issue.pull_request ? 'pull request' : 'issue'}.`;
+              } else if (error.message.includes('not found')) {
+                errorMessage = `❌ ${issue.pull_request ? 'Pull request' : 'Issue'} not found or already closed.`;
               }
               
               await github.rest.issues.createComment({

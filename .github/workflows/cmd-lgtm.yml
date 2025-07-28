@@ -13,7 +13,7 @@ jobs:
   lgtm:
     runs-on: ubuntu-latest
     steps:
-      - name: Add LGTM approval
+      - name: LGTM pull request
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -31,29 +31,17 @@ jobs:
             // Get the actor from the comment author (the person who triggered the slash command)
             const actor = context.payload.client_payload.github.payload.comment.user.login;
             const command = context.payload.client_payload.slash_command.command;
+            const args = context.payload.client_payload.slash_command.args || [];
             
             console.log('✅ Slash command detected');
             console.log('Command:', command);
             console.log('Actor:', actor);
+            console.log('Args:', args);
             
             // Verify we have all required data
             if (!actor) {
               console.log('❌ Could not determine actor from payload');
               core.setFailed('Missing actor information');
-              return;
-            }
-            
-            // Authorization check - only allow repository owners
-            const authorizedUsers = ['Va16hav07', 'Pranjal6955'];
-            if (!authorizedUsers.includes(actor)) {
-              console.log(`❌ Unauthorized user: ${actor}`);
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.client_payload.github.payload.issue.number,
-                body: `❌ @${actor}, only repository owners can use the /lgtm command.`
-              });
-              core.setFailed('Unauthorized user');
               return;
             }
             
@@ -94,7 +82,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: prNumber,
-                  body: `❌ Cannot add LGTM: Pull request is ${pr.data.state}.`
+                  body: `❌ Cannot LGTM: Pull request is ${pr.data.state}.`
                 });
                 core.setFailed(`PR is ${pr.data.state}`);
                 return;
@@ -106,11 +94,16 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: prNumber,
-                  body: `❌ @${actor}, you cannot approve your own pull request.`
+                  body: `❌ @${actor}, you cannot LGTM your own pull request.`
                 });
-                core.setFailed('Cannot self-approve');
+                core.setFailed('Cannot self-LGTM');
                 return;
               }
+              
+              // Get optional review message from args
+              const reviewMessage = args.length > 0 
+                ? args.join(' ')
+                : '👍 LGTM (Looks Good To Me)';
               
               // Submit an approving review
               await github.rest.pulls.createReview({
@@ -118,7 +111,7 @@ jobs:
                 repo: context.repo.repo,
                 pull_number: prNumber,
                 event: 'APPROVE',
-                body: '✅ LGTM (Looks Good To Me) - Approved via slash command'
+                body: reviewMessage
               });
               
               // Add a comment confirming the action
@@ -126,21 +119,39 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: prNumber,
-                body: `✅ @${actor} approved this pull request with LGTM.`
+                body: `👍 @${actor} says LGTM!`
               });
               
-              console.log(`✅ Successfully added LGTM approval from ${actor}`);
+              console.log(`✅ Successfully LGTM'd PR #${prNumber} by ${actor}`);
               
             } catch (error) {
               console.log('LGTM error:', error.message);
               
-              let errorMessage = `❌ Failed to add LGTM approval: ${error.message}`;
+              let errorMessage = `❌ Failed to LGTM pull request: ${error.message}`;
               
               // Handle specific error cases
               if (error.message.includes('duplicate')) {
                 errorMessage = `❌ @${actor}, you have already reviewed this pull request.`;
               } else if (error.message.includes('permission')) {
                 errorMessage = `❌ @${actor}, you don't have permission to review this pull request.`;
+              } else if (error.status === 422 && error.message.includes('review')) {
+                // Try to check if user already has a pending review
+                try {
+                  const reviews = await github.rest.pulls.listReviews({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: prNumber
+                  });
+                  
+                  const userReviews = reviews.data.filter(review => review.user.login === actor);
+                  const latestReview = userReviews[userReviews.length - 1];
+                  
+                  if (latestReview && latestReview.state === 'APPROVED') {
+                    errorMessage = `❌ @${actor}, you have already approved this pull request.`;
+                  }
+                } catch (reviewCheckError) {
+                  console.log('Error checking existing reviews:', reviewCheckError.message);
+                }
               }
               
               await github.rest.issues.createComment({
