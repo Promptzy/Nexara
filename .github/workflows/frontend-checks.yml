@@ -11,6 +11,11 @@ on:
     paths:
       - 'frontend/**'
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   frontend-checks:
     runs-on: ubuntu-latest
