@@ -1,0 +1,22 @@
+name: Add Label
+
+on:
+  repository_dispatch:
+    types: [slash-command]
+
+jobs:
+  label:
+    if: >-
+      ${{ contains(fromJson('["bug","feature"]'), github.event.client_payload.slash_command.command) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add label
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const label = github.event.client_payload.slash_command.command;
+            await github.rest.issues.addLabels({
+              ...context.issue,
+              labels: [label]
+            });

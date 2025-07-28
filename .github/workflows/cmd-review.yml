@@ -1,0 +1,25 @@
+name: Request Review
+
+on:
+  repository_dispatch:
+    types: [slash-command]
+
+jobs:
+  review:
+    if: ${{ github.event.client_payload.slash_command.command == 'review' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Request review from user
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const user = github.event.client_payload.slash_command.args.unnamed[0];
+            if (!user) throw new Error('No user mentioned');
+            if (!context.payload.pull_request) throw new Error('Not a pull request');
+            await github.rest.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              reviewers: [user.replace(/^@/, '')]
+            });

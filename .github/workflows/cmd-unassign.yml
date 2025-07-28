@@ -1,0 +1,22 @@
+name: Unassign User
+
+on:
+  repository_dispatch:
+    types: [slash-command]
+
+jobs:
+  unassign:
+    if: ${{ github.event.client_payload.slash_command.command == 'unassign' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Unassign user
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const user = github.event.client_payload.slash_command.args.unnamed[0];
+            if (!user) throw new Error('No user mentioned');
+            await github.rest.issues.removeAssignees({
+              ...context.issue,
+              assignees: [user.replace(/^@/, '')]
+            });
