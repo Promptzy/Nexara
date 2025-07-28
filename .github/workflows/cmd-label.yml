@@ -4,6 +4,11 @@ on:
   repository_dispatch:
     types: [slash-command]
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
 jobs:
   label:
     if: >-
@@ -16,7 +21,27 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const label = github.event.client_payload.slash_command.command;
-            await github.rest.issues.addLabels({
-              ...context.issue,
-              labels: [label]
-            });
+            
+            try {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: github.event.client_payload.slash_command.issue.number,
+                labels: [label]
+              });
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: github.event.client_payload.slash_command.issue.number,
+                body: `✅ Added label \`${label}\` to this ${github.event.client_payload.slash_command.issue.pull_request ? 'pull request' : 'issue'}.`
+              });
+            } catch (error) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: github.event.client_payload.slash_command.issue.number,
+                body: `❌ Failed to add label \`${label}\`: ${error.message}`
+              });
+              core.setFailed(error.message);
+            }

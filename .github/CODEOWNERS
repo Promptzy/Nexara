@@ -1,4 +1,6 @@
-# Add repository owner to CODEOWNERS
+# Add repository owner to CODEOWNERS for organization repository
 .github/workflows/ @va16hav07
+.github/workflows/*.yml @va16hav07
+.github/workflows/*.yaml @va16hav07
 *.yml @va16hav07
 *.yaml @va16hav07

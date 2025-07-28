@@ -6,9 +6,18 @@ on:
   pull_request_review_comment:
     types: [created]
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  repository-projects: write
+  actions: write
+
 jobs:
   slash-command:
     runs-on: ubuntu-latest
+    # Only run for comments on issues and PRs, not on commits
+    if: github.event.issue.pull_request != null || github.event.issue != null
     steps:
       - uses: peter-evans/slash-command-dispatch@v4
         with:
@@ -22,3 +31,5 @@ jobs:
             feature
           permission: write
           issue-type: both
+          reaction-token: ${{ secrets.GITHUB_TOKEN }}
+          reactions: true

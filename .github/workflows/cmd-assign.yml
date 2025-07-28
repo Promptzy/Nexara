@@ -4,6 +4,11 @@ on:
   repository_dispatch:
     types: [slash-command]
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
 jobs:
   assign:
     if: ${{ github.event.client_payload.slash_command.command == 'assign' }}
@@ -14,9 +19,42 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const user = github.event.client_payload.slash_command.args.unnamed[0];
-            if (!user) throw new Error('No user mentioned');
-            await github.rest.issues.addAssignees({
-              ...context.issue,
-              assignees: [user.replace(/^@/, '')]
-            });
+            const args = github.event.client_payload.slash_command.args.unnamed;
+            const user = args && args.length > 0 ? args[0] : null;
+            
+            if (!user) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: github.event.client_payload.slash_command.issue.number,
+                body: `❌ Please mention a user to assign. Usage: \`/assign @username\``
+              });
+              core.setFailed('No user mentioned');
+              return;
+            }
+            
+            const username = user.replace(/^@/, '');
+            
+            try {
+              await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: github.event.client_payload.slash_command.issue.number,
+                assignees: [username]
+              });
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: github.event.client_payload.slash_command.issue.number,
+                body: `✅ Assigned @${username} to this ${github.event.client_payload.slash_command.issue.pull_request ? 'pull request' : 'issue'}.`
+              });
+            } catch (error) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: github.event.client_payload.slash_command.issue.number,
+                body: `❌ Failed to assign @${username}: ${error.message}`
+              });
+              core.setFailed(error.message);
+            }
