@@ -21,10 +21,6 @@ This repository includes a powerful GitHub bot that responds to slash commands i
 - `/bug` - Adds the "bug" label to the issue or PR
 - `/feature` - Adds the "feature" label to the issue or PR
 
-### Auto-Labeling:
-- Changes to `frontend/**` files automatically add the `frontend` label
-- Changes to `backend/**` files automatically add the `backend` label
-
 ### How to Use:
 1. **In any issue or pull request**, post a comment with one of the slash commands above
 2. **The bot will react** with an emoji to show it received the command
