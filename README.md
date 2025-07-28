@@ -229,6 +229,12 @@ npm start
 
 # Check API health
 curl http://localhost:5000/health
+
+# Format backend code
+npm run format
+
+# Check code formatting
+npm run format:check
 ```
 
 #### 🔄 **Full Stack Development**
@@ -242,6 +248,20 @@ npm run dev:backend
 
 # Terminal 2: Start frontend  
 npm run dev:frontend
+```
+
+#### 🎨 **Code Formatting (Prettier)**
+```bash
+# Format backend code
+npm run format:backend
+
+# Check backend formatting
+npm run format:check:backend
+
+# Or from backend directory
+cd backend
+npm run format
+npm run format:check
 ```
 
 ### API Endpoints
