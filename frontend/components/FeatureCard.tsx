@@ -1,64 +1,69 @@
-'use client'
+"use client";
 
-import React from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { LucideIcon } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import React from "react";
+import { LucideIcon } from "lucide-react";
 
 export interface FeatureCardProps {
-  icon: LucideIcon
-  title: string
-  description: string
-  gradient: string
-  className?: string
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  action: string;
+  hasCodePreview?: boolean;
+  className?: string;
 }
 
 /**
- * FeatureCard component displays a single feature with icon, title, and description
- * Includes hover animations and gradient styling
+ * FeatureCard displays a feature with icon, title, description and action button
+ * Matches the design with purple gradient icons and clean styling
  */
 const FeatureCard: React.FC<FeatureCardProps> = ({
   icon: Icon,
   title,
   description,
-  gradient,
-  className
+  action,
+  hasCodePreview = false,
+  className = "",
 }) => {
   return (
-    <Card className={cn(
-      "group relative overflow-hidden border-0 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1",
-      className
-    )}>
-      <CardContent className="p-6">
-        {/* Background gradient overlay on hover */}
-        <div 
-          className={cn(
-            "absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-300",
-            gradient
-          )} 
-        />
-        
-        {/* Icon container */}
-        <div className={cn(
-          "inline-flex items-center justify-center w-12 h-12 rounded-lg mb-4 text-white shadow-sm group-hover:scale-110 transition-transform duration-300",
-          gradient
-        )}>
-          <Icon className="w-6 h-6" />
+    <div className={`bg-gray-800/50 border border-gray-700/50 rounded-2xl p-8 hover:border-gray-600/50 transition-all duration-300 ${className}`}>
+      <div className="flex flex-col h-full">
+        {/* Icon */}
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg mb-6 bg-gradient-to-r from-purple-500 to-pink-500">
+          <Icon className="w-6 h-6 text-white" />
         </div>
 
         {/* Content */}
-        <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+        <h3 className="text-2xl font-bold text-white mb-4">
           {title}
         </h3>
-        <p className="text-muted-foreground text-sm leading-relaxed group-hover:text-foreground/80 transition-colors">
+        <p className="text-gray-300 text-base leading-relaxed mb-6 flex-grow">
           {description}
         </p>
 
-        {/* Subtle border animation */}
-        <div className="absolute inset-0 rounded-lg border-2 border-transparent group-hover:border-border/20 transition-colors duration-300" />
-      </CardContent>
-    </Card>
-  )
-}
+        {/* Code Preview for Code Collaboration Card */}
+        {hasCodePreview && (
+          <div className="bg-gray-900/80 rounded-lg p-4 mb-6 border border-gray-700/30">
+            <div className="text-xs text-gray-400 mb-2">DigitalToken.js</div>
+            <div className="font-mono text-sm space-y-1">
+              <div className="text-gray-400">1. <span className="text-blue-400">// addNumbersToToken</span></div>
+              <div className="text-gray-400">2. <span className="text-purple-400">function</span> <span className="text-yellow-400">addNumbersToToken</span><span className="text-white">(</span><span className="text-orange-400">num1</span><span className="text-white">, </span><span className="text-orange-400">num2</span><span className="text-white">) {</span></div>
+              <div className="text-gray-400">3. &nbsp;&nbsp;<span className="text-purple-400">let</span> <span className="text-blue-300">sum</span> <span className="text-white">= </span><span className="text-orange-400">num1</span> <span className="text-white">+ </span><span className="text-orange-400">num2</span><span className="text-white">;</span></div>
+              <div className="text-gray-400">4. &nbsp;&nbsp;<span className="text-purple-400">let</span> <span className="text-blue-300">token</span> <span className="text-white">= {</span></div>
+              <div className="text-gray-400">5. &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-green-400">value:</span> <span className="text-blue-300">sum</span><span className="text-white">,</span></div>
+              <div className="text-gray-400">6. &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-green-400">value:</span> <span className="text-blue-300">sum</span><span className="text-white">,</span></div>
+              <div className="text-gray-400">7. &nbsp;&nbsp;<span className="text-purple-400">return</span> <span className="text-blue-300">token</span><span className="text-white">;</span></div>
+              <div className="text-gray-400">8. <span className="text-white">}</span></div>
+            </div>
+          </div>
+        )}
 
-export default FeatureCard
+        {/* Action Button */}
+        <button className="text-white hover:text-purple-400 transition-colors duration-200 text-left font-medium">
+          {action}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default FeatureCard;

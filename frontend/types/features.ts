@@ -10,17 +10,10 @@ export interface Feature {
   title: string
   /** Feature description */
   description: string
-  /** Tailwind gradient classes for styling */
-  gradient: string
-}
-
-/**
- * Animation configuration for react-bits
- */
-export interface AnimationConfig {
-  direction?: 'up' | 'down' | 'left' | 'right'
-  duration?: number
-  delay?: number
+  /** Action button text */
+  action: string
+  /** Whether to show code preview */
+  hasCodePreview?: boolean
 }
 
 /**
@@ -30,6 +23,7 @@ export interface FeatureCardProps {
   icon: LucideIcon
   title: string
   description: string
-  gradient: string
+  action: string
+  hasCodePreview?: boolean
   className?: string
 }
