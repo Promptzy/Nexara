@@ -2,7 +2,7 @@ name: Add Label
 
 on:
   repository_dispatch:
-    types: [slash-command]
+    types: [bug-command, feature-command]
 
 permissions:
   contents: read
@@ -11,8 +11,6 @@ permissions:
 
 jobs:
   label:
-    if: >-
-      ${{ contains(fromJson('["bug","feature"]'), github.event.client_payload.slash_command.command) }}
     runs-on: ubuntu-latest
     steps:
       - name: Add label

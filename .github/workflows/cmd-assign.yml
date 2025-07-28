@@ -2,7 +2,7 @@ name: Assign User
 
 on:
   repository_dispatch:
-    types: [slash-command]
+    types: [assign-command]
 
 permissions:
   contents: read
@@ -11,7 +11,6 @@ permissions:
 
 jobs:
   assign:
-    if: ${{ github.event.client_payload.slash_command.command == 'assign' }}
     runs-on: ubuntu-latest
     steps:
       - name: Assign user

@@ -1,0 +1,85 @@
+name: Merge PR
+
+on:
+  repository_dispatch:
+    types: [merge-command]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if user is authorized
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const actor = github.event.client_payload.slash_command.actor;
+            // Get authorized users from secret or use default
+            const authorizedUsersSecret = '${{ secrets.MERGE_AUTHORIZED_USERS }}' || '';
+            const authorizedUsers = authorizedUsersSecret 
+              ? authorizedUsersSecret.split(',').map(u => u.trim())
+              : ['va16hav07']; // Fallback to repository owner
+            
+            console.log(`Checking authorization for user: ${actor}`);
+            console.log(`Authorized users: ${authorizedUsers.join(', ')}`);
+            
+            if (!authorizedUsers.includes(actor)) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: github.event.client_payload.slash_command.issue.number,
+                body: `❌ @${actor}, you are not authorized to merge. Only ${authorizedUsers.join(', ')} can use the /merge command.`
+              });
+              core.setFailed(`User ${actor} is not authorized to merge.`);
+              return;
+            }
+            
+            console.log(`✅ User ${actor} is authorized to merge.`);
+      
+      - name: Merge pull request
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = github.event.client_payload.slash_command.issue;
+            if (!issue.pull_request) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `❌ The /merge command can only be used on pull requests.`
+              });
+              core.setFailed('Not a pull request');
+              return;
+            }
+            
+            const prNumber = issue.number;
+            
+            try {
+              await github.rest.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                merge_method: 'merge'
+              });
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: `✅ Pull request merged successfully by @${github.event.client_payload.slash_command.actor}.`
+              });
+            } catch (error) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: `❌ Failed to merge pull request: ${error.message}`
+              });
+              core.setFailed(error.message);
+            }
