@@ -18,7 +18,16 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const actor = github.event.client_payload.slash_command.actor;
+            // Check if this is a valid slash command dispatch event
+            if (!github.event.client_payload || !github.event.client_payload.slash_command) {
+              console.log('❌ This workflow should only be triggered by slash command dispatch events');
+              core.setFailed('Invalid event trigger - expected slash command dispatch');
+              return;
+            }
+            
+            const slashCommand = github.event.client_payload.slash_command;
+            const actor = slashCommand.actor;
+            
             // Get authorized users from secret or use default
             const authorizedUsersSecret = '${{ secrets.MERGE_AUTHORIZED_USERS }}' || '';
             const authorizedUsers = authorizedUsersSecret 
@@ -32,7 +41,7 @@ jobs:
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: github.event.client_payload.slash_command.issue.number,
+                issue_number: slashCommand.issue.number,
                 body: `❌ @${actor}, you are not authorized to merge. Only ${authorizedUsers.join(', ')} can use the /merge command.`
               });
               core.setFailed(`User ${actor} is not authorized to merge.`);
@@ -46,7 +55,15 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const issue = github.event.client_payload.slash_command.issue;
+            // Check if this is a valid slash command dispatch event
+            if (!github.event.client_payload || !github.event.client_payload.slash_command) {
+              console.log('❌ This workflow should only be triggered by slash command dispatch events');
+              core.setFailed('Invalid event trigger - expected slash command dispatch');
+              return;
+            }
+            
+            const slashCommand = github.event.client_payload.slash_command;
+            const issue = slashCommand.issue;
             if (!issue.pull_request) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
@@ -72,7 +89,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: prNumber,
-                body: `✅ Pull request merged successfully by @${github.event.client_payload.slash_command.actor}.`
+                body: `✅ Pull request merged successfully by @${slashCommand.actor}.`
               });
             } catch (error) {
               await github.rest.issues.createComment({
