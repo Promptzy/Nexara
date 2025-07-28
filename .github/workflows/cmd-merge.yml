@@ -79,6 +79,90 @@ jobs:
             
             const prNumber = issueNumber;
             
+            // Check PR status before attempting to merge
+            try {
+              const pr = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+              
+              console.log('PR Status:', pr.data.state);
+              console.log('Mergeable:', pr.data.mergeable);
+              console.log('Mergeable State:', pr.data.mergeable_state);
+              
+              // Check if PR is in a mergeable state
+              if (pr.data.state !== 'open') {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: `❌ Cannot merge: Pull request is ${pr.data.state}. Only open pull requests can be merged.`
+                });
+                core.setFailed(`PR is ${pr.data.state}`);
+                return;
+              }
+              
+              // Check mergeable state
+              if (pr.data.mergeable === false) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: `❌ Cannot merge: Pull request has conflicts that need to be resolved.`
+                });
+                core.setFailed('PR has conflicts');
+                return;
+              }
+              
+              if (pr.data.mergeable_state === 'blocked') {
+                // Get more details about what's blocking the merge
+                const reviews = await github.rest.pulls.listReviews({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber
+                });
+                
+                const requestedReviews = await github.rest.pulls.listRequestedReviewers({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber
+                });
+                
+                let blockingIssues = [];
+                
+                // Check for pending reviews
+                if (requestedReviews.data.users && requestedReviews.data.users.length > 0) {
+                  const pendingReviewers = requestedReviews.data.users.map(user => user.login).join(', ');
+                  blockingIssues.push(`Pending reviews from: ${pendingReviewers}`);
+                }
+                
+                // Check for review comments requesting changes
+                const changeRequests = reviews.data.filter(review => review.state === 'CHANGES_REQUESTED');
+                if (changeRequests.length > 0) {
+                  const reviewers = changeRequests.map(review => review.user.login).join(', ');
+                  blockingIssues.push(`Changes requested by: ${reviewers}`);
+                }
+                
+                const errorMessage = blockingIssues.length > 0 
+                  ? `❌ Cannot merge: ${blockingIssues.join('. ')}`
+                  : '❌ Cannot merge: Pull request is blocked by repository rules.';
+                
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: errorMessage
+                });
+                core.setFailed('PR is blocked');
+                return;
+              }
+              
+            } catch (error) {
+              console.log('Error checking PR status:', error.message);
+              // Continue with merge attempt even if status check fails
+            }
+            
             try {
               await github.rest.pulls.merge({
                 owner: context.repo.owner,
@@ -94,11 +178,27 @@ jobs:
                 body: `✅ Pull request merged successfully by @${actor}.`
               });
             } catch (error) {
+              console.log('Merge error:', error.message);
+              
+              let errorMessage = `❌ Failed to merge pull request: ${error.message}`;
+              
+              // Provide more helpful error messages for common issues
+              if (error.message.includes('Repository rule violations found')) {
+                errorMessage = `❌ Cannot merge: Repository rules are blocking this merge. This could be due to:
+                - Pending review requests
+                - Required status checks not passing
+                - Branch protection rules
+                
+                Please ensure all required reviews are completed and status checks are passing.`;
+              } else if (error.message.includes('mergeable')) {
+                errorMessage = `❌ Cannot merge: Pull request has conflicts or is not in a mergeable state. Please resolve any conflicts and try again.`;
+              }
+              
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: prNumber,
-                body: `❌ Failed to merge pull request: ${error.message}`
+                body: errorMessage
               });
               core.setFailed(error.message);
             }

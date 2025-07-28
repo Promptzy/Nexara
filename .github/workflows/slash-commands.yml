@@ -27,6 +27,7 @@ jobs:
             unassign
             merge
             review
+            status
             bug
             feature
           permission: write

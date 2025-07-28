@@ -18,6 +18,7 @@ This repository includes a powerful GitHub bot that responds to slash commands i
 - `/unassign @username` - Unassigns the mentioned user from an issue or PR  
 - `/merge` - Merges a pull request (restricted to authorized users)
 - `/review @username` - Requests a review from the mentioned user
+- `/status` - Checks the status of a pull request and provides merge readiness assessment
 - `/bug` - Adds the "type: bug" label to the issue or PR
 - `/feature` - Adds the "type: feature" label to the issue or PR
 
