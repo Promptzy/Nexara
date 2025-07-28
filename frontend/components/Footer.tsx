@@ -45,7 +45,7 @@ export default function Footer() {
               className="hover:text-[#bdbdc7]"
             >
               {/* Instagram icon from lucide-react */}
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><rect width="18" height="18" x="3" y="3" rx="4.5"/><circle cx="12" cy="12" r="3.5"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><rect width="18" height="18" x="3" y="3" rx="4.5" /><circle cx="12" cy="12" r="3.5" /><circle cx="17.5" cy="6.5" r="1" /></svg>
             </a>
             <a
               href="https://linkedin.com/"
