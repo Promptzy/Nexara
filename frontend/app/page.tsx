@@ -3,10 +3,9 @@ import Footer from '../components/Footer'
 
 const page = () => {
   return (
-    <div>
-      <div>page</div>
+    <main>
       <Footer />
-    </div>
+    </main>
   )
 }
 
