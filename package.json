@@ -17,6 +17,10 @@
     "install:backend": "cd backend && npm install",
     "lint": "npm run lint:frontend",
     "lint:frontend": "cd frontend && npm run lint",
+    "format": "npm run format:backend",
+    "format:backend": "cd backend && npm run format",
+    "format:check": "npm run format:check:backend",
+    "format:check:backend": "cd backend && npm run format:check",
     "clean": "npm run clean:frontend && npm run clean:backend",
     "clean:frontend": "cd frontend && rm -rf node_modules .next",
     "clean:backend": "cd backend && rm -rf node_modules"

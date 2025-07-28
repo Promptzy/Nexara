@@ -16,7 +16,7 @@ app.get('/health', (req, res) => {
     status: 'OK',
     message: 'Zenjira Backend Server is running!',
     timestamp: new Date().toISOString(),
-    version: '1.0.0'
+    version: '1.0.0',
   });
 });
 
@@ -28,8 +28,8 @@ app.get('/api/test', (req, res) => {
       'GET /health - Health check',
       'GET /api/test - API test endpoint',
       'POST /api/jira/webhook - Jira webhook handler (coming soon)',
-      'GET /api/automation/workflows - List automation workflows (coming soon)'
-    ]
+      'GET /api/automation/workflows - List automation workflows (coming soon)',
+    ],
   });
 });
 
@@ -37,7 +37,7 @@ app.get('/api/test', (req, res) => {
 app.get('/api/jira/projects', (req, res) => {
   res.json({
     message: 'Jira integration coming soon!',
-    projects: []
+    projects: [],
   });
 });
 
@@ -45,7 +45,7 @@ app.get('/api/jira/projects', (req, res) => {
 app.get('/api/automation/workflows', (req, res) => {
   res.json({
     message: 'Automation workflows coming soon!',
-    workflows: []
+    workflows: [],
   });
 });
 
@@ -53,7 +53,7 @@ app.get('/api/automation/workflows', (req, res) => {
 app.post('/api/ai/summarize', (req, res) => {
   res.json({
     message: 'AI summarization coming soon!',
-    summary: 'This feature will be implemented with GPT-4 integration'
+    summary: 'This feature will be implemented with GPT-4 integration',
   });
 });
 
@@ -61,7 +61,7 @@ app.post('/api/ai/summarize', (req, res) => {
 app.use('*', (req, res) => {
   res.status(404).json({
     error: 'Route not found',
-    message: `The route ${req.originalUrl} does not exist on this server`
+    message: `The route ${req.originalUrl} does not exist on this server`,
   });
 });
 
@@ -70,7 +70,7 @@ app.use((err, req, res, next) => {
   console.error('Error:', err.stack);
   res.status(500).json({
     error: 'Internal Server Error',
-    message: 'Something went wrong on the server'
+    message: 'Something went wrong on the server',
   });
 });
 
