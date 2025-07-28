@@ -13,22 +13,38 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             console.log('=== DEBUG EVENT INFORMATION ===');
-            console.log('Event name:', github.event_name);
-            console.log('Event action:', github.event.action);
-            console.log('Repository dispatch type:', github.event.type || 'Not specified');
             
-            if (github.event.client_payload) {
-              console.log('Client payload exists');
-              console.log('Client payload:', JSON.stringify(github.event.client_payload, null, 2));
+            // Safely access context properties
+            console.log('Event name:', context.eventName || 'undefined');
+            console.log('Action:', context.action || 'undefined');
+            console.log('Payload keys:', Object.keys(context.payload || {}));
+            
+            // Check for repository dispatch specific properties
+            if (context.payload && context.payload.client_payload) {
+              console.log('✅ Client payload exists');
+              console.log('Client payload:', JSON.stringify(context.payload.client_payload, null, 2));
               
-              if (github.event.client_payload.slash_command) {
-                console.log('Slash command detected');
-                console.log('Command:', github.event.client_payload.slash_command.command);
-                console.log('Actor:', github.event.client_payload.slash_command.actor);
+              if (context.payload.client_payload.slash_command) {
+                console.log('✅ Slash command detected');
+                console.log('Command:', context.payload.client_payload.slash_command.command);
+                console.log('Actor:', context.payload.client_payload.slash_command.actor);
+                console.log('Issue number:', context.payload.client_payload.slash_command.issue.number);
               } else {
-                console.log('No slash_command in client_payload');
+                console.log('❌ No slash_command in client_payload');
+                console.log('Client payload keys:', Object.keys(context.payload.client_payload));
               }
             } else {
-              console.log('❌ No client_payload found in event');
-              console.log('Available event properties:', Object.keys(github.event));
+              console.log('❌ No client_payload found');
+              console.log('Payload structure:', JSON.stringify(context.payload, null, 2));
+            }
+            
+            // Also check the github.event structure
+            console.log('=== GITHUB EVENT STRUCTURE ===');
+            try {
+              console.log('github.event keys:', Object.keys(github.event || {}));
+              if (github.event && github.event.client_payload) {
+                console.log('github.event.client_payload:', JSON.stringify(github.event.client_payload, null, 2));
+              }
+            } catch (e) {
+              console.log('Error accessing github.event:', e.message);
             }

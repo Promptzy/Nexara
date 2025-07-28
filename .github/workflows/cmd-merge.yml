@@ -19,13 +19,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             // Check if this is a valid slash command dispatch event
-            if (!github.event.client_payload || !github.event.client_payload.slash_command) {
+            if (!context.payload || !context.payload.client_payload || !context.payload.client_payload.slash_command) {
               console.log('❌ This workflow should only be triggered by slash command dispatch events');
               core.setFailed('Invalid event trigger - expected slash command dispatch');
               return;
             }
             
-            const slashCommand = github.event.client_payload.slash_command;
+            const slashCommand = context.payload.client_payload.slash_command;
             const actor = slashCommand.actor;
             
             // Simple authorization check - only allow va16hav07
