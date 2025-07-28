@@ -9,9 +9,37 @@
 
 ---
 
-</div>
+## 🤖 GitHub Bot Commands
 
-**Zenjira** is an enterprise-grade web platform that revolutionizes Jira workflow management through intelligent automation, AI-powered sprint planning, and comprehensive analytics — delivered via an intuitive, centralized dashboard.
+This repository includes a powerful GitHub bot that responds to slash commands in issues and pull requests:
+
+### Available Commands:
+- `/assign @username` - Assigns an issue or PR to the mentioned user
+- `/unassign @username` - Unassigns the mentioned user from an issue or PR  
+- `/merge` - Merges a pull request (restricted to authorized users)
+- `/review @username` - Requests a review from the mentioned user
+- `/status` - Checks the status of a pull request and provides merge readiness assessment
+- `/bug` - Adds the "type: bug" label to the issue or PR
+- `/feature` - Adds the "type: feature" label to the issue or PR
+
+### How to Use:
+1. **In any issue or pull request**, post a comment with one of the slash commands above
+2. **The bot will react** with an emoji to show it received the command
+3. **The command will execute** and the bot will post a confirmation message
+4. **Check the Actions tab** if a command doesn't work as expected
+
+### Automated Labeling:
+- **Pull requests are automatically labeled** based on changed files
+- **Size labels** (XS, S, M, L, XL) are added based on the number of lines changed
+- **Component labels** help identify which part of the codebase is affected
+- **Technology labels** help identify the languages and frameworks involved
+
+### Security:
+- The `/merge` command is restricted to authorized users only
+- All workflow changes require approval from repository maintainers
+- Commands provide clear feedback on success or failure
+
+### Status: ✅ **ACTIVE** - Bot is configured and ready to use!
 
 ---
 
@@ -130,32 +158,33 @@ gantt
     title Zenjira Development Timeline
     dateFormat  MM-DD
     section Phase 1
-    Requirements & Setup    :active, p1, 08-01, 08-31
+    Jira Clone Foundation    :active, p1, 08-01, 08-31
     section Phase 2  
-    Core Features          :p2, 09-01, 09-30
+    Automation & AI          :p2, 09-01, 09-30
     section Phase 3
-    AI & Integrations      :p3, 10-01, 10-31
+    Advanced Features        :p3, 10-01, 10-31
     section Phase 4
-    Testing & Launch       :p4, 11-01, 11-30
+    Testing & Launch         :p4, 11-01, 11-30
 ```
 
-### 🗓 **Phase 1: Foundation** *(Month 1)*
-- [ ] **Architecture Design** - System design and technical specifications
-- [ ] **UI/UX Design** - Figma wireframes and design system
-- [ ] **Infrastructure Setup** - Docker, PostgreSQL, Redis, authentication
-- [ ] **Development Environment** - CI/CD pipelines and tooling
+### 🗓 **Phase 1: Jira Clone Foundation** *(Month 1)*
+- [ ] **Core Jira Clone** - Build basic project management features (issues, boards, sprints)
+- [ ] **User Management** - Authentication, user roles, and permissions
+- [ ] **Issue Management** - Create, edit, assign, and track issues with status workflows
+- [ ] **Project Boards** - Kanban boards and basic sprint functionality
+- [ ] **Infrastructure Setup** - Docker, PostgreSQL, Redis, and development environment
 
-### 🔧 **Phase 2: Core Platform** *(Month 2)*
-- [ ] **Automation Engine** - n8n integration and workflow builder
-- [ ] **Jira Integration** - OAuth2, issue management, real-time sync
-- [ ] **AI Features** - GPT-4 integration for summaries and planning
-- [ ] **ChatOps Bot** - Slack/Teams integration for team communication
+### 🔧 **Phase 2: Automation & Intelligence** *(Month 2)*
+- [ ] **Automation Engine** - n8n integration and workflow builder for custom automations
+- [ ] **External Jira Integration** - OAuth2 connection to existing Jira instances for migration/sync
+- [ ] **AI Features** - GPT-4 integration for intelligent summaries and planning assistance
+- [ ] **ChatOps Bot** - Slack/Teams integration for team communication and notifications
 
-### 🤖 **Phase 3: Intelligence Layer** *(Month 3)*
-- [ ] **Semantic Search** - Hugging Face model integration
-- [ ] **VCS Integration** - GitHub/GitLab pull request insights
-- [ ] **Advanced Analytics** - Retrospectives and performance metrics
-- [ ] **Visual Dashboards** - Gantt charts and project heatmaps
+### 🤖 **Phase 3: Advanced Features** *(Month 3)*
+- [ ] **Semantic Search** - Hugging Face model integration for intelligent issue discovery
+- [ ] **VCS Integration** - GitHub/GitLab pull request insights and code-to-issue linking
+- [ ] **Advanced Analytics** - Sprint retrospectives and team performance metrics
+- [ ] **Visual Dashboards** - Gantt charts, burndown charts, and cross-project heatmaps
 
 ### 🚀 **Phase 4: Production Ready** *(Month 4)*
 - [ ] **Quality Assurance** - Comprehensive testing suite (Jest, Cypress)
@@ -229,6 +258,12 @@ npm start
 
 # Check API health
 curl http://localhost:5000/health
+
+# Format backend code
+npm run format
+
+# Check code formatting
+npm run format:check
 ```
 
 #### 🔄 **Full Stack Development**
@@ -242,6 +277,20 @@ npm run dev:backend
 
 # Terminal 2: Start frontend  
 npm run dev:frontend
+```
+
+#### 🎨 **Code Formatting (Prettier)**
+```bash
+# Format backend code
+npm run format:backend
+
+# Check backend formatting
+npm run format:check:backend
+
+# Or from backend directory
+cd backend
+npm run format
+npm run format:check
 ```
 
 ### API Endpoints
@@ -261,6 +310,11 @@ npm run dev:frontend
 - **API Health Check**: http://localhost:5000/health
 
 ---
+
+## 📜 Code of Conduct
+
+Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) to understand the expected behavior in this community.
+
 
 ## 📄 License
 

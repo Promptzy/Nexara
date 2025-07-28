@@ -1,0 +1,153 @@
+name: LGTM Command
+
+on:
+  repository_dispatch:
+    types: [lgtm-command]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  lgtm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add LGTM approval
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Check if this is a valid slash command dispatch event
+            if (!context.payload || !context.payload.client_payload) {
+              console.log('❌ This workflow should only be triggered by repository dispatch events');
+              core.setFailed('Invalid event trigger - expected repository dispatch');
+              return;
+            }
+            
+            // Debug: Log the full client payload structure
+            console.log('Client payload structure:', JSON.stringify(context.payload.client_payload, null, 2));
+            
+            // Get the actor from the comment author (the person who triggered the slash command)
+            const actor = context.payload.client_payload.github.payload.comment.user.login;
+            const command = context.payload.client_payload.slash_command.command;
+            
+            console.log('✅ Slash command detected');
+            console.log('Command:', command);
+            console.log('Actor:', actor);
+            
+            // Verify we have all required data
+            if (!actor) {
+              console.log('❌ Could not determine actor from payload');
+              core.setFailed('Missing actor information');
+              return;
+            }
+            
+            // Authorization check - only allow repository owners
+            const authorizedUsers = ['Va16hav07', 'Pranjal6955'];
+            if (!authorizedUsers.includes(actor)) {
+              console.log(`❌ Unauthorized user: ${actor}`);
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.client_payload.github.payload.issue.number,
+                body: `❌ @${actor}, only repository owners can use the /lgtm command.`
+              });
+              core.setFailed('Unauthorized user');
+              return;
+            }
+            
+            // Get issue data from the repository dispatch event
+            const issue = context.payload.client_payload.github.payload.issue;
+            const issueNumber = issue.number;
+            
+            if (!issue || !issueNumber) {
+              console.log('❌ Could not determine issue information');
+              core.setFailed('Missing issue information');
+              return;
+            }
+            
+            // Check if this is a pull request
+            if (!issue.pull_request) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `❌ The /lgtm command can only be used on pull requests.`
+              });
+              core.setFailed('Not a pull request');
+              return;
+            }
+            
+            const prNumber = issueNumber;
+            
+            try {
+              // Check if the PR is still open
+              const pr = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+              
+              if (pr.data.state !== 'open') {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: `❌ Cannot add LGTM: Pull request is ${pr.data.state}.`
+                });
+                core.setFailed(`PR is ${pr.data.state}`);
+                return;
+              }
+              
+              // Check if the user is the PR author
+              if (pr.data.user.login === actor) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: `❌ @${actor}, you cannot approve your own pull request.`
+                });
+                core.setFailed('Cannot self-approve');
+                return;
+              }
+              
+              // Submit an approving review
+              await github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                event: 'APPROVE',
+                body: '✅ LGTM (Looks Good To Me) - Approved via slash command'
+              });
+              
+              // Add a comment confirming the action
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: `✅ @${actor} approved this pull request with LGTM.`
+              });
+              
+              console.log(`✅ Successfully added LGTM approval from ${actor}`);
+              
+            } catch (error) {
+              console.log('LGTM error:', error.message);
+              
+              let errorMessage = `❌ Failed to add LGTM approval: ${error.message}`;
+              
+              // Handle specific error cases
+              if (error.message.includes('duplicate')) {
+                errorMessage = `❌ @${actor}, you have already reviewed this pull request.`;
+              } else if (error.message.includes('permission')) {
+                errorMessage = `❌ @${actor}, you don't have permission to review this pull request.`;
+              }
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: errorMessage
+              });
+              core.setFailed(error.message);
+            }

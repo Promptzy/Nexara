@@ -1,0 +1,39 @@
+name: Slash Command Dispatch
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  repository-projects: write
+  actions: write
+
+jobs:
+  slash-command:
+    runs-on: ubuntu-latest
+    # Only run for comments on issues and PRs, not on commits
+    if: github.event.issue.pull_request != null || github.event.issue != null
+    steps:
+      - uses: peter-evans/slash-command-dispatch@v4
+        with:
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          commands: |
+            assign
+            unassign
+            merge
+            review
+            status
+            bug
+            feature
+            lgtm
+            close
+            approve
+          permission: write
+          issue-type: both
+          reaction-token: ${{ secrets.GITHUB_TOKEN }}
+          reactions: true

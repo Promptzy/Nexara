@@ -1,0 +1,203 @@
+name: Backend Checks
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-checks.yml'
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'backend/**'
+
+jobs:
+  backend-checks:
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: backend
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check formatting with Prettier
+        run: |
+          # Check if prettier config exists, if not create a basic one
+          if [ ! -f .prettierrc ]; then
+            echo '{
+              "semi": true,
+              "trailingComma": "es5",
+              "singleQuote": true,
+              "printWidth": 80,
+              "tabWidth": 2
+            }' > .prettierrc
+          fi
+          
+          # Install prettier if not already in package.json
+          if ! npm list prettier --depth=0 > /dev/null 2>&1; then
+            npm install --no-save prettier
+          fi
+          
+          # Check formatting
+          npx prettier --check "**/*.{js,jsx,ts,tsx,json,md}"
+      
+      - name: Run ESLint
+        run: |
+          # Check if ESLint is configured
+          if [ -f .eslintrc.json ] || [ -f .eslintrc.js ] || [ -f eslint.config.js ]; then
+            npx eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0
+          else
+            echo "⚠️ ESLint configuration not found. Setting up basic ESLint for Node.js..."
+            
+            # Install ESLint and basic config if not present
+            npm install --no-save eslint @eslint/js
+            
+            # Create basic ESLint config for Node.js
+            echo 'import js from "@eslint/js";
+            
+            export default [
+              js.configs.recommended,
+              {
+                languageOptions: {
+                  ecmaVersion: 2022,
+                  sourceType: "module",
+                  globals: {
+                    console: "readonly",
+                    process: "readonly",
+                    Buffer: "readonly",
+                    __dirname: "readonly",
+                    __filename: "readonly",
+                    global: "readonly",
+                    module: "readonly",
+                    require: "readonly",
+                    exports: "readonly"
+                  }
+                },
+                rules: {
+                  "no-unused-vars": "error",
+                  "no-console": "off",
+                  "prefer-const": "error"
+                }
+              }
+            ];' > eslint.config.js
+            
+            # Run ESLint with the new config
+            npx eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0
+          fi
+      
+      - name: Type checking (if TypeScript)
+        run: |
+          # Check if this is a TypeScript project
+          if [ -f "tsconfig.json" ]; then
+            echo "🔍 TypeScript project detected, running type checking..."
+            npx tsc --noEmit
+          else
+            echo "ℹ️ JavaScript project detected, skipping TypeScript checks."
+          fi
+      
+      - name: Run tests (if available)
+        run: |
+          # Check if test script exists in package.json
+          if npm run test --dry-run > /dev/null 2>&1; then
+            npm run test
+          else
+            echo "⚠️ No test script found. Consider adding tests for better code quality."
+            echo "You can add tests using Jest, Mocha, or your preferred testing framework."
+          fi
+      
+      - name: Check for security vulnerabilities
+        run: |
+          # Run npm audit to check for security vulnerabilities
+          echo "🔒 Checking for security vulnerabilities..."
+          npm audit --audit-level moderate
+      
+      - name: Verify server can start
+        run: |
+          # Try to start the server to ensure it doesn't have startup errors
+          echo "🚀 Verifying server can start..."
+          
+          # Install any additional dependencies that might be needed
+          if [ -f "package.json" ]; then
+            # Start server in background and check if it starts successfully
+            timeout 30s npm start &
+            SERVER_PID=$!
+            
+            # Wait a moment for server to start
+            sleep 5
+            
+            # Check if process is still running
+            if kill -0 $SERVER_PID 2>/dev/null; then
+              echo "✅ Server started successfully"
+              kill $SERVER_PID
+            else
+              echo "❌ Server failed to start"
+              exit 1
+            fi
+          else
+            echo "⚠️ No package.json found"
+            exit 1
+          fi
+      
+      - name: Check environment variables
+        run: |
+          # Check if there's an example environment file
+          if [ -f ".env.example" ] || [ -f ".env.sample" ]; then
+            echo "✅ Environment example file found"
+          else
+            echo "⚠️ Consider adding .env.example file for required environment variables"
+          fi
+          
+          # Check for common Node.js environment variables
+          echo "🔧 Checking for common environment configurations..."
+          node -e "
+            const pkg = require('./package.json');
+            console.log('Node version requirement:', pkg.engines?.node || 'Not specified');
+            console.log('NPM version requirement:', pkg.engines?.npm || 'Not specified');
+          "
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request' && failure()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: `❌ **Backend checks failed!**
+              
+              Please fix the following issues:
+              - Check formatting with Prettier
+              - Fix any ESLint errors
+              - Resolve TypeScript type errors (if applicable)
+              - Fix any failing tests
+              - Ensure server can start without errors
+              - Address any security vulnerabilities
+              
+              You can run these checks locally:
+              \`\`\`bash
+              cd backend
+              npm install
+              npx prettier --check "**/*.{js,jsx,ts,tsx,json,md}"
+              npx eslint . --ext .js,.jsx,.ts,.tsx
+              npm audit
+              npm start
+              \`\`\`
+              `
+            });
