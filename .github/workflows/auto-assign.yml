@@ -1,0 +1,125 @@
+name: Auto Assign and Unassign
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  assign-unassign:
+    if: startsWith(github.event.comment.body, '/assign') || startsWith(github.event.comment.body, '/unassign')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign or unassign users
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.comment.body.trim();
+            const commenter = context.payload.comment.user.login;
+            const issue_number = context.payload.issue.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            
+            const commandRegex = /^\/(assign|unassign)(?:\s+@?([\w-]+(?:\s+@?[\w-]+)*))?$/i;
+            const match = body.match(commandRegex);
+            
+            if (!match) {
+              console.log("Comment is not a valid /assign or /unassign command.");
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body: `❌ Invalid command format. Use:\n- \`/assign\` (assign yourself)\n- \`/assign @username\` (assign specific user)\n- \`/unassign\` (unassign yourself)\n- \`/unassign @username\` (unassign specific user)`
+              });
+              return;
+            }
+            
+            const action = match[1]; // "assign" or "unassign"
+            let targets;
+            let isSelfAction = false;
+            
+            if (!match[2]) {
+              // No usernames provided — use commenter (self-action)
+              targets = [commenter];
+              isSelfAction = true;
+            } else {
+              targets = match[2]
+                .split(/\s+/)
+                .map(user => user.replace(/^@/, '').trim())
+                .filter(Boolean);
+              
+              // Check if it's only self-assignment
+              isSelfAction = targets.length === 1 && targets[0] === commenter;
+            }
+            
+            console.log(`Performing /${action} for:`, targets);
+            console.log(`Is self-action:`, isSelfAction);
+            console.log(`Commenter:`, commenter);
+            
+            try {
+              if (action === 'assign') {
+                await github.rest.issues.addAssignees({
+                  owner,
+                  repo,
+                  issue_number,
+                  assignees: targets,
+                });
+                
+                const targetList = targets.map(user => `@${user}`).join(', ');
+                const actionText = isSelfAction ? 'assigned yourself' : `assigned ${targetList}`;
+                
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number,
+                  body: `✅ @${commenter} ${actionText} to this ${context.payload.issue.pull_request ? 'pull request' : 'issue'}.`
+                });
+                
+              } else if (action === 'unassign') {
+                await github.rest.issues.removeAssignees({
+                  owner,
+                  repo,
+                  issue_number,
+                  assignees: targets,
+                });
+                
+                const targetList = targets.map(user => `@${user}`).join(', ');
+                const actionText = isSelfAction ? 'unassigned yourself' : `unassigned ${targetList}`;
+                
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number,
+                  body: `✅ @${commenter} ${actionText} from this ${context.payload.issue.pull_request ? 'pull request' : 'issue'}.`
+                });
+              }
+              
+              console.log(`✅ Successfully ${action}ed users:`, targets);
+              
+            } catch (error) {
+              console.log(`${action} error:`, error.message);
+              
+              let errorMessage = `❌ Failed to ${action}: ${error.message}`;
+              
+              // Handle specific error cases
+              if (error.message.includes('not found')) {
+                const invalidUsers = targets.filter(user => error.message.includes(user));
+                if (invalidUsers.length > 0) {
+                  errorMessage = `❌ User(s) not found: ${invalidUsers.map(u => `@${u}`).join(', ')}. Please check the username(s).`;
+                }
+              } else if (error.message.includes('already assigned')) {
+                errorMessage = `❌ Some users are already assigned to this ${context.payload.issue.pull_request ? 'pull request' : 'issue'}.`;
+              } else if (error.message.includes('not assigned')) {
+                errorMessage = `❌ Some users are not currently assigned to this ${context.payload.issue.pull_request ? 'pull request' : 'issue'}.`;
+              }
+              
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body: errorMessage
+              });
+            }
