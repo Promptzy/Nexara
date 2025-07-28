@@ -18,18 +18,20 @@ This repository includes a powerful GitHub bot that responds to slash commands i
 - `/unassign @username` - Unassigns the mentioned user from an issue or PR  
 - `/merge` - Merges a pull request (restricted to authorized users)
 - `/review @username` - Requests a review from the mentioned user
-- `/bug` - Adds the "bug" label to the issue or PR
-- `/feature` - Adds the "feature" label to the issue or PR
-
-### Auto-Labeling:
-- Changes to `frontend/**` files automatically add the `frontend` label
-- Changes to `backend/**` files automatically add the `backend` label
+- `/bug` - Adds the "type: bug" label to the issue or PR
+- `/feature` - Adds the "type: feature" label to the issue or PR
 
 ### How to Use:
 1. **In any issue or pull request**, post a comment with one of the slash commands above
 2. **The bot will react** with an emoji to show it received the command
 3. **The command will execute** and the bot will post a confirmation message
 4. **Check the Actions tab** if a command doesn't work as expected
+
+### Automated Labeling:
+- **Pull requests are automatically labeled** based on changed files
+- **Size labels** (XS, S, M, L, XL) are added based on the number of lines changed
+- **Component labels** help identify which part of the codebase is affected
+- **Technology labels** help identify the languages and frameworks involved
 
 ### Security:
 - The `/merge` command is restricted to authorized users only
