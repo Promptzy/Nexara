@@ -9,9 +9,34 @@
 
 ---
 
-</div>
+## 🤖 GitHub Bot Commands
 
-**Zenjira** is an enterprise-grade web platform that revolutionizes Jira workflow management through intelligent automation, AI-powered sprint planning, and comprehensive analytics — delivered via an intuitive, centralized dashboard.
+This repository includes a powerful GitHub bot that responds to slash commands in issues and pull requests:
+
+### Available Commands:
+- `/assign @username` - Assigns an issue or PR to the mentioned user
+- `/unassign @username` - Unassigns the mentioned user from an issue or PR  
+- `/merge` - Merges a pull request (restricted to authorized users)
+- `/review @username` - Requests a review from the mentioned user
+- `/bug` - Adds the "bug" label to the issue or PR
+- `/feature` - Adds the "feature" label to the issue or PR
+
+### Auto-Labeling:
+- Changes to `frontend/**` files automatically add the `frontend` label
+- Changes to `backend/**` files automatically add the `backend` label
+
+### How to Use:
+1. **In any issue or pull request**, post a comment with one of the slash commands above
+2. **The bot will react** with an emoji to show it received the command
+3. **The command will execute** and the bot will post a confirmation message
+4. **Check the Actions tab** if a command doesn't work as expected
+
+### Security:
+- The `/merge` command is restricted to authorized users only
+- All workflow changes require approval from repository maintainers
+- Commands provide clear feedback on success or failure
+
+### Status: ✅ **ACTIVE** - Bot is configured and ready to use!
 
 ---
 
