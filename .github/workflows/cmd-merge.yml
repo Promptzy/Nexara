@@ -53,8 +53,8 @@ jobs:
               return;
             }
             
-            // Simple authorization check - allow va16hav07 and Pranjal6955
-            const authorizedUsers = ['va16hav07', 'Pranjal6955'];
+            // Simple authorization check - allow Va16hav07 and Pranjal6955
+            const authorizedUsers = ['Va16hav07', 'Pranjal6955'];
             if (!authorizedUsers.includes(actor)) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
