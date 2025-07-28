@@ -29,22 +29,31 @@ jobs:
             const args = slashCommand.args.unnamed;
             const user = args && args.length > 0 ? args[0] : null;
             
+            console.log('✅ Slash command detected');
+            console.log('Command:', slashCommand.command);
+            console.log('Actor:', slashCommand.actor);
+            console.log('Args:', args);
+            
+            // Get issue data from the repository dispatch event
+            const issue = context.payload.client_payload.github.payload.issue;
+            const issueNumber = issue.number;
+            
             if (!user) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: slashCommand.issue.number,
+                issue_number: issueNumber,
                 body: `❌ Please mention a user to request review. Usage: \`/review @username\``
               });
               core.setFailed('No user mentioned');
               return;
             }
             
-            if (!slashCommand.issue.pull_request) {
+            if (!issue.pull_request) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: slashCommand.issue.number,
+                issue_number: issueNumber,
                 body: `❌ The /review command can only be used on pull requests.`
               });
               core.setFailed('Not a pull request');
@@ -57,21 +66,21 @@ jobs:
               await github.rest.pulls.requestReviewers({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                pull_number: slashCommand.issue.number,
+                pull_number: issueNumber,
                 reviewers: [username]
               });
               
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: slashCommand.issue.number,
+                issue_number: issueNumber,
                 body: `✅ Requested review from @${username}.`
               });
             } catch (error) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: slashCommand.issue.number,
+                issue_number: issueNumber,
                 body: `❌ Failed to request review from @${username}: ${error.message}`
               });
               core.setFailed(error.message);

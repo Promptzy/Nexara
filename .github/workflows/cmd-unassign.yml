@@ -29,11 +29,19 @@ jobs:
             const args = slashCommand.args.unnamed;
             const user = args && args.length > 0 ? args[0] : null;
             
+            console.log('✅ Slash command detected');
+            console.log('Command:', slashCommand.command);
+            console.log('Actor:', slashCommand.actor);
+            console.log('Args:', args);
+            
+            // Get issue number from the repository dispatch event
+            const issueNumber = context.payload.client_payload.github.payload.issue.number;
+            
             if (!user) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: slashCommand.issue.number,
+                issue_number: issueNumber,
                 body: `❌ Please mention a user to unassign. Usage: \`/unassign @username\``
               });
               core.setFailed('No user mentioned');
@@ -46,21 +54,24 @@ jobs:
               await github.rest.issues.removeAssignees({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: slashCommand.issue.number,
+                issue_number: issueNumber,
                 assignees: [username]
               });
+              
+              // Check if it's a pull request or issue
+              const isPullRequest = context.payload.client_payload.github.payload.issue.pull_request !== undefined;
               
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: slashCommand.issue.number,
-                body: `✅ Unassigned @${username} from this ${slashCommand.issue.pull_request ? 'pull request' : 'issue'}.`
+                issue_number: issueNumber,
+                body: `✅ Unassigned @${username} from this ${isPullRequest ? 'pull request' : 'issue'}.`
               });
             } catch (error) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: slashCommand.issue.number,
+                issue_number: issueNumber,
                 body: `❌ Failed to unassign @${username}: ${error.message}`
               });
               core.setFailed(error.message);

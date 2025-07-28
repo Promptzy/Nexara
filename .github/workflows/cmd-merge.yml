@@ -28,31 +28,38 @@ jobs:
             const slashCommand = context.payload.client_payload.slash_command;
             const actor = slashCommand.actor;
             
+            console.log('✅ Slash command detected');
+            console.log('Command:', slashCommand.command);
+            console.log('Actor:', actor);
+            
+            // Get issue data from the repository dispatch event
+            const issue = context.payload.client_payload.github.payload.issue;
+            const issueNumber = issue.number;
+            
             // Simple authorization check - only allow va16hav07
             if (actor !== 'va16hav07') {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: slashCommand.issue.number,
+                issue_number: issueNumber,
                 body: `❌ @${actor}, you are not authorized to merge. Only va16hav07 can use the /merge command.`
               });
               core.setFailed(`User ${actor} is not authorized to merge.`);
               return;
             }
             
-            const issue = slashCommand.issue;
             if (!issue.pull_request) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: issue.number,
+                issue_number: issueNumber,
                 body: `❌ The /merge command can only be used on pull requests.`
               });
               core.setFailed('Not a pull request');
               return;
             }
             
-            const prNumber = issue.number;
+            const prNumber = issueNumber;
             
             try {
               await github.rest.pulls.merge({
