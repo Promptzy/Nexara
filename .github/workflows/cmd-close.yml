@@ -1,0 +1,143 @@
+name: Close Command
+
+on:
+  repository_dispatch:
+    types: [close-command]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  close:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close issue or pull request
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Check if this is a valid slash command dispatch event
+            if (!context.payload || !context.payload.client_payload) {
+              console.log('❌ This workflow should only be triggered by repository dispatch events');
+              core.setFailed('Invalid event trigger - expected repository dispatch');
+              return;
+            }
+            
+            // Debug: Log the full client payload structure
+            console.log('Client payload structure:', JSON.stringify(context.payload.client_payload, null, 2));
+            
+            // Get the actor from the comment author (the person who triggered the slash command)
+            const actor = context.payload.client_payload.github.payload.comment.user.login;
+            const command = context.payload.client_payload.slash_command.command;
+            
+            console.log('✅ Slash command detected');
+            console.log('Command:', command);
+            console.log('Actor:', actor);
+            
+            // Verify we have all required data
+            if (!actor) {
+              console.log('❌ Could not determine actor from payload');
+              core.setFailed('Missing actor information');
+              return;
+            }
+            
+            // Get issue data from the repository dispatch event
+            const issue = context.payload.client_payload.github.payload.issue;
+            const issueNumber = issue.number;
+            
+            if (!issue || !issueNumber) {
+              console.log('❌ Could not determine issue information');
+              core.setFailed('Missing issue information');
+              return;
+            }
+            
+            // Simple authorization check - allow Va16hav07, Pranjal6955, and the issue/PR author
+            const authorizedUsers = ['Va16hav07', 'Pranjal6955'];
+            const isAuthor = issue.user.login === actor;
+            
+            if (!authorizedUsers.includes(actor) && !isAuthor) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `❌ @${actor}, you are not authorized to close this ${issue.pull_request ? 'pull request' : 'issue'}. Only ${authorizedUsers.join(', ')} or the author can use the /close command.`
+              });
+              core.setFailed(`User ${actor} is not authorized to close.`);
+              return;
+            }
+            
+            try {
+              // Check current state
+              const currentItem = issue.pull_request 
+                ? await github.rest.pulls.get({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: issueNumber
+                  })
+                : await github.rest.issues.get({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issueNumber
+                  });
+              
+              if (currentItem.data.state === 'closed') {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  body: `❌ This ${issue.pull_request ? 'pull request' : 'issue'} is already closed.`
+                });
+                core.setFailed('Already closed');
+                return;
+              }
+              
+              // Close the issue or pull request
+              if (issue.pull_request) {
+                await github.rest.pulls.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: issueNumber,
+                  state: 'closed'
+                });
+              } else {
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  state: 'closed'
+                });
+              }
+              
+              // Add a comment confirming the action
+              const itemType = issue.pull_request ? 'pull request' : 'issue';
+              const reason = isAuthor ? 'by the author' : `by @${actor}`;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `🔒 This ${itemType} was closed ${reason} via slash command.`
+              });
+              
+              console.log(`✅ Successfully closed ${itemType} #${issueNumber}`);
+              
+            } catch (error) {
+              console.log('Close error:', error.message);
+              
+              let errorMessage = `❌ Failed to close ${issue.pull_request ? 'pull request' : 'issue'}: ${error.message}`;
+              
+              // Handle specific error cases
+              if (error.message.includes('permission')) {
+                errorMessage = `❌ @${actor}, you don't have permission to close this ${issue.pull_request ? 'pull request' : 'issue'}.`;
+              }
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: errorMessage
+              });
+              core.setFailed(error.message);
+            }

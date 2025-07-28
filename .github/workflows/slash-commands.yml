@@ -30,6 +30,9 @@ jobs:
             status
             bug
             feature
+            lgtm
+            close
+            approve
           permission: write
           issue-type: both
           reaction-token: ${{ secrets.GITHUB_TOKEN }}
