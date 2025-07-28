@@ -1,4 +1,55 @@
-frontend:
-  - any: ['frontend/**']
-backend:
-  - any: ['backend/**']
+# Labeler configuration for automatic PR labeling
+# Format for actions/labeler@v5
+
+'component: frontend':
+  - changed-files:
+    - any-glob-to-any-file: 'frontend/**/*'
+
+'component: backend':
+  - changed-files:
+    - any-glob-to-any-file: 'backend/**/*'
+
+'type: documentation':
+  - changed-files:
+    - any-glob-to-any-file: ['*.md', 'docs/**/*', 'README*']
+
+'component: ci/cd':
+  - changed-files:
+    - any-glob-to-any-file: '.github/**/*'
+
+'component: dependencies':
+  - changed-files:
+    - any-glob-to-any-file: ['**/package.json', '**/package-lock.json', '**/yarn.lock']
+
+'tech: typescript':
+  - changed-files:
+    - any-glob-to-any-file: ['**/*.ts', '**/*.tsx']
+
+'tech: javascript':
+  - changed-files:
+    - any-glob-to-any-file: ['**/*.js', '**/*.jsx']
+
+'tech: css':
+  - changed-files:
+    - any-glob-to-any-file: ['**/*.css', '**/*.scss', '**/*.sass']
+
+'tech: react':
+  - changed-files:
+    - any-glob-to-any-file: ['**/components/**/*', '**/app/**/*', '**/*.tsx', '**/*.jsx']
+
+'tech: nextjs':
+  - changed-files:
+    - any-glob-to-any-file: ['frontend/**/*', '**/next.config.*', '**/app/**/*']
+
+'tech: nodejs':
+  - changed-files:
+    - any-glob-to-any-file: ['backend/**/*', '**/server.js', '**/index.js']
+
+'component: api':
+  - changed-files:
+    - any-glob-to-any-file: ['**/api/**/*', '**/routes/**/*', '**/controllers/**/*']
+
+'component: database':
+  - changed-files:
+    - any-glob-to-any-file: ['**/migrations/**/*', '**/models/**/*', '**/schemas/**/*', '**/*.sql']
+>>>>>>> 827ae75dd949fa045af78b6386fc83114d45e335
