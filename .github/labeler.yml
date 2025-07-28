@@ -52,4 +52,3 @@
 'component: database':
   - changed-files:
     - any-glob-to-any-file: ['**/migrations/**/*', '**/models/**/*', '**/schemas/**/*', '**/*.sql']
->>>>>>> 827ae75dd949fa045af78b6386fc83114d45e335
