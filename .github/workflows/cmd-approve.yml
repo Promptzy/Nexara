@@ -106,13 +106,13 @@ jobs:
                 return;
               }
               
-              // Check if the user is the PR author
-              if (pr.data.user.login === actor) {
+              // Allow self-approval for authorized users
+              if (pr.data.user.login === actor && !authorizedUsers.includes(actor)) {
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: prNumber,
-                  body: `❌ @${actor}, you cannot approve your own pull request.`
+                  body: `❌ @${actor}, you cannot approve your own pull request unless you are a repository owner.`
                 });
                 core.setFailed('Cannot self-approve');
                 return;
