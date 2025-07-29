@@ -29,9 +29,12 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: node scripts/update-contributors.js
-      - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Create Pull Request for updated contributors
+        uses: peter-evans/create-pull-request@v5
         with:
-          commit_message: 'chore: update CONTRIBUTORS.md and contributors.json [skip ci]'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          commit-message: 'chore: update CONTRIBUTORS.md and contributors.json [skip ci]'
+          branch: auto/update-contributors-${{ github.run_id }}
+          title: 'chore: update CONTRIBUTORS.md and contributors.json'
+          body: 'Automated update of contributors list after PR merge.'
+          base: ${{ github.ref_name }}
+          delete-branch: true 
