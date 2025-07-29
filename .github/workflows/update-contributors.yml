@@ -1,0 +1,36 @@
+name: Update Contributors
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  update-contributors:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./backend
+      - name: Install node-fetch
+        run: npm install node-fetch@3
+      - name: Run update-contributors script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: node scripts/update-contributors.js
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: update CONTRIBUTORS.md and contributors.json [skip ci]'
+          branch: ${{ github.ref }} 
