@@ -20,4 +20,4 @@ Thank you to all our amazing contributors! This leaderboard tracks contributions
 
 *Last updated: 2025-07-29*
 
-*To contribute, make sure your PR has one of the difficulty labels: `easy`, `medium`, or `hard`*
+*To contribute, make sure your PR has one of the difficulty labels: `level 1`, `level 2`, or `level 3`*
