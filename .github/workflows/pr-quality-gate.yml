@@ -142,10 +142,10 @@ jobs:
             
             core.setFailed('Backend checks timed out');
 
-  quality-gate:
-    needs: [check-changes, frontend-gate, backend-gate]
-    if: always()
+  quality-gate-summary:
     runs-on: ubuntu-latest
+    needs: [check-changes, frontend-gate, backend-gate]
+    if: github.event_name == 'pull_request_target' && always()
     steps:
       - name: Quality gate summary
         uses: actions/github-script@v7
@@ -154,12 +154,9 @@ jobs:
           script: |
             const frontendChanged = '${{ needs.check-changes.outputs.frontend-changed }}' === 'true';
             const backendChanged = '${{ needs.check-changes.outputs.backend-changed }}' === 'true';
-            
             const frontendResult = '${{ needs.frontend-gate.result }}';
             const backendResult = '${{ needs.backend-gate.result }}';
-            
             let summary = '## 🔍 PR Quality Gate Summary\n\n';
-            
             if (frontendChanged) {
               if (frontendResult === 'success') {
                 summary += '✅ **Frontend checks**: Passed\n';
@@ -171,7 +168,6 @@ jobs:
             } else {
               summary += 'ℹ️ **Frontend checks**: Skipped (no changes)\n';
             }
-            
             if (backendChanged) {
               if (backendResult === 'success') {
                 summary += '✅ **Backend checks**: Passed\n';
@@ -183,7 +179,6 @@ jobs:
             } else {
               summary += 'ℹ️ **Backend checks**: Skipped (no changes)\n';
             }
-            
             summary += '\n### 📋 Checks Performed:\n';
             summary += '- 🎨 Code formatting (Prettier)\n';
             summary += '- 🔍 Linting (ESLint)\n';
@@ -191,21 +186,16 @@ jobs:
             summary += '- 🧪 Tests (if available)\n';
             summary += '- 🔒 Security audit (backend)\n';
             summary += '- 📝 TypeScript type checking\n';
-            
             const prNumber = context.payload.pull_request.number;
-            
-            // Add or update the summary comment
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: prNumber
             });
-            
             const botComment = comments.find(comment => 
               comment.user.login === 'github-actions[bot]' && 
               comment.body.includes('PR Quality Gate Summary')
             );
-            
             if (botComment) {
               await github.rest.issues.updateComment({
                 owner: context.repo.owner,
@@ -221,8 +211,6 @@ jobs:
                 body: summary
               });
             }
-            
-            // Fail if any required checks failed
             if ((frontendChanged && frontendResult === 'failure') || 
                 (backendChanged && backendResult === 'failure')) {
               core.setFailed('Quality gate failed');

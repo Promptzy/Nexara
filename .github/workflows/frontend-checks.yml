@@ -115,34 +115,20 @@ jobs:
             exit 1
           fi
 
+  comment-on-pr:
+    runs-on: ubuntu-latest
+    needs: frontend-checks
+    if: github.event_name == 'pull_request_target' && needs.frontend-checks.result == 'failure'
+    steps:
       - name: Comment PR with results
-        if: github.event_name == 'pull_request' && failure()
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = context.payload.pull_request.number;
-            
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: prNumber,
-              body: `❌ **Frontend checks failed!**
-              
-              Please fix the following issues:
-              - Check formatting with Prettier
-              - Fix any ESLint errors
-              - Resolve TypeScript type errors
-              - Fix any failing tests
-              - Ensure the build completes successfully
-              
-              You can run these checks locally:
-              \`\`\`bash
-              cd frontend
-              npm run build
-              npx prettier --check "**/*.{js,jsx,ts,tsx,json,css,md}"
-              npx eslint . --ext .js,.jsx,.ts,.tsx
-              npx tsc --noEmit
-              \`\`\`
-              `
+              body: `❌ **Frontend checks failed!**\n  \n  Please fix the following issues:\n  - Check formatting with Prettier\n  - Fix any ESLint errors\n  - Resolve TypeScript type errors\n  - Fix any failing tests\n  - Ensure the build completes successfully\n  \n  You can run these checks locally:\n  \`\`\`bash\n  cd frontend\n  npm run build\n  npx prettier --check "**/*.{js,jsx,ts,tsx,json,css,md}"\n  npx eslint . --ext .js,.jsx,.ts,.tsx\n  npx tsc --noEmit\n  \`\`\`\n  `
             });

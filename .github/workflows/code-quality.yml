@@ -137,35 +137,34 @@ jobs:
           
           echo "✅ Backend checks passed!"
 
+  comment-on-pr:
+    runs-on: ubuntu-latest
+    needs: code-quality
+    if: github.event_name == 'pull_request_target' && (needs.code-quality.result == 'failure' || needs.code-quality.result == 'success')
+    steps:
       - name: Comment on PR with quality check results
-        if: github.event_name == 'pull_request' && (failure() || success())
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo, number } = context.issue;
-            const frontendChanged = '${{ steps.changed-files.outputs.frontend_changed }}' === 'true';
-            const backendChanged = '${{ steps.changed-files.outputs.backend_changed }}' === 'true';
-            const success = '${{ job.status }}' === 'success';
-            
+            const frontendChanged = '${{ needs.code-quality.outputs.frontend_changed }}' === 'true';
+            const backendChanged = '${{ needs.code-quality.outputs.backend_changed }}' === 'true';
+            const success = '${{ needs.code-quality.result }}' === 'success';
             let message = '## 🔍 Code Quality Check Results\n\n';
-            
             if (frontendChanged) {
               message += success 
                 ? '✅ **Frontend**: All quality checks passed!\n'
                 : '❌ **Frontend**: Quality checks failed. Please fix the issues above.\n';
             }
-            
             if (backendChanged) {
               message += success 
                 ? '✅ **Backend**: All quality checks passed!\n'
                 : '❌ **Backend**: Quality checks failed. Please fix the issues above.\n';
             }
-            
             if (!frontendChanged && !backendChanged) {
               message += 'ℹ️ No frontend or backend changes detected.\n';
             }
-            
             if (!success) {
               message += '\n### 🔧 How to fix:\n';
               if (frontendChanged) {
@@ -175,7 +174,6 @@ jobs:
                 message += '**Backend formatting:**\n```bash\ncd backend\nnpm run format\n```\n\n';
               }
             }
-            
             await github.rest.issues.createComment({
               owner,
               repo,
