@@ -19,6 +19,15 @@ on:
       - '*.ts'
       - '*.json'
       - '.github/workflows/code-quality.yml'
+  pull_request_target:
+    branches: [ main, develop ]
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - '*.js'
+      - '*.ts'
+      - '*.json'
+      - '.github/workflows/code-quality.yml'
   workflow_dispatch:
     inputs:
       pr_number:
@@ -36,6 +45,7 @@ permissions:
 jobs:
   code-quality:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
     
     steps:
       - name: Checkout code

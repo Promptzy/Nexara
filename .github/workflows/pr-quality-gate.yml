@@ -15,6 +15,7 @@ permissions:
 jobs:
   check-changes:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch'
     outputs:
       frontend-changed: ${{ steps.changes.outputs.frontend }}
       backend-changed: ${{ steps.changes.outputs.backend }}

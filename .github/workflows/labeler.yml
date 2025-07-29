@@ -3,6 +3,8 @@ name: "Pull Request Labeler"
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  pull_request_target:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
     inputs:
       pr_number:
@@ -21,6 +23,7 @@ permissions:
 jobs:
   label:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Label Pull Request
         uses: actions/labeler@v5

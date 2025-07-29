@@ -6,6 +6,11 @@ on:
     paths:
       - 'frontend/**'
       - '.github/workflows/frontend-checks.yml'
+  pull_request_target:
+    branches: [ main, develop ]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-checks.yml'
   push:
     branches: [ main, develop ]
     paths:
@@ -28,6 +33,7 @@ permissions:
 jobs:
   frontend-checks:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
     
     defaults:
       run:
