@@ -23,8 +23,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.base.ref }}
           fetch-depth: 0
-          token: ${{ secrets.PAT_TOKEN || github.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -116,7 +117,7 @@ jobs:
                 try {
                   await octokit.rest.issues.createComment({
                     owner, repo, issue_number: prNumber,
-                    body: \\\`🤖 Auto-Labeler Notice: Suggested labels: \\\${labels.map(l => \\\`\\\\\\\\\\`\\\${l}\\\\\\\\\\`\\\`).join(', ')}. See .github/URGENT_REPOSITORY_FIX.md for setup.\\\`
+                    body: \`🤖 Auto-Labeler Notice: Suggested labels: \${labels.map(l => \`\`\${l}\`\`).join(', ')}. See .github/URGENT_REPOSITORY_FIX.md for setup.\`
                   });
                   console.log('💬 Created informational comment');
                   return { success: true, applied: [], failed: [] };
