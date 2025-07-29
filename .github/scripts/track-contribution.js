@@ -5,13 +5,13 @@ const path = require('path');
 
 // Points system
 const POINTS = {
-  easy: 4,
-  medium: 7,
-  hard: 10
+  'level 1': 4,
+  'level 2': 7,
+  'level 3': 10
 };
 
 // Valid difficulty labels
-const VALID_LABELS = ['easy', 'medium', 'hard'];
+const VALID_LABELS = ['level 1', 'level 2', 'level 3'];
 
 function main() {
   // Get command line arguments
@@ -36,7 +36,7 @@ function main() {
   const difficultyLabel = labels.find(label => VALID_LABELS.includes(label));
   
   if (!difficultyLabel) {
-    console.log('⚠️  No valid difficulty label found (easy, medium, hard). Skipping contribution tracking.');
+    console.log('⚠️  No valid difficulty label found (level 1, level 2, level 3). Skipping contribution tracking.');
     return;
   }
   
@@ -62,9 +62,9 @@ function main() {
   // Initialize user data if not exists
   if (!contributors[username]) {
     contributors[username] = {
-      easy: 0,
-      medium: 0,
-      hard: 0,
+      'level 1': 0,
+      'level 2': 0,
+      'level 3': 0,
       total_prs: 0,
       points: 0
     };
@@ -76,7 +76,7 @@ function main() {
   user.total_prs++;
   
   // Recalculate total points
-  user.points = (user.easy * POINTS.easy) + (user.medium * POINTS.medium) + (user.hard * POINTS.hard);
+  user.points = (user['level 1'] * POINTS['level 1']) + (user['level 2'] * POINTS['level 2']) + (user['level 3'] * POINTS['level 3']);
   
   console.log(`Updated stats for ${username}:`, user);
   
@@ -111,28 +111,28 @@ Thank you to all our amazing contributors! This leaderboard tracks contributions
 
 ## 📊 Scoring System
 
-- **Easy** (🟢): 4 points
-- **Medium** (🟡): 7 points  
-- **Hard** (🔴): 10 points
+- **Level 1** (🟢): 4 points
+- **Level 2** (🟡): 7 points  
+- **Level 3** (🔴): 10 points
 
 ## 🎯 Leaderboard
 
-| Rank | Username | Easy PRs | Medium PRs | Hard PRs | Total PRs | Total Points |
-|------|----------|----------|------------|----------|-----------|--------------|
+| Rank | Username | Level 1 PRs | Level 2 PRs | Level 3 PRs | Total PRs | Total Points |
+|------|----------|-------------|-------------|-------------|-----------|--------------|
 `;
 
   sortedContributors.forEach(([username, stats], index) => {
     const rank = index + 1;
     const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `${rank}.`;
     
-    markdown += `| ${medal} | [@${username}](https://github.com/${username}) | ${stats.easy} 🟢 | ${stats.medium} 🟡 | ${stats.hard} 🔴 | ${stats.total_prs} | **${stats.points}** |\n`;
+    markdown += `| ${medal} | [@${username}](https://github.com/${username}) | ${stats['level 1']} 🟢 | ${stats['level 2']} 🟡 | ${stats['level 3']} 🔴 | ${stats.total_prs} | **${stats.points}** |\n`;
   });
   
   markdown += `\n---
 
 *Last updated: ${new Date().toISOString().split('T')[0]}*
 
-*To contribute, make sure your PR has one of the difficulty labels: \`easy\`, \`medium\`, or \`hard\`*
+*To contribute, make sure your PR has one of the difficulty labels: \`level 1\`, \`level 2\`, or \`level 3\`*
 `;
   
   try {

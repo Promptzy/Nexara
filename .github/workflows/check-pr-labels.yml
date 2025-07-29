@@ -19,7 +19,7 @@ jobs:
           script: |
             const prNumber = context.payload.pull_request.number;
             const labels = context.payload.pull_request.labels.map(label => label.name);
-            const difficultyLabels = ['easy', 'medium', 'hard'];
+            const difficultyLabels = ['level 1', 'level 2', 'level 3'];
             
             const hasDifficultyLabel = labels.some(label => 
               difficultyLabels.includes(label.toLowerCase())
@@ -49,9 +49,9 @@ jobs:
                   "",
                   "**Maintainers:** Please add one of these labels before merging:",
                   "",
-                  "- 🟢 `easy` - Bug fixes, documentation, minor improvements (4 points)",
-                  "- 🟡 `medium` - Features, refactoring, moderate complexity (7 points)",
-                  "- 🔴 `hard` - Complex features, architecture changes (10 points)",
+                  "- 🟢 `level 1` - Bug fixes, documentation, minor improvements (4 points)",
+                  "- 🟡 `level 2` - Features, refactoring, moderate complexity (7 points)",
+                  "- 🔴 `level 3` - Complex features, architecture changes (10 points)",
                   "",
                   "This helps us track and reward contributions fairly. Thank you! 🙏",
                   "",

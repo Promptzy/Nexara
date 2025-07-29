@@ -1,4 +1,8 @@
-# Contribution Tracking System
+# Contribution Tracking S**Contributors earn points based on the difficulty of their merged PRs:**
+
+- Level 1: 4 points
+- Level 2: 7 points
+- Level 3: 10 points
 
 This repository uses an automated system to track and reward contributions based on merged pull requests.
 
@@ -8,9 +12,9 @@ This repository uses an automated system to track and reward contributions based
 
 Every pull request should be labeled with one of the following difficulty labels:
 
-- **`easy`** - Simple bug fixes, documentation updates, minor improvements (4 points)
-- **`medium`** - Feature implementations, moderate bug fixes, refactoring (7 points)  
-- **`hard`** - Complex features, architectural changes, performance optimizations (10 points)
+- **`level 1`** - Simple bug fixes, documentation updates, minor improvements (4 points)
+- **`level 2`** - Feature implementations, moderate bug fixes, refactoring (7 points)  
+- **`level 3`** - Complex features, architectural changes, performance optimizations (10 points)
 
 ### 🤖 Automated Tracking
 
@@ -45,9 +49,9 @@ Make sure to add the difficulty labels to your repository:
 
 1. Go to Issues → Labels
 2. Create these labels if they don't exist:
-   - `easy` (green color recommended)
-   - `medium` (yellow color recommended)
-   - `hard` (red color recommended)
+   - `level 1` (green color recommended)
+   - `level 2` (yellow color recommended)
+   - `level 3` (red color recommended)
 
 ### Manual Updates
 
@@ -86,7 +90,7 @@ CONTRIBUTORS.md                   # Generated leaderboard
 
 If a merged PR isn't showing up in the leaderboard:
 
-1. Check if the PR had a valid difficulty label (`easy`, `medium`, or `hard`)
+1. Check if the PR had a valid difficulty label (`level 1`, `level 2`, or `level 3`)
 2. Verify the GitHub Action ran successfully in the Actions tab
 3. Check the Action logs for any error messages
 
