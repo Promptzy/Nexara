@@ -16,7 +16,9 @@ This repository includes a powerful GitHub bot that responds to slash commands i
 ### Available Commands:
 - `/assign @username` - Assigns an issue or PR to the mentioned user
 - `/unassign @username` - Unassigns the mentioned user from an issue or PR  
-- `/merge` - Merges a pull request (restricted to authorized users)
+- `/merge` - Merges a pull request and closes linked issues (restricted to authorized users)
+- `/approve [message]` - Approves a pull request with optional auto-merge
+- `/lgtm [message]` - Approves a pull request with "Looks Good To Me"
 - `/review @username` - Requests a review from the mentioned user
 - `/status` - Checks the status of a pull request and provides merge readiness assessment
 - `/bug` - Adds the "type: bug" label to the issue or PR
@@ -28,11 +30,18 @@ This repository includes a powerful GitHub bot that responds to slash commands i
 3. **The command will execute** and the bot will post a confirmation message
 4. **Check the Actions tab** if a command doesn't work as expected
 
-### Automated Labeling:
+### Automated Features:
 - **Pull requests are automatically labeled** based on changed files
 - **Size labels** (XS, S, M, L, XL) are added based on the number of lines changed
 - **Component labels** help identify which part of the codebase is affected
 - **Technology labels** help identify the languages and frameworks involved
+- **Linked issues are automatically closed** when PRs are merged via bot commands
+
+### Issue Linking:
+When using `/merge` or `/approve` commands, the bot automatically:
+- Searches PR title, body, and commit messages for issue references
+- Closes linked issues using patterns like "Closes #123", "Fixes #456", "Resolves #789"
+- Posts a confirmation comment on both the PR and closed issues
 
 ### Security:
 - The `/merge` command is restricted to authorized users only

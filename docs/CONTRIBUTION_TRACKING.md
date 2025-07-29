@@ -29,16 +29,16 @@ When a pull request with a difficulty label is merged:
 
 Contributors earn points based on the difficulty of their merged PRs:
 
-- Easy: 4 points
-- Medium: 7 points
-- Hard: 10 points
+- Level 1: 4 points
+- Level 2: 7 points
+- Level 3: 10 points
 
 ### 🏆 Leaderboard
 
 The `CONTRIBUTORS.md` file contains a live leaderboard showing:
 
 - Contributor ranking by total points
-- Breakdown of easy/medium/hard PRs
+- Breakdown of level 1/level 2/level 3 PRs
 - Total PRs and points for each contributor
 
 ## For Maintainers
