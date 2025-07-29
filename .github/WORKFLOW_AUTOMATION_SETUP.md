@@ -22,6 +22,8 @@ Go to: **Settings** → **Actions** → **General**
 - ☑️ Read and write permissions
 - ☑️ Allow GitHub Actions to create and approve pull requests
 
+> ⚠️ **Important**: These settings are REQUIRED for auto-approval to work for all contributors.
+
 ### 2. Branch Protection Rules (Optional but Recommended)
 Go to: **Settings** → **Branches** → **Add rule**
 
@@ -114,9 +116,16 @@ const trustedContributors = [
 
 If you encounter issues with workflow automation:
 
-1. Check the **Actions** tab for workflow status
-2. Use `/check` command to run all workflows fresh  
-3. Use `/rerun` command for failed workflows
-4. Contact repository maintainers: @Va16hav07, @Pranjal6955
-5. Review this configuration file for settings verification
-6. Run test script: `.github/scripts/test-workflow-triggers.sh`
+1. **Check repository settings** - See REQUIRED settings above ⚠️
+2. **Read the permission fix guide**: `.github/PERMISSION_FIX_GUIDE.md`
+3. Use `/check` command to run all workflows fresh  
+4. Use `/rerun` command for failed workflows
+5. Contact repository maintainers: @Va16hav07, @Pranjal6955
+6. Review this configuration file for settings verification
+7. Run test script: `.github/scripts/test-workflow-triggers.sh`
+
+### Common Issues:
+
+- **"Resource not accessible by integration"** → Repository settings need to be configured
+- **Workflows require approval** → Check fork pull request settings
+- **Comments not posting** → PAT_TOKEN may be needed

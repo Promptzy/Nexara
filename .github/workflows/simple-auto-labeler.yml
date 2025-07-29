@@ -1,0 +1,121 @@
+name: Simple Auto Labeler
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  auto-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto-label PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const pull_number = context.payload.pull_request.number;
+            const prAuthor = context.payload.pull_request.user.login;
+            
+            console.log(`🏷️ Auto-labeling PR #${pull_number} by @${prAuthor}`);
+            
+            try {
+              // Get PR files
+              const files = await github.rest.pulls.listFiles({
+                owner,
+                repo,
+                pull_number
+              });
+              
+              const labels = [];
+              const filenames = files.data.map(f => f.filename);
+              const totalChanges = files.data.reduce((sum, file) => sum + file.changes, 0);
+              
+              console.log(`Files changed: ${filenames.join(', ')}`);
+              console.log(`Total changes: ${totalChanges} lines`);
+              
+              // Component labels
+              if (filenames.some(f => f.startsWith('frontend/'))) {
+                labels.push('component: frontend');
+              }
+              if (filenames.some(f => f.startsWith('backend/'))) {
+                labels.push('component: backend');
+              }
+              if (filenames.some(f => f.startsWith('.github/'))) {
+                labels.push('component: ci/cd');
+              }
+              if (filenames.some(f => f.startsWith('docs/') || f.endsWith('.md'))) {
+                labels.push('type: documentation');
+              }
+              
+              // Technology labels
+              if (filenames.some(f => f.endsWith('.js') || f.endsWith('.jsx'))) {
+                labels.push('tech: javascript');
+              }
+              if (filenames.some(f => f.endsWith('.ts') || f.endsWith('.tsx'))) {
+                labels.push('tech: typescript');
+              }
+              if (filenames.some(f => f.endsWith('.py'))) {
+                labels.push('tech: python');
+              }
+              if (filenames.some(f => f.endsWith('.yml') || f.endsWith('.yaml'))) {
+                labels.push('tech: yaml');
+              }
+              if (filenames.some(f => f.includes('package.json') || f.includes('package-lock.json'))) {
+                labels.push('component: dependencies');
+              }
+              
+              // Size labels
+              if (totalChanges < 10) {
+                labels.push('size: XS');
+              } else if (totalChanges < 30) {
+                labels.push('size: S');
+              } else if (totalChanges < 100) {
+                labels.push('size: M');
+              } else if (totalChanges < 500) {
+                labels.push('size: L');
+              } else {
+                labels.push('size: XL');
+              }
+              
+              // Apply labels
+              if (labels.length > 0) {
+                try {
+                  await github.rest.issues.addLabels({
+                    owner,
+                    repo,
+                    issue_number: pull_number,
+                    labels
+                  });
+                  
+                  console.log(`✅ Applied labels: ${labels.join(', ')}`);
+                  
+                  // Add a comment about the labeling
+                  try {
+                    await github.rest.issues.createComment({
+                      owner,
+                      repo,
+                      issue_number: pull_number,
+                      body: `🏷️ **Auto-labeled this PR**:\n\n${labels.map(l => `- \`${l}\``).join('\n')}\n\n*Labels are automatically applied based on file changes and PR size.*`
+                    });
+                  } catch (commentError) {
+                    console.log('Could not create labeling comment:', commentError.message);
+                  }
+                  
+                } catch (labelError) {
+                  console.log('Could not apply labels:', labelError.message);
+                  console.log('This may be due to insufficient permissions.');
+                }
+              } else {
+                console.log('No labels to apply');
+              }
+              
+            } catch (error) {
+              console.log('Error during auto-labeling:', error.message);
+              console.log('This may be normal for permission restrictions');
+            }

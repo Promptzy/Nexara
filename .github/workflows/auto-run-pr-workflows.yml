@@ -11,6 +11,7 @@ permissions:
   checks: write
   contents: read
   pull-requests: write
+  issues: write
 
 jobs:
   auto-approve:
@@ -19,7 +20,7 @@ jobs:
       - name: Auto-approve and run workflows
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
             const prNumber = context.payload.pull_request.number;
@@ -120,31 +121,45 @@ jobs:
                 }
                 
                 if (approvedCount > 0) {
-                  await github.rest.issues.createComment({
-                    owner,
-                    repo,
-                    issue_number: prNumber,
-                    body: `🤖 **Auto-approved ${approvedCount} workflow(s)** for this PR (${reason})\n\n✅ All GitHub Actions will run automatically. This repository welcomes contributions from all developers!`
-                  });
+                  try {
+                    await github.rest.issues.createComment({
+                      owner,
+                      repo,
+                      issue_number: prNumber,
+                      body: `🤖 **Auto-approved ${approvedCount} workflow(s)** for this PR (${reason})\n\n✅ All GitHub Actions will run automatically. This repository welcomes contributions from all developers!`
+                    });
+                  } catch (commentError) {
+                    console.log('Could not create approval comment:', commentError.message);
+                  }
                 } else {
                   // Even if no workflows needed approval, let them know about auto-approval policy
-                  await github.rest.issues.createComment({
-                    owner,
-                    repo,
-                    issue_number: prNumber,
-                    body: `🤖 **Welcome @${prAuthor}!** This repository auto-approves workflows for all contributors.\n\n✅ Your workflows should run automatically. If you encounter any issues, use the \`/rerun\` command.`
-                  });
+                  try {
+                    await github.rest.issues.createComment({
+                      owner,
+                      repo,
+                      issue_number: prNumber,
+                      body: `🤖 **Welcome @${prAuthor}!** This repository auto-approves workflows for all contributors.\n\n✅ Your workflows should run automatically. If you encounter any issues, use the \`/rerun\` command.`
+                    });
+                  } catch (commentError) {
+                    console.log('Could not create welcome comment:', commentError.message);
+                  }
                 }
                 
               } catch (error) {
                 console.log('Error auto-approving workflows:', error.message);
+                console.log('Error details:', error);
                 
                 // Still welcome the contributor even if approval failed
-                await github.rest.issues.createComment({
-                  owner,
-                  repo,
-                  issue_number: prNumber,
-                  body: `👋 **Welcome @${prAuthor}!** \n\nThis repository welcomes all contributors. If workflows don't start automatically, use the \`/rerun\` command or contact maintainers.\n\n**Available commands:** \`/rerun\`, \`/status\`, \`/assign\`, and more!`
-                });
+                try {
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    body: `👋 **Welcome @${prAuthor}!** \n\nThis repository welcomes all contributors. If workflows don't start automatically, use the \`/rerun\` command or contact maintainers.\n\n**Available commands:** \`/rerun\`, \`/status\`, \`/assign\`, and more!`
+                  });
+                } catch (commentError) {
+                  console.log('Could not create fallback comment:', commentError.message);
+                  console.log('This may be due to insufficient permissions. Repository maintainers should check token permissions.');
+                }
               }
             }

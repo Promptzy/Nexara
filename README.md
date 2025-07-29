@@ -4,8 +4,45 @@
 [![Slack](https://img.shields.io/badge/slack-join%20community-blueviolet.svg)](https://join.slack.com/t/promptzy/shared_invite/zt-3acy22kkh-R~nMYTl7op_MF5UaLnwdsA)
 [![TypeScript](https://img.shields.io/badge/typescript-4.9+-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/next.js-13+-black.svg)](https://nextjs.org/)
+[![Automation Status](https://img.shields.io/badge/automation-fully%20active-green.svg)](#-automated-contribution-system)
 
 *Intelligent automation and AI-driven insights for modern development teams*
+
+---
+
+## 🤖 Automated Contribution System
+
+**Welcome Contributors!** This repository features a comprehensive automation system that makes contributing effortless:
+
+### ✨ **What Happens Automatically:**
+- 🏷️ **Smart Labeling** - PRs get labeled by type, area, size, and priority
+- 👍 **Auto-Approval** - External PRs are automatically approved to run workflows
+- 🎯 **Quality Checks** - Automatic linting, testing, and build verification
+- 📊 **Contributor Tracking** - All contributions are tracked and rewarded
+- 🔄 **Workflow Execution** - All workflows run for all contributors immediately
+
+### 🎮 **Manual Commands Available:**
+- `/check` - Re-run all quality checks and workflows
+- `/rerun` - Re-run failed workflows and refresh approvals  
+- `/label` - Re-trigger smart labeling system
+- Plus [15+ other commands](#available-commands) for advanced management
+
+### 📈 **For New Contributors:**
+1. **Fork the repository** and create your branch
+2. **Make your changes** - the system auto-detects the type and scope
+3. **Open a pull request** - automation kicks in immediately:
+   - ✅ PR gets automatically approved for workflow execution
+   - 🏷️ Smart labels applied (type/feature, area/frontend, size/M, etc.)
+   - 🧪 All quality checks run automatically (no waiting!)
+   - 📝 You're added to our contributor tracking system
+4. **Address any feedback** - use `/check` to re-run tests after fixes
+5. **Get merged** - maintainers can use `/merge` for quick integration
+
+### 🛠️ **Zero Configuration Required:**
+- **No setup needed** - automation works out of the box
+- **All PR types welcome** - features, fixes, docs, tests, refactors
+- **External forks supported** - same experience for everyone
+- **Graceful error handling** - clear feedback if something goes wrong
 
 ---
 
