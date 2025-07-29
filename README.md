@@ -321,6 +321,11 @@ Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) to understand the expect
 📜 Please review our [Community Guidelines](./COMMUNITY_GUIDELINES.md) before contributing.
 
 
+## 👥 Contributors
+
+We welcome and appreciate all contributions! See the list of amazing contributors in [CONTRIBUTORS.md](./CONTRIBUTORS.md).
+
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
