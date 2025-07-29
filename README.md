@@ -324,7 +324,9 @@ Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) to understand the expect
 ## 👥 Contributors
 
 We welcome and appreciate all contributions! Our automated contribution tracking system rewards merged PRs based on difficulty:
+
 > **Note:** The scoring system applies only to GSSOC contributors.
+
 🟢 **Easy** (4 points) - Bug fixes, documentation, minor improvements  
 🟡 **Medium** (7 points) - Features, refactoring, moderate complexity  
 🔴 **Hard** (10 points) - Complex features, architecture changes  
