@@ -1,0 +1,23 @@
+{
+  "testuser1": {
+    "easy": 1,
+    "medium": 1,
+    "hard": 1,
+    "total_prs": 3,
+    "points": 21
+  },
+  "testuser2": {
+    "easy": 0,
+    "medium": 0,
+    "hard": 1,
+    "total_prs": 1,
+    "points": 10
+  },
+  "testuser3": {
+    "easy": 1,
+    "medium": 0,
+    "hard": 0,
+    "total_prs": 1,
+    "points": 4
+  }
+}
