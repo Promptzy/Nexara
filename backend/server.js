@@ -2,6 +2,19 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+// Import configuration
+const { validateEnv, printConfigSummary } = require('./config/env');
+const { testConnection, disconnectDatabase } = require('./config/database');
+
+// Validate environment variables
+try {
+  validateEnv();
+  printConfigSummary();
+} catch (error) {
+  console.error('❌ Environment validation failed:', error.message);
+  process.exit(1);
+}
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -20,6 +33,9 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Import routes
+const authRoutes = require('./routes/auth.routes');
+
 // API Routes
 app.get('/api/test', (req, res) => {
   res.json({
@@ -27,59 +43,59 @@ app.get('/api/test', (req, res) => {
     endpoints: [
       'GET /health - Health check',
       'GET /api/test - API test endpoint',
-      'POST /api/jira/webhook - Jira webhook handler (coming soon)',
-      'GET /api/automation/workflows - List automation workflows (coming soon)',
+      'POST /api/auth/signup - User registration',
+      'POST /api/auth/login - User login',
+      'GET /api/auth/profile - Get user profile (protected)',
+      'GET /api/auth/verify - Verify token (protected)',
     ],
   });
 });
 
-// Jira API routes (placeholder)
-app.get('/api/jira/projects', (req, res) => {
-  res.json({
-    message: 'Jira integration coming soon!',
-    projects: [],
-  });
-});
+// Authentication routes
+app.use('/api/auth', authRoutes);
 
-// Automation routes (placeholder)
-app.get('/api/automation/workflows', (req, res) => {
-  res.json({
-    message: 'Automation workflows coming soon!',
-    workflows: [],
-  });
-});
+// Import error handling middleware
+const {
+  globalErrorHandler,
+  handleNotFound,
+} = require('./middleware/errorHandler');
 
-// AI routes (placeholder)
-app.post('/api/ai/summarize', (req, res) => {
-  res.json({
-    message: 'AI summarization coming soon!',
-    summary: 'This feature will be implemented with GPT-4 integration',
-  });
-});
+// 404 handler for undefined routes
+app.use('*', handleNotFound);
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({
-    error: 'Route not found',
-    message: `The route ${req.originalUrl} does not exist on this server`,
-  });
-});
+// Global error handling middleware
+app.use(globalErrorHandler);
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error('Error:', err.stack);
-  res.status(500).json({
-    error: 'Internal Server Error',
-    message: 'Something went wrong on the server',
-  });
-});
+// Test database connection
+testConnection();
 
 // Start server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 Zenjira Backend Server running on port ${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/health`);
   console.log(`🔧 API test: http://localhost:${PORT}/api/test`);
   console.log(`📖 Environment: ${process.env.NODE_ENV || 'development'}`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    console.log('HTTP server closed');
+    disconnectDatabase().then(() => {
+      process.exit(0);
+    });
+  });
+});
+
+process.on('SIGINT', async () => {
+  console.log('SIGINT received, shutting down gracefully');
+  server.close(() => {
+    console.log('HTTP server closed');
+    disconnectDatabase().then(() => {
+      process.exit(0);
+    });
+  });
 });
 
 module.exports = app;
