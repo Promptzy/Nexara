@@ -4,9 +4,8 @@ import fetch from 'node-fetch';
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO = process.env.GITHUB_REPOSITORY;
-const PR_NUMBER = process.env.PR_NUMBER;
 
-if (!GITHUB_TOKEN || !REPO || !PR_NUMBER) {
+if (!GITHUB_TOKEN || !REPO) {
   console.error('Missing required environment variables.');
   process.exit(1);
 }
@@ -17,48 +16,46 @@ const headers = {
   'X-GitHub-Api-Version': '2022-11-28',
 };
 
-async function getPRInfo() {
-  const url = `https://api.github.com/repos/${REPO}/pulls/${PR_NUMBER}`;
-  const res = await fetch(url, { headers });
-  if (!res.ok) throw new Error('Failed to fetch PR info');
-  return res.json();
+const pointsMap = { easy: 4, medium: 7, hard: 10 };
+const difficultyLabels = ["easy", "medium", "hard"];
+
+async function fetchAllMergedPRs() {
+  let prs = [];
+  let page = 1;
+  while (true) {
+    const url = `https://api.github.com/repos/${REPO}/pulls?state=closed&per_page=100&page=${page}`;
+    const res = await fetch(url, { headers });
+    if (!res.ok) throw new Error('Failed to fetch PRs');
+    const data = await res.json();
+    if (data.length === 0) break;
+    prs = prs.concat(data.filter(pr => pr.merged_at));
+    page++;
+  }
+  return prs;
 }
 
-async function getPRLabels() {
-  const url = `https://api.github.com/repos/${REPO}/issues/${PR_NUMBER}/labels`;
+async function fetchLabelsForPR(prNumber) {
+  const url = `https://api.github.com/repos/${REPO}/issues/${prNumber}/labels`;
   const res = await fetch(url, { headers });
   if (!res.ok) throw new Error('Failed to fetch PR labels');
   return res.json();
 }
 
 async function updateContributors() {
-  const pr = await getPRInfo();
-  const labels = await getPRLabels();
-  const username = pr.user.login;
-  let type = null;
-  for (const label of labels) {
-    if (["easy", "medium", "hard"].includes(label.name)) {
-      type = label.name;
-      break;
-    }
-  }
-  if (!type) {
-    console.error('No valid difficulty label found.');
-    process.exit(1);
-  }
-  const pointsMap = { easy: 4, medium: 7, hard: 10 };
+  const mergedPRs = await fetchAllMergedPRs();
   let contributors = {};
-  try {
-    contributors = JSON.parse(await readFile('contributors.json', 'utf8'));
-  } catch (e) {
-    contributors = {};
+  for (const pr of mergedPRs) {
+    const username = pr.user.login;
+    const labels = await fetchLabelsForPR(pr.number);
+    const type = labels.find(label => difficultyLabels.includes(label.name))?.name;
+    if (!type) continue;
+    if (!contributors[username]) {
+      contributors[username] = { easy: 0, medium: 0, hard: 0, total_prs: 0, points: 0 };
+    }
+    contributors[username][type] += 1;
+    contributors[username].total_prs += 1;
+    contributors[username].points += pointsMap[type];
   }
-  if (!contributors[username]) {
-    contributors[username] = { easy: 0, medium: 0, hard: 0, total_prs: 0, points: 0 };
-  }
-  contributors[username][type] += 1;
-  contributors[username].total_prs += 1;
-  contributors[username].points += pointsMap[type];
   await writeFile('contributors.json', JSON.stringify(contributors, null, 2));
   await writeContributorsMD(contributors);
 }
