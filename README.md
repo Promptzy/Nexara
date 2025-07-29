@@ -19,6 +19,8 @@ This repository includes a powerful GitHub bot that responds to slash commands i
 - `/merge` - Merges a pull request and closes linked issues (restricted to authorized users)
 - `/approve [message]` - Approves a pull request with optional auto-merge
 - `/lgtm [message]` - Approves a pull request with "Looks Good To Me"
+- `/rerun` - Re-runs all failed workflows and approves waiting workflows for a PR
+- `/check` - Runs all workflows and checks for a PR (perfect for new contributors)
 - `/review @username` - Requests a review from the mentioned user
 - `/status` - Checks the status of a pull request and provides merge readiness assessment
 - `/bug` - Adds the "type: bug" label to the issue or PR
@@ -36,6 +38,16 @@ This repository includes a powerful GitHub bot that responds to slash commands i
 - **Component labels** help identify which part of the codebase is affected
 - **Technology labels** help identify the languages and frameworks involved
 - **Linked issues are automatically closed** when PRs are merged via bot commands
+- **Workflows run automatically** for all contributors without waiting for approval
+- **First-time contributors** can use `/check` command to run all workflows manually
+- **Manual override** available with `/rerun` and `/check` commands for any PR
+
+### Workflow Automation:
+- **All contributors** get automatic workflow approval and execution
+- **Documentation changes** (.md, docs/, README files) run automatically
+- **All PR types** get automatic approval - welcoming to new contributors
+- **Manual override** available with `/rerun` and `/check` commands for any PR
+- **Zero-config setup** - works out of the box for all contributions
 
 ### Issue Linking:
 When using `/merge` or `/approve` commands, the bot automatically:

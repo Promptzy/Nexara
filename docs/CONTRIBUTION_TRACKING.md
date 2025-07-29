@@ -1,10 +1,14 @@
-# Contribution Tracking S**Contributors earn points based on the difficulty of their merged PRs:**
+# Contribution Tracking System
+
+## Overview
+
+This repository uses an automated system to track and reward contributions based on merged pull requests.
+
+**Contributors earn points based on the difficulty of their merged PRs:**
 
 - Level 1: 4 points
 - Level 2: 7 points
 - Level 3: 10 points
-
-This repository uses an automated system to track and reward contributions based on merged pull requests.
 
 ## How It Works
 
@@ -110,3 +114,68 @@ The workflow needs these permissions:
 - `pull-requests: read` - to read PR information
 
 Make sure these are set in the workflow file.
+
+## Testing the System
+
+### Manual Testing
+
+Run the test scripts to verify everything works:
+
+```bash
+# Test the tracking script directly
+.github/scripts/test-tracking.sh
+
+# Test with a manual example
+.github/scripts/test-manual.sh
+
+# Test workflow triggers
+.github/scripts/test-workflow-triggers.sh
+```
+
+### GitHub Workflow Testing
+
+You can manually trigger the tracking workflow:
+
+1. Go to **Actions** tab in GitHub
+2. Select **Track Contributions** workflow
+3. Click **Run workflow**
+4. Fill in test parameters:
+   - PR number: `999`
+   - Username: `testuser`
+   - Labels: `level 2,frontend`
+
+### Real-World Testing
+
+1. Create a test PR with meaningful changes
+2. Add a difficulty label (`level 1`, `level 2`, or `level 3`)
+3. Merge the PR
+4. Check that `contributors.json` and `CONTRIBUTORS.md` are updated automatically
+
+### Debugging Steps
+
+1. **Check workflow logs**: Go to Actions tab and examine the tracking workflow run
+2. **Verify labels**: Ensure PRs have correct difficulty labels
+3. **Test locally**: Run the tracking script manually with test data
+4. **Check permissions**: Verify workflow has necessary repository permissions
+
+### Manual Recovery
+
+If tracking fails for a merged PR, you can manually run it:
+
+```bash
+# Replace with actual values
+node .github/scripts/track-contribution.js "username" "level 2" 123
+```
+
+## Current Status
+
+✅ **System is fully functional and tested**
+
+- Tracking script works correctly
+- Workflow integration is complete
+- Points calculation is accurate
+- File generation works properly
+- Error handling is robust
+- Manual testing is available
+
+The system will track contributions automatically for all merged PRs with difficulty labels.

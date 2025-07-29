@@ -1,37 +1,45 @@
----
-name: 📋 Pull Request Template
-about: Template for pull requests
-title: ''
-labels: ''
-assignees: ''
----
+## 📌 Pull Request
 
-## 📝 Description
+### 📃 Description
 
-<!-- Describe what this PR does and why -->
+<!-- Clearly describe the purpose of this PR. What bug or feature does it address? Why is this change necessary? -->
 
-## 🔄 Type of Change
+Fixes #[Issue Number]  
 
-- [ ] 🟢 **Level 1** - Bug fix, documentation, minor improvement
-- [ ] 🟡 **Level 2** - Feature implementation, refactoring, moderate complexity
-- [ ] 🔴 **Level 3** - Complex feature, architectural change, performance optimization
+### ✅ Changes Made
 
-## ✅ Checklist
+- [ ] Feature 1 added / Bug 1 fixed
+- [ ] Refactored ____
+- [ ] Updated relevant logic in ____
+- [ ] Removed unnecessary ____
 
+### 🧪 How to Test
+
+<!-- Describe how to manually test the changes or include test commands -->
+1. Go to ...
+2. Click on ...
+3. You should see ...
+
+### 🔍 Screenshots (if applicable)
+
+| Before | After |
+|--------|-------|
+| Image  | Image |
+
+### 🧩 Checklist
+
+- [ ] I have linked the related issue (if any)
 - [ ] I have tested my changes locally
-- [ ] I have added/updated documentation if needed
-- [ ] My code follows the project's coding standards
-- [ ] I have added tests for new functionality (if applicable)
-
-## 🎯 Related Issues
-
-<!-- Link any related issues here -->
-Closes #<!-- issue number -->
-
-## 📷 Screenshots (if applicable)
-
-<!-- Add screenshots to help explain your changes -->
+- [ ] I have added necessary documentation/comments
+- [ ] I have followed the project's code style
+- [ ] I have not included any sensitive information or credentials
 
 ---
 
-**For Maintainers:** Please add the appropriate difficulty label (`level 1`, `level 2`, or `level 3`) before merging to ensure contribution tracking works correctly.
+### 💬 Additional Notes (optional)
+
+<!-- Mention if there's anything reviewers should keep in mind or any follow-up work required -->
+
+---
+
+> Thank you for your contribution! 🚀

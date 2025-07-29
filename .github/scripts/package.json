@@ -1,0 +1,12 @@
+{
+  "name": "contribution-tracking",
+  "version": "1.0.0",
+  "description": "Scripts for tracking contributions in the repository",
+  "main": "track-contribution.js",
+  "scripts": {
+    "track": "node track-contribution.js"
+  },
+  "keywords": ["contribution", "tracking", "github"],
+  "author": "Zenjira Team",
+  "license": "MIT"
+}

@@ -3,6 +3,14 @@ name: PR Size Labeler
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to process'
+        required: false
+      triggered_by:
+        description: 'User who triggered this workflow'
+        required: false
 
 permissions:
   contents: read

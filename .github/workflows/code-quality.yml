@@ -3,8 +3,30 @@ name: Code Quality & Formatting
 on:
   push:
     branches: [ main, develop ]
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - '*.js'
+      - '*.ts'
+      - '*.json'
+      - '.github/workflows/code-quality.yml'
   pull_request:
     branches: [ main, develop ]
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - '*.js'
+      - '*.ts'
+      - '*.json'
+      - '.github/workflows/code-quality.yml'
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to process'
+        required: false
+      triggered_by:
+        description: 'User who triggered this workflow'
+        required: false
 
 permissions:
   contents: read
@@ -50,10 +72,11 @@ jobs:
           fi
 
       - name: Setup Node.js
+        if: steps.changed-files.outputs.frontend_changed == 'true' || steps.changed-files.outputs.backend_changed == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          # Don't cache npm globally - we'll handle it per directory
 
       - name: Install and check frontend
         if: steps.changed-files.outputs.frontend_changed == 'true'

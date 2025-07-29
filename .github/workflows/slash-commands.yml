@@ -33,6 +33,8 @@ jobs:
             lgtm
             close
             approve
+            rerun
+            check
           permission: write
           issue-type: both
           reaction-token: ${{ secrets.GITHUB_TOKEN }}

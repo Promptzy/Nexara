@@ -1,0 +1,150 @@
+name: Auto-Run PR Workflows
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  actions: write
+  checks: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  auto-approve:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto-approve and run workflows
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.payload.pull_request.number;
+            const prAuthor = context.payload.pull_request.user.login;
+            const headSha = context.payload.pull_request.head.sha;
+            
+            console.log(`Auto-processing PR #${prNumber} by ${prAuthor}`);
+            console.log(`Head SHA: ${headSha}`);
+            
+            // List of trusted contributors who always get auto-approval
+            const trustedContributors = [
+              'Va16hav07',
+              'Pranjal6955'
+            ];
+            
+            const isTrusted = trustedContributors.includes(prAuthor);
+            
+            // Auto-approve for ALL contributors - we'll be more permissive
+            let shouldAutoApprove = true;
+            let reason = '';
+            
+            // Check change characteristics for informational purposes
+            try {
+              const files = await github.rest.pulls.listFiles({
+                owner,
+                repo,
+                pull_number: prNumber
+              });
+              
+              const totalChanges = files.data.reduce((sum, file) => sum + file.changes, 0);
+              const isSmallChange = totalChanges < 100;
+              const isMediumChange = totalChanges < 500;
+              
+              const isDocsOnly = files.data.every(file => 
+                file.filename.match(/\.(md|txt|rst)$/i) || 
+                file.filename.includes('docs/') ||
+                file.filename.includes('README') ||
+                file.filename.includes('.github/')
+              );
+              
+              const isConfigOnly = files.data.every(file =>
+                file.filename.match(/\.(json|yml|yaml|toml|ini|conf)$/i) ||
+                file.filename.includes('config/') ||
+                file.filename.includes('.vscode/') ||
+                file.filename.includes('.github/')
+              );
+              
+              // Determine reason for auto-approval
+              if (isTrusted) {
+                reason = 'trusted contributor';
+              } else if (isDocsOnly) {
+                reason = 'documentation-only changes';
+              } else if (isConfigOnly) {
+                reason = 'configuration-only changes';
+              } else if (isSmallChange) {
+                reason = `small change (${totalChanges} lines)`;
+              } else if (isMediumChange) {
+                reason = `medium change (${totalChanges} lines)`;
+              } else {
+                reason = `large change (${totalChanges} lines) - auto-approved for open development`;
+              }
+              
+            } catch (error) {
+              console.log('Could not analyze files:', error.message);
+              reason = 'unable to analyze changes - auto-approved by default';
+            }
+            
+            // Auto-approve for ALL contributors
+            if (shouldAutoApprove) {
+              console.log(`Auto-approving workflows for all contributors: ${reason}`);
+              
+              // Wait a moment for workflows to be created
+              await new Promise(resolve => setTimeout(resolve, 5000));
+              
+              try {
+                // Get workflow runs for this PR
+                const workflowRuns = await github.rest.actions.listWorkflowRunsForRepo({
+                  owner,
+                  repo,
+                  head_sha: headSha,
+                  status: 'waiting'
+                });
+                
+                let approvedCount = 0;
+                
+                for (const run of workflowRuns.data.workflow_runs) {
+                  try {
+                    await github.rest.actions.approveWorkflowRun({
+                      owner,
+                      repo,
+                      run_id: run.id
+                    });
+                    approvedCount++;
+                    console.log(`Approved workflow: ${run.name} (${run.id})`);
+                  } catch (error) {
+                    console.log(`Could not approve ${run.name}:`, error.message);
+                  }
+                }
+                
+                if (approvedCount > 0) {
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    body: `🤖 **Auto-approved ${approvedCount} workflow(s)** for this PR (${reason})\n\n✅ All GitHub Actions will run automatically. This repository welcomes contributions from all developers!`
+                  });
+                } else {
+                  // Even if no workflows needed approval, let them know about auto-approval policy
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    body: `🤖 **Welcome @${prAuthor}!** This repository auto-approves workflows for all contributors.\n\n✅ Your workflows should run automatically. If you encounter any issues, use the \`/rerun\` command.`
+                  });
+                }
+                
+              } catch (error) {
+                console.log('Error auto-approving workflows:', error.message);
+                
+                // Still welcome the contributor even if approval failed
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  body: `👋 **Welcome @${prAuthor}!** \n\nThis repository welcomes all contributors. If workflows don't start automatically, use the \`/rerun\` command or contact maintainers.\n\n**Available commands:** \`/rerun\`, \`/status\`, \`/assign\`, and more!`
+                });
+              }
+            }

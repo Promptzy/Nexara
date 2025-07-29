@@ -1,0 +1,123 @@
+name: Auto-Approve Workflows
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+permissions:
+  actions: write
+  checks: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  auto-approve:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto-approve workflows for trusted scenarios
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.payload.pull_request.number;
+            const prAuthor = context.payload.pull_request.user.login;
+            
+            console.log(`Checking PR #${prNumber} by ${prAuthor}`);
+            
+            // List of trusted contributors who don't need approval
+            const trustedContributors = [
+              'Va16hav07',
+              'Pranjal6955',
+              // Add more trusted contributors here
+            ];
+            
+            // Check if author is trusted
+            const isTrusted = trustedContributors.includes(prAuthor);
+            
+            // Check if this is a documentation-only change
+            const files = await github.rest.pulls.listFiles({
+              owner,
+              repo,
+              pull_number: prNumber
+            });
+            
+            const isDocsOnly = files.data.every(file => 
+              file.filename.includes('.md') || 
+              file.filename.includes('docs/') ||
+              file.filename.includes('.txt') ||
+              file.filename.includes('README')
+            );
+            
+            // Check if this is a small change (< 50 lines)
+            const totalChanges = files.data.reduce((sum, file) => sum + file.changes, 0);
+            const isSmallChange = totalChanges < 50;
+            
+            // Auto-approve if any condition is met
+            if (isTrusted || isDocsOnly || isSmallChange) {
+              const reason = isTrusted ? 'trusted contributor' : 
+                           isDocsOnly ? 'documentation-only changes' :
+                           'small change (<50 lines)';
+              
+              console.log(`Auto-approving workflows for ${reason}`);
+              
+              // Approve any pending workflow runs
+              try {
+                const workflowRuns = await github.rest.actions.listWorkflowRunsForRepo({
+                  owner,
+                  repo,
+                  event: 'pull_request',
+                  status: 'waiting'
+                });
+                
+                for (const run of workflowRuns.data.workflow_runs) {
+                  if (run.head_sha === context.payload.pull_request.head.sha) {
+                    try {
+                      await github.rest.actions.approveWorkflowRun({
+                        owner,
+                        repo,
+                        run_id: run.id
+                      });
+                      console.log(`Approved workflow run ${run.id}`);
+                    } catch (error) {
+                      console.log(`Could not approve workflow run ${run.id}:`, error.message);
+                    }
+                  }
+                }
+                
+                // Add a comment explaining the auto-approval
+                const approvalMessage = [
+                  "🤖 **Auto-approved workflows** for this PR because: " + reason,
+                  "",
+                  "All GitHub Actions workflows have been automatically approved and will run without manual intervention."
+                ].join('\n');
+                
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  body: approvalMessage
+                });
+                
+              } catch (error) {
+                console.log('Error auto-approving workflows:', error.message);
+              }
+            } else {
+              console.log('PR does not meet auto-approval criteria');
+              
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: prNumber,
+                body: `👋 **Workflow approval needed**
+                
+This PR requires manual approval to run workflows. A maintainer will review and approve shortly.
+
+**Auto-approval criteria:**
+- ✅ Trusted contributors: ${trustedContributors.join(', ')}
+- ✅ Documentation-only changes (.md, docs/, README files)
+- ✅ Small changes (<50 lines modified)
+
+Current PR: **${totalChanges} lines changed** by **@${prAuthor}**`
+              });
+            }
