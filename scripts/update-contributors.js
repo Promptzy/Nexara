@@ -17,7 +17,15 @@ const headers = {
 };
 
 const pointsMap = { easy: 4, medium: 7, hard: 10 };
-const difficultyLabels = ["easy", "medium", "hard"];
+const difficultyLabels = ["easy", "medium", "hard", "meduim"];
+
+function normalizeLabel(label) {
+  const l = label.toLowerCase();
+  if (l === 'easy') return 'easy';
+  if (l === 'medium' || l === 'meduim') return 'medium';
+  if (l === 'hard') return 'hard';
+  return null;
+}
 
 async function fetchAllMergedPRs() {
   let prs = [];
@@ -47,7 +55,8 @@ async function updateContributors() {
   for (const pr of mergedPRs) {
     const username = pr.user.login;
     const labels = await fetchLabelsForPR(pr.number);
-    const type = labels.find(label => difficultyLabels.includes(label.name))?.name;
+    const found = labels.find(label => normalizeLabel(label.name));
+    const type = found ? normalizeLabel(found.name) : null;
     if (!type) continue;
     if (!contributors[username]) {
       contributors[username] = { easy: 0, medium: 0, hard: 0, total_prs: 0, points: 0 };
