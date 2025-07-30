@@ -138,3 +138,193 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* --- Advanced Scroll Animations --- */
+.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.is-visible .stagger-child {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition-delay: calc(var(--stagger-index) * 150ms);
+}
+
+
+
+
+/* Below are the css for about us section */
+/* Custom animations for enhanced visual effects */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slide-in-delayed {
+  0% { transform: translateX(-20px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes bounce-delayed {
+  0%, 20%, 53%, 80%, 100% { transform: translateY(0); }
+  40%, 43% { transform: translateY(-10px); }
+  70% { transform: translateY(-5px); }
+  90% { transform: translateY(-2px); }
+}
+
+@keyframes dash {
+  0% { stroke-dasharray: 0 100; }
+  100% { stroke-dasharray: 100 0; }
+}
+
+@keyframes progress-fill {
+  0% { width: 0%; }
+  100% { width: 78%; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes galaxy-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(147, 51, 234, 0.3), 0 0 40px rgba(147, 51, 234, 0.2); }
+  50% { box-shadow: 0 0 30px rgba(236, 72, 153, 0.4), 0 0 60px rgba(236, 72, 153, 0.3); }
+}
+
+@keyframes cosmic-drift {
+  0% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-10px) rotate(1deg); }
+  50% { transform: translateY(0) rotate(0deg); }
+  75% { transform: translateY(10px) rotate(-1deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-scale {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes parallax-float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  33% { transform: translateY(-8px) translateX(4px); }
+  66% { transform: translateY(4px) translateX(-6px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+.animate-slide-in-delayed {
+  animation: slide-in-delayed 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-bounce-delayed {
+  animation: bounce-delayed 2s infinite;
+}
+
+.animate-dash {
+  stroke-dasharray: 10 5;
+  animation: dash 2s linear infinite;
+}
+
+.animate-progress-fill {
+  animation: progress-fill 2s ease-out;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+.animate-galaxy-glow {
+  animation: galaxy-glow 4s ease-in-out infinite;
+}
+
+.animate-cosmic-drift {
+  animation: cosmic-drift 8s ease-in-out infinite;
+}
+
+.animate-star-twinkle {
+  animation: star-twinkle 2s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-parallax-float {
+  animation: parallax-float 12s ease-in-out infinite;
+}
+
+/* Stagger animation utilities */
+.stagger-child {
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Responsive animations */
+@media (max-width: 768px) {
+  .animate-cosmic-drift {
+    animation-duration: 6s;
+  }
+  
+  .animate-parallax-float {
+    animation-duration: 8s;
+  }
+  
+  .stagger-child {
+    transform: translateY(15px);
+  }
+}
+
+@media (max-width: 480px) {
+  .animate-galaxy-glow {
+    animation-duration: 3s;
+  }
+  
+  .stagger-child {
+    transform: translateY(10px);
+    transition-duration: 0.4s;
+  }
+}
+
+/* Ensure galaxy background is visible */
+html, body, #root {
+  background: transparent !important;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+canvas {
+  display: block;
+}

@@ -6,7 +6,7 @@ import ContactForm from '../components/ContactForm'
 import Footer from '../components/Footer'
 import NavBar from '@/components/NavBar'
 
-const page = () => {
+const Page = () => {
   return (
     <main className="min-h-screen">
       <div className="sticky top-0 z-10">
@@ -22,7 +22,4 @@ const page = () => {
   )
 }
 
-export default page
-
-{
-}
+export default Page
