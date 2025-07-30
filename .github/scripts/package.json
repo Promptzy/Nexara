@@ -4,7 +4,12 @@
   "description": "Scripts for tracking contributions in the repository",
   "main": "track-contribution.js",
   "scripts": {
-    "track": "node track-contribution.js"
+    "track": "node track-contribution.js",
+    "fetch-past": "node fetch-past-contributions.js"
+  },
+  "dependencies": {
+    "@actions/github": "^6.0.0",
+    "@actions/core": "^1.10.0"
   },
   "keywords": ["contribution", "tracking", "github"],
   "author": "Zenjira Team",

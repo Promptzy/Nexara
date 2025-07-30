@@ -7,16 +7,21 @@ on:
     inputs:
       pr_number:
         description: 'PR number to track (for testing)'
-        required: true
+        required: false
         type: string
       username:
         description: 'Username (for testing)'
-        required: true
+        required: false
         type: string
       labels:
         description: 'Comma-separated labels (for testing)'
-        required: true
+        required: false
         type: string
+      process_all_past:
+        description: 'Process all past merged PRs'
+        required: false
+        default: 'false'
+        type: boolean
 
 permissions:
   contents: write
@@ -54,13 +59,30 @@ jobs:
             console.log('======================================');
             console.log('Event type:', context.eventName);
             
+            // Check if we should process all past contributions
+            if (context.eventName === 'workflow_dispatch' && context.payload.inputs.process_all_past === 'true') {
+              console.log('🔄 Processing all past merged PRs...');
+              try {
+                execSync(`cd .github/scripts && node fetch-past-contributions.js`, {
+                  stdio: 'inherit'
+                });
+                console.log('✅ Past contributions processing completed successfully');
+                return;
+              } catch (error) {
+                console.error('❌ Past contributions processing failed:', error.message);
+                console.error('Error details:', error);
+                core.setFailed(`Failed to process past contributions: ${error.message}`);
+                return;
+              }
+            }
+            
             let prNumber, username, labels;
             
             if (context.eventName === 'workflow_dispatch') {
               // Manual trigger - get data from inputs
               prNumber = context.payload.inputs.pr_number;
               username = context.payload.inputs.username;
-              labels = context.payload.inputs.labels.split(',').map(l => l.trim());
+              labels = context.payload.inputs.labels ? context.payload.inputs.labels.split(',').map(l => l.trim()) : [];
               
               console.log('Manual trigger detected');
               console.log('Input PR Number:', prNumber);
