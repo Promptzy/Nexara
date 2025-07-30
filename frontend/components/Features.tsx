@@ -16,9 +16,6 @@ import {
 } from 'lucide-react'
 import FeatureCard from './FeatureCard'
 
-/**
- * Core Features - Essential Zenjira capabilities
- */
 const coreFeatures = [
   {
     icon: Workflow,
@@ -57,9 +54,7 @@ const coreFeatures = [
   },
 ]
 
-/**
- * Advanced Features - Powerful capabilities for enhanced productivity
- */
+
 const advancedFeatures = [
   {
     icon: Search,
@@ -106,9 +101,6 @@ const advancedFeatures = [
   },
 ]
 
-/**
- * Features section component showcasing all Zenjira capabilities
- */
 const Features: React.FC = () => {
   return (
     <section className="py-16 md:py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">

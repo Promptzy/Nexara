@@ -12,10 +12,7 @@ export interface FeatureCardProps {
   className?: string
 }
 
-/**
- * FeatureCard displays a feature with icon, title, description and action button
- * Inspired by the design with modern styling and clean layout
- */
+
 const FeatureCard: React.FC<FeatureCardProps> = ({
   icon: Icon,
   title,
@@ -59,7 +56,6 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
               <div className="text-slate-400">
                 1.{' '}
                 <span className="text-green-400">
-                  {/* AI Test Case Generation */}
                 </span>
               </div>
               <div className="text-slate-400">
