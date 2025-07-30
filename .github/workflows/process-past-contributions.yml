@@ -1,0 +1,78 @@
+name: Process Past Contributions
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force update even if no changes detected'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  process-past-contributions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd .github/scripts
+          npm install
+
+      - name: Process past contributions
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const { execSync } = require('child_process');
+            
+            console.log('🤖 Process Past Contributions Workflow Started');
+            console.log('============================================');
+            
+            try {
+              console.log('Starting past contributions processing...');
+              execSync(`cd .github/scripts && node fetch-past-contributions.js`, {
+                stdio: 'inherit'
+              });
+              console.log('✅ Past contributions processing completed successfully');
+            } catch (error) {
+              console.error('❌ Past contributions processing failed:', error.message);
+              console.error('Error details:', error);
+              core.setFailed(`Failed to process past contributions: ${error.message}`);
+            }
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add contributors.json CONTRIBUTORS.md
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update contributor leaderboard with past contributions"
+            git push
+          fi
+
+      - name: Create summary
+        run: |
+          echo "## 📊 Past Contributions Processing Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Successfully processed all past merged pull requests" >> $GITHUB_STEP_SUMMARY
+          echo "📈 Updated contributor leaderboard with historical data" >> $GITHUB_STEP_SUMMARY
+          echo "🎯 All contributors with valid difficulty labels have been tracked" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Note:** This workflow can be run manually anytime to sync past contributions." >> $GITHUB_STEP_SUMMARY 

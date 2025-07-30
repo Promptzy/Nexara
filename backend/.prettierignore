@@ -1,12 +1,22 @@
+# Dependencies
 node_modules/
+package-lock.json
+
+# Build outputs
 dist/
 build/
-.next/
-coverage/
-*.log
+
+# Database
+*.db
+*.sqlite
+
+# Environment files
 .env
 .env.local
 .env.production
-.env.development
-package-lock.json
-yarn.lock
+
+# Logs
+*.log
+
+# Prisma generated files
+prisma/migrations/*/migration.sql

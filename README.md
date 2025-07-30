@@ -4,8 +4,45 @@
 [![Slack](https://img.shields.io/badge/slack-join%20community-blueviolet.svg)](https://join.slack.com/t/promptzy/shared_invite/zt-3acy22kkh-R~nMYTl7op_MF5UaLnwdsA)
 [![TypeScript](https://img.shields.io/badge/typescript-4.9+-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/next.js-13+-black.svg)](https://nextjs.org/)
+[![Automation Status](https://img.shields.io/badge/automation-fully%20active-green.svg)](#-automated-contribution-system)
 
 *Intelligent automation and AI-driven insights for modern development teams*
+
+---
+
+## 🤖 Automated Contribution System
+
+**Welcome Contributors!** This repository features a comprehensive automation system that makes contributing effortless:
+
+### ✨ **What Happens Automatically:**
+- 🏷️ **Smart Labeling** - PRs get labeled by type, area, size, and priority
+- 👍 **Auto-Approval** - External PRs are automatically approved to run workflows
+- 🎯 **Quality Checks** - Automatic linting, testing, and build verification
+- 📊 **Contributor Tracking** - All contributions are tracked and rewarded
+- 🔄 **Workflow Execution** - All workflows run for all contributors immediately
+
+### 🎮 **Manual Commands Available:**
+- `/check` - Re-run all quality checks and workflows
+- `/rerun` - Re-run failed workflows and refresh approvals  
+- `/label` - Re-trigger smart labeling system
+- Plus [15+ other commands](#available-commands) for advanced management
+
+### 📈 **For New Contributors:**
+1. **Fork the repository** and create your branch
+2. **Make your changes** - the system auto-detects the type and scope
+3. **Open a pull request** - automation kicks in immediately:
+   - ✅ PR gets automatically approved for workflow execution
+   - 🏷️ Smart labels applied (type/feature, area/frontend, size/M, etc.)
+   - 🧪 All quality checks run automatically (no waiting!)
+   - 📝 You're added to our contributor tracking system
+4. **Address any feedback** - use `/check` to re-run tests after fixes
+5. **Get merged** - maintainers can use `/merge` for quick integration
+
+### 🛠️ **Zero Configuration Required:**
+- **No setup needed** - automation works out of the box
+- **All PR types welcome** - features, fixes, docs, tests, refactors
+- **External forks supported** - same experience for everyone
+- **Graceful error handling** - clear feedback if something goes wrong
 
 ---
 
@@ -16,7 +53,11 @@ This repository includes a powerful GitHub bot that responds to slash commands i
 ### Available Commands:
 - `/assign @username` - Assigns an issue or PR to the mentioned user
 - `/unassign @username` - Unassigns the mentioned user from an issue or PR  
-- `/merge` - Merges a pull request (restricted to authorized users)
+- `/merge` - Merges a pull request and closes linked issues (restricted to authorized users)
+- `/approve [message]` - Approves a pull request with optional auto-merge
+- `/lgtm [message]` - Approves a pull request with "Looks Good To Me"
+- `/rerun` - Re-runs all failed workflows and approves waiting workflows for a PR
+- `/check` - Runs all workflows and checks for a PR (perfect for new contributors)
 - `/review @username` - Requests a review from the mentioned user
 - `/status` - Checks the status of a pull request and provides merge readiness assessment
 - `/bug` - Adds the "type: bug" label to the issue or PR
@@ -28,11 +69,28 @@ This repository includes a powerful GitHub bot that responds to slash commands i
 3. **The command will execute** and the bot will post a confirmation message
 4. **Check the Actions tab** if a command doesn't work as expected
 
-### Automated Labeling:
+### Automated Features:
 - **Pull requests are automatically labeled** based on changed files
 - **Size labels** (XS, S, M, L, XL) are added based on the number of lines changed
 - **Component labels** help identify which part of the codebase is affected
 - **Technology labels** help identify the languages and frameworks involved
+- **Linked issues are automatically closed** when PRs are merged via bot commands
+- **Workflows run automatically** for all contributors without waiting for approval
+- **First-time contributors** can use `/check` command to run all workflows manually
+- **Manual override** available with `/rerun` and `/check` commands for any PR
+
+### Workflow Automation:
+- **All contributors** get automatic workflow approval and execution
+- **Documentation changes** (.md, docs/, README files) run automatically
+- **All PR types** get automatic approval - welcoming to new contributors
+- **Manual override** available with `/rerun` and `/check` commands for any PR
+- **Zero-config setup** - works out of the box for all contributions
+
+### Issue Linking:
+When using `/merge` or `/approve` commands, the bot automatically:
+- Searches PR title, body, and commit messages for issue references
+- Closes linked issues using patterns like "Closes #123", "Fixes #456", "Resolves #789"
+- Posts a confirmation comment on both the PR and closed issues
 
 ### Security:
 - The `/merge` command is restricted to authorized users only
@@ -314,6 +372,26 @@ npm run format:check
 ## 📜 Code of Conduct
 
 Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) to understand the expected behavior in this community.
+
+
+## Community Guidelines
+
+📜 Please review our [Community Guidelines](./COMMUNITY_GUIDELINES.md) before contributing.
+
+
+## 👥 Contributors
+
+We welcome and appreciate all contributions! Our automated contribution tracking system rewards merged PRs based on difficulty:
+
+> **Note:** The scoring system applies only to GSSOC contributors.
+
+🟢 **Level 1** (4 points) - Bug fixes, documentation, minor improvements  
+🟡 **Level 2** (7 points) - Features, refactoring, moderate complexity  
+🔴 **Level 3** (10 points) - Complex features, architecture changes  
+
+See the current leaderboard and detailed contribution stats in [CONTRIBUTORS.md](./CONTRIBUTORS.md).
+
+📚 Learn more about our contribution tracking system in [docs/CONTRIBUTION_TRACKING.md](./docs/CONTRIBUTION_TRACKING.md).
 
 
 ## 📄 License

@@ -5,6 +5,8 @@ on:
     types: [opened]
   pull_request:
     types: [opened]
+  pull_request_target:
+    types: [opened]
 
 permissions:
   contents: read
@@ -14,6 +16,7 @@ permissions:
 jobs:
   welcome:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request_target' || github.event_name == 'issues'
     steps:
       - name: Welcome new contributor
         uses: actions/github-script@v7

@@ -42,6 +42,9 @@ jobs:
             console.log('Args object:', argsObject);
             console.log('Args array:', args);
             
+            // Authorization check - get authorized users list
+            const authorizedUsers = ['Va16hav07', 'Pranjal6955'];
+            
             // Verify we have all required data
             if (!actor) {
               console.log('❌ Could not determine actor from payload');
@@ -92,13 +95,13 @@ jobs:
                 return;
               }
               
-              // Check if the user is the PR author
-              if (pr.data.user.login === actor) {
+              // Allow self-LGTM for authorized users
+              if (pr.data.user.login === actor && !authorizedUsers.includes(actor)) {
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: prNumber,
-                  body: `❌ @${actor}, you cannot LGTM your own pull request.`
+                  body: `❌ @${actor}, you cannot LGTM your own pull request unless you are a repository owner.`
                 });
                 core.setFailed('Cannot self-LGTM');
                 return;

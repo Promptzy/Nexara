@@ -18,6 +18,113 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            // Helper function to close linked issues
+            async function closeLinkedIssues(github, owner, repo, prNumber, actor) {
+              try {
+                console.log(`Looking for linked issues in PR #${prNumber}...`);
+                
+                // Get PR details to access body and title
+                const pr = await github.rest.pulls.get({
+                  owner: owner,
+                  repo: repo,
+                  pull_number: prNumber
+                });
+                
+                const prBody = pr.data.body || '';
+                const prTitle = pr.data.title || '';
+                
+                // Look for issue references in PR body and title
+                // Common patterns: "Closes #123", "Fixes #123", "Resolves #123", etc.
+                const issuePatterns = [
+                  /(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#(\d+)/gi,
+                  /(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+(?:https?:\/\/github\.com\/[^\/]+\/[^\/]+\/issues\/)(\d+)/gi
+                ];
+                
+                const linkedIssues = new Set();
+                
+                // Search in PR body
+                for (const pattern of issuePatterns) {
+                  let match;
+                  while ((match = pattern.exec(prBody)) !== null) {
+                    linkedIssues.add(parseInt(match[1]));
+                  }
+                }
+                
+                // Search in PR title
+                for (const pattern of issuePatterns) {
+                  let match;
+                  while ((match = pattern.exec(prTitle)) !== null) {
+                    linkedIssues.add(parseInt(match[1]));
+                  }
+                }
+                
+                // Get all commits and check their messages too
+                const commits = await github.rest.pulls.listCommits({
+                  owner: owner,
+                  repo: repo,
+                  pull_number: prNumber
+                });
+                
+                for (const commit of commits.data) {
+                  const commitMessage = commit.commit.message || '';
+                  for (const pattern of issuePatterns) {
+                    let match;
+                    while ((match = pattern.exec(commitMessage)) !== null) {
+                      linkedIssues.add(parseInt(match[1]));
+                    }
+                  }
+                }
+                
+                console.log(`Found ${linkedIssues.size} linked issues:`, Array.from(linkedIssues));
+                
+                // Close each linked issue
+                for (const issueNumber of linkedIssues) {
+                  try {
+                    // Check if issue exists and is open
+                    const issue = await github.rest.issues.get({
+                      owner: owner,
+                      repo: repo,
+                      issue_number: issueNumber
+                    });
+                    
+                    if (issue.data.state === 'open') {
+                      await github.rest.issues.update({
+                        owner: owner,
+                        repo: repo,
+                        issue_number: issueNumber,
+                        state: 'closed'
+                      });
+                      
+                      await github.rest.issues.createComment({
+                        owner: owner,
+                        repo: repo,
+                        issue_number: issueNumber,
+                        body: `🎉 This issue was automatically closed by merging PR #${prNumber} via /approve command by @${actor}.`
+                      });
+                      
+                      console.log(`✅ Closed issue #${issueNumber}`);
+                    } else {
+                      console.log(`ℹ️ Issue #${issueNumber} is already ${issue.data.state}`);
+                    }
+                  } catch (error) {
+                    console.log(`⚠️ Could not close issue #${issueNumber}:`, error.message);
+                  }
+                }
+                
+                if (linkedIssues.size > 0) {
+                  await github.rest.issues.createComment({
+                    owner: owner,
+                    repo: repo,
+                    issue_number: prNumber,
+                    body: `🔗 Automatically closed ${linkedIssues.size} linked issue(s): ${Array.from(linkedIssues).map(n => `#${n}`).join(', ')}`
+                  });
+                }
+                
+              } catch (error) {
+                console.log('Error closing linked issues:', error.message);
+              }
+            }
+            
             // Check if this is a valid slash command dispatch event
             if (!context.payload || !context.payload.client_payload) {
               console.log('❌ This workflow should only be triggered by repository dispatch events');
@@ -106,13 +213,13 @@ jobs:
                 return;
               }
               
-              // Check if the user is the PR author
-              if (pr.data.user.login === actor) {
+              // Allow self-approval for authorized users
+              if (pr.data.user.login === actor && !authorizedUsers.includes(actor)) {
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: prNumber,
-                  body: `❌ @${actor}, you cannot approve your own pull request.`
+                  body: `❌ @${actor}, you cannot approve your own pull request unless you are a repository owner.`
                 });
                 core.setFailed('Cannot self-approve');
                 return;
@@ -232,6 +339,9 @@ jobs:
                     pull_number: prNumber,
                     merge_method: 'merge'
                   });
+                  
+                  // Close linked issues after successful auto-merge
+                  await closeLinkedIssues(github, context.repo.owner, context.repo.repo, prNumber, actor);
                   
                   await github.rest.issues.createComment({
                     owner: context.repo.owner,
