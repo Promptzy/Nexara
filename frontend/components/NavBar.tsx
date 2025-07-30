@@ -22,9 +22,7 @@ function NavBar() {
   return (
     <div className="bg-[transparent] backdrop-blur-sm flex justify-around">
       <div className="my-4">
-        {/* <div className="my-2"> */}
         <Link className="text-[white] text-[2rem] font-bold" href="/">
-          {/* <Link className="text-[white] text-[1.5rem] font-bold" href="/"> */}
           Zenjira
         </Link>
       </div>
