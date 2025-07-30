@@ -4,7 +4,7 @@ import { Github, Twitter, Linkedin } from 'lucide-react'
 export default function Footer() {
   return (
     <footer
-      className="w-full bg-[#232129] text-[#e4e4e7] py-14 px-4 mt-12"
+      className="w-full bg-[#232129] text-[#e4e4e7] py-14 px-4"
       role="contentinfo"
       aria-label="Site Footer"
     >
