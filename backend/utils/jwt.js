@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 
-const generateToken = (payload) => {
+const generateToken = payload => {
   try {
     const secret = process.env.JWT_SECRET;
     const expiresIn = process.env.JWT_EXPIRES_IN || '15m';
-    
+
     if (!secret) {
       throw new Error('JWT_SECRET environment variable is required');
     }
@@ -15,10 +15,10 @@ const generateToken = (payload) => {
   }
 };
 
-const verifyToken = (token) => {
+const verifyToken = token => {
   try {
     const secret = process.env.JWT_SECRET;
-    
+
     if (!secret) {
       throw new Error('JWT_SECRET environment variable is required');
     }
@@ -37,9 +37,7 @@ const verifyToken = (token) => {
   }
 };
 
-
-
-const extractTokenFromHeader = (authHeader) => {
+const extractTokenFromHeader = authHeader => {
   if (!authHeader) {
     return null;
   }

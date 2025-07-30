@@ -1,5 +1,9 @@
 const authService = require('../services/auth.service');
-const { hashPassword, comparePassword, validatePasswordStrength } = require('../utils/password');
+const {
+  hashPassword,
+  comparePassword,
+  validatePasswordStrength,
+} = require('../utils/password');
 const { generateToken } = require('../utils/jwt');
 
 /**
@@ -49,7 +53,9 @@ const signup = async (req, res) => {
 
     // Check if username already exists (if provided)
     if (username) {
-      const existingUserByUsername = await authService.findUserByUsername(username.trim());
+      const existingUserByUsername = await authService.findUserByUsername(
+        username.trim()
+      );
       if (existingUserByUsername) {
         return res.status(409).json({
           success: false,
@@ -100,7 +106,11 @@ const signup = async (req, res) => {
       });
     }
 
-    if (error.message.includes('Unique constraint failed on the fields: (`username`)')) {
+    if (
+      error.message.includes(
+        'Unique constraint failed on the fields: (`username`)'
+      )
+    ) {
       return res.status(409).json({
         success: false,
         error: {
@@ -146,7 +156,7 @@ const login = async (req, res) => {
 
     // Find user by email or username
     const user = await authService.findUserByEmailOrUsername(loginIdentifier);
-    
+
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -159,7 +169,7 @@ const login = async (req, res) => {
 
     // Compare password
     const isPasswordValid = await comparePassword(password, user.passwordHash);
-    
+
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,

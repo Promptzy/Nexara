@@ -20,7 +20,11 @@ const globalErrorHandler = (err, req, res, next) => {
   });
 
   if (err.code === 'P2002') {
-    error = new AppError('Duplicate field value entered', 409, 'DUPLICATE_FIELD');
+    error = new AppError(
+      'Duplicate field value entered',
+      409,
+      'DUPLICATE_FIELD'
+    );
   }
 
   if (err.code === 'P2025') {
@@ -41,7 +45,7 @@ const globalErrorHandler = (err, req, res, next) => {
 const sendErrorResponse = (err, req, res) => {
   const statusCode = err.statusCode || 500;
   const code = err.code || 'INTERNAL_ERROR';
-  
+
   if (err.isOperational) {
     res.status(statusCode).json({
       success: false,

@@ -8,9 +8,11 @@ async function main() {
 
   // Check if database is already seeded
   const existingUsers = await prisma.user.count();
-  
+
   if (existingUsers > 0) {
-    console.log(`ℹ️  Database already contains ${existingUsers} user(s). Skipping seed.`);
+    console.log(
+      `ℹ️  Database already contains ${existingUsers} user(s). Skipping seed.`
+    );
     console.log('   Use --force flag or clear database to reseed.');
     return;
   }
@@ -42,15 +44,16 @@ async function main() {
     });
 
     console.log(`✅ Created admin user: ${user.email} (${user.username})`);
-    
+
     console.log(`\n📊 Database seeded successfully!`);
     console.log(`   Total users: 1`);
     console.log(`\n🔑 Default Admin Credentials:`);
     console.log(`   Email: ${adminUser.email}`);
     console.log(`   Username: ${adminUser.username}`);
     console.log(`   Password: ${adminUser.password}`);
-    console.log(`\n⚠️  IMPORTANT: Change the admin password after first login!`);
-    
+    console.log(
+      `\n⚠️  IMPORTANT: Change the admin password after first login!`
+    );
   } catch (error) {
     console.error(`❌ Failed to create admin user:`, error.message);
     throw error;
@@ -58,7 +61,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('❌ Seed failed:', e);
     process.exit(1);
   })

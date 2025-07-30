@@ -31,7 +31,10 @@ app.get('/health', (req, res) => {
 const authRoutes = require('./routes/auth.routes');
 app.use('/api/auth', authRoutes);
 
-const { globalErrorHandler, handleNotFound } = require('./middleware/errorHandler');
+const {
+  globalErrorHandler,
+  handleNotFound,
+} = require('./middleware/errorHandler');
 
 app.use('*', handleNotFound);
 app.use(globalErrorHandler);

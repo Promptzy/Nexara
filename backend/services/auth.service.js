@@ -8,10 +8,10 @@ const { prisma } = require('../config/database');
  * @param {string} [userData.username] - Optional username
  * @returns {Promise<Object>} - Created user object (without password)
  */
-const createUser = async (userData) => {
+const createUser = async userData => {
   try {
     const { email, password_hash, username } = userData;
-    
+
     // Create new user using Prisma
     const newUser = await prisma.user.create({
       data: {
@@ -27,10 +27,11 @@ const createUser = async (userData) => {
         isActive: true,
       },
     });
-    
+
     return newUser;
   } catch (error) {
-    if (error.code === 'P2002') { // Prisma unique constraint violation
+    if (error.code === 'P2002') {
+      // Prisma unique constraint violation
       throw new Error('Email already exists');
     }
     throw new Error(`User creation failed: ${error.message}`);
@@ -42,7 +43,7 @@ const createUser = async (userData) => {
  * @param {string} email - User email
  * @returns {Promise<Object|null>} - User object or null if not found
  */
-const findUserByEmail = async (email) => {
+const findUserByEmail = async email => {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -58,12 +59,12 @@ const findUserByEmail = async (email) => {
         isActive: true,
       },
     });
-    
+
     // Only return active users
     if (user && !user.isActive) {
       return null;
     }
-    
+
     return user;
   } catch (error) {
     throw new Error(`User lookup failed: ${error.message}`);
@@ -75,7 +76,7 @@ const findUserByEmail = async (email) => {
  * @param {string} username - Username
  * @returns {Promise<Object|null>} - User object or null if not found
  */
-const findUserByUsername = async (username) => {
+const findUserByUsername = async username => {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -91,12 +92,12 @@ const findUserByUsername = async (username) => {
         isActive: true,
       },
     });
-    
+
     // Only return active users
     if (user && !user.isActive) {
       return null;
     }
-    
+
     return user;
   } catch (error) {
     throw new Error(`User lookup failed: ${error.message}`);
@@ -108,13 +109,13 @@ const findUserByUsername = async (username) => {
  * @param {string} identifier - Email or username
  * @returns {Promise<Object|null>} - User object or null if not found
  */
-const findUserByEmailOrUsername = async (identifier) => {
+const findUserByEmailOrUsername = async identifier => {
   try {
     const trimmedIdentifier = identifier.trim();
-    
+
     // Check if identifier looks like an email
     const isEmail = trimmedIdentifier.includes('@');
-    
+
     const user = await prisma.user.findFirst({
       where: {
         OR: [
@@ -123,7 +124,9 @@ const findUserByEmailOrUsername = async (identifier) => {
           // Also search both fields to be safe
           { email: trimmedIdentifier.toLowerCase() },
           { username: trimmedIdentifier },
-        ].filter(condition => Object.values(condition).some(val => val !== undefined)),
+        ].filter(condition =>
+          Object.values(condition).some(val => val !== undefined)
+        ),
       },
       select: {
         id: true,
@@ -135,12 +138,12 @@ const findUserByEmailOrUsername = async (identifier) => {
         isActive: true,
       },
     });
-    
+
     // Only return active users
     if (user && !user.isActive) {
       return null;
     }
-    
+
     return user;
   } catch (error) {
     throw new Error(`User lookup failed: ${error.message}`);
@@ -152,7 +155,7 @@ const findUserByEmailOrUsername = async (identifier) => {
  * @param {string} id - User ID
  * @returns {Promise<Object|null>} - User object (without password) or null if not found
  */
-const findUserById = async (id) => {
+const findUserById = async id => {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -167,19 +170,17 @@ const findUserById = async (id) => {
         isActive: true,
       },
     });
-    
+
     // Only return active users
     if (user && !user.isActive) {
       return null;
     }
-    
+
     return user;
   } catch (error) {
     throw new Error(`User lookup failed: ${error.message}`);
   }
 };
-
-
 
 module.exports = {
   createUser,

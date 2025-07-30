@@ -22,7 +22,9 @@ const validateEnv = () => {
   });
 
   if (process.env.JWT_SECRET.length < 32) {
-    console.warn('⚠️  JWT_SECRET should be at least 32 characters long for security');
+    console.warn(
+      '⚠️  JWT_SECRET should be at least 32 characters long for security'
+    );
   }
 };
 

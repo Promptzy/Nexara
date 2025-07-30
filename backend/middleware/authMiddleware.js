@@ -1,7 +1,6 @@
 const { verifyToken, extractTokenFromHeader } = require('../utils/jwt');
 const authService = require('../services/auth.service');
 
-
 const authMiddleware = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -12,7 +11,8 @@ const authMiddleware = async (req, res, next) => {
         success: false,
         error: {
           code: 'NO_TOKEN',
-          message: 'Access token is required. Please provide a valid Bearer token.',
+          message:
+            'Access token is required. Please provide a valid Bearer token.',
         },
       });
     }
@@ -36,7 +36,7 @@ const authMiddleware = async (req, res, next) => {
     }
 
     const user = await authService.findUserById(decoded.sub);
-    
+
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -67,8 +67,6 @@ const authMiddleware = async (req, res, next) => {
     });
   }
 };
-
-
 
 module.exports = {
   authMiddleware,
