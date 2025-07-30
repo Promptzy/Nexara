@@ -1,8 +1,5 @@
 const Joi = require('joi');
 
-/**
- * Validation schema for user signup
- */
 const signupSchema = Joi.object({
   email: Joi.string()
     .email({ tlds: { allow: false } })
@@ -34,16 +31,28 @@ const signupSchema = Joi.object({
     }),
 });
 
-/**
- * Validation schema for user login
- */
 const loginSchema = Joi.object({
+  identifier: Joi.string()
+    .min(3)
+    .optional()
+    .messages({
+      'string.min': 'Email or username must be at least 3 characters long',
+    }),
+  
   email: Joi.string()
     .email({ tlds: { allow: false } })
-    .required()
+    .optional()
     .messages({
       'string.email': 'Please provide a valid email address',
-      'any.required': 'Email is required',
+    }),
+  
+  username: Joi.string()
+    .alphanum()
+    .min(3)
+    .optional()
+    .messages({
+      'string.alphanum': 'Username must contain only letters and numbers',
+      'string.min': 'Username must be at least 3 characters long',
     }),
   
   password: Joi.string()
@@ -51,18 +60,16 @@ const loginSchema = Joi.object({
     .messages({
       'any.required': 'Password is required',
     }),
-});
+}).or('identifier', 'email', 'username')
+  .messages({
+    'object.missing': 'Either identifier, email, or username is required',
+  });
 
-/**
- * Generic validation middleware factory
- * @param {Joi.Schema} schema - Joi validation schema
- * @returns {Function} - Express middleware function
- */
 const validate = (schema) => {
   return (req, res, next) => {
     const { error, value } = schema.validate(req.body, {
-      abortEarly: false, // Return all validation errors
-      stripUnknown: true, // Remove unknown fields
+      abortEarly: false,
+      stripUnknown: true,
     });
 
     if (error) {
@@ -81,28 +88,14 @@ const validate = (schema) => {
       });
     }
 
-    // Replace req.body with validated and sanitized data
     req.body = value;
     next();
   };
 };
 
-/**
- * Signup validation middleware
- */
 const validateSignup = validate(signupSchema);
-
-/**
- * Login validation middleware
- */
 const validateLogin = validate(loginSchema);
 
-/**
- * Sanitize email input
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @param {Function} next - Express next function
- */
 const sanitizeEmail = (req, res, next) => {
   if (req.body.email) {
     req.body.email = req.body.email.toLowerCase().trim();
@@ -110,11 +103,8 @@ const sanitizeEmail = (req, res, next) => {
   next();
 };
 
-
-
 module.exports = {
   validateSignup,
   validateLogin,
   sanitizeEmail,
-  validate, // Export generic validate function for custom schemas
 };

@@ -1,15 +1,9 @@
 const { verifyToken, extractTokenFromHeader } = require('../utils/jwt');
 const authService = require('../services/auth.service');
 
-/**
- * Authentication middleware to protect routes
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @param {Function} next - Express next function
- */
+
 const authMiddleware = async (req, res, next) => {
   try {
-    // Extract token from Authorization header
     const authHeader = req.headers.authorization;
     const token = extractTokenFromHeader(authHeader);
 
@@ -23,7 +17,6 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
-    // Verify the token
     let decoded;
     try {
       decoded = verifyToken(token);
@@ -34,21 +27,14 @@ const authMiddleware = async (req, res, next) => {
       if (tokenError.message === 'Token has expired') {
         errorCode = 'TOKEN_EXPIRED';
         errorMessage = 'Token has expired. Please login again.';
-      } else if (tokenError.message === 'Invalid token') {
-        errorCode = 'INVALID_TOKEN';
-        errorMessage = 'Invalid or malformed token';
       }
 
       return res.status(401).json({
         success: false,
-        error: {
-          code: errorCode,
-          message: errorMessage,
-        },
+        error: { code: errorCode, message: errorMessage },
       });
     }
 
-    // Verify user still exists and is active
     const user = await authService.findUserById(decoded.sub);
     
     if (!user) {
@@ -61,7 +47,6 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
-    // Attach user information to request object
     req.user = {
       sub: user.id,
       email: user.email,
@@ -73,7 +58,6 @@ const authMiddleware = async (req, res, next) => {
     next();
   } catch (error) {
     console.error('Auth middleware error:', error);
-
     return res.status(500).json({
       success: false,
       error: {

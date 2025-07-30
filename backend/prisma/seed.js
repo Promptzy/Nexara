@@ -6,74 +6,55 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Starting database seed...');
 
-  // Create test users
-  const testUsers = [
-    {
-      email: 'admin@zenjira.com',
-      username: 'admin',
-      password: 'AdminPassword123!',
-    },
-    {
-      email: 'user@zenjira.com',
-      username: 'testuser',
-      password: 'UserPassword123!',
-    },
-    {
-      email: 'demo@zenjira.com',
-      username: 'demo',
-      password: 'DemoPassword123!',
-    },
-  ];
-
-  for (const userData of testUsers) {
-    try {
-      // Check if user already exists
-      const existingUser = await prisma.user.findUnique({
-        where: { email: userData.email },
-      });
-
-      if (existingUser) {
-        console.log(`👤 User ${userData.email} already exists, skipping...`);
-        continue;
-      }
-
-      // Hash password
-      const passwordHash = await hashPassword(userData.password);
-
-      // Create user
-      const user = await prisma.user.create({
-        data: {
-          email: userData.email,
-          username: userData.username,
-          passwordHash: passwordHash,
-        },
-        select: {
-          id: true,
-          email: true,
-          username: true,
-          createdAt: true,
-        },
-      });
-
-      console.log(`✅ Created user: ${user.email} (${user.username})`);
-    } catch (error) {
-      console.error(`❌ Failed to create user ${userData.email}:`, error.message);
-    }
+  // Check if database is already seeded
+  const existingUsers = await prisma.user.count();
+  
+  if (existingUsers > 0) {
+    console.log(`ℹ️  Database already contains ${existingUsers} user(s). Skipping seed.`);
+    console.log('   Use --force flag or clear database to reseed.');
+    return;
   }
 
-  // Get user statistics
-  const stats = await prisma.user.aggregate({
-    _count: {
-      id: true,
-    },
-  });
+  // Create default admin user for production
+  const adminUser = {
+    email: 'admin@zenjira.com',
+    username: 'admin',
+    password: 'AdminPassword123!', // Change this in production!
+  };
 
-  console.log(`\n📊 Database seeded successfully!`);
-  console.log(`   Total users: ${stats._count.id}`);
-  console.log(`\n🔑 Test Credentials:`);
-  testUsers.forEach(user => {
-    console.log(`   Email: ${user.email} | Password: ${user.password}`);
-  });
+  try {
+    // Hash password
+    const passwordHash = await hashPassword(adminUser.password);
+
+    // Create admin user
+    const user = await prisma.user.create({
+      data: {
+        email: adminUser.email,
+        username: adminUser.username,
+        passwordHash: passwordHash,
+      },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        createdAt: true,
+      },
+    });
+
+    console.log(`✅ Created admin user: ${user.email} (${user.username})`);
+    
+    console.log(`\n📊 Database seeded successfully!`);
+    console.log(`   Total users: 1`);
+    console.log(`\n🔑 Default Admin Credentials:`);
+    console.log(`   Email: ${adminUser.email}`);
+    console.log(`   Username: ${adminUser.username}`);
+    console.log(`   Password: ${adminUser.password}`);
+    console.log(`\n⚠️  IMPORTANT: Change the admin password after first login!`);
+    
+  } catch (error) {
+    console.error(`❌ Failed to create admin user:`, error.message);
+    throw error;
+  }
 }
 
 main()

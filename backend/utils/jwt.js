@@ -1,10 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-/**
- * Generate a JWT token with user payload
- * @param {Object} payload - User data to include in token
- * @returns {string} - Signed JWT token
- */
 const generateToken = (payload) => {
   try {
     const secret = process.env.JWT_SECRET;
@@ -20,11 +15,6 @@ const generateToken = (payload) => {
   }
 };
 
-/**
- * Verify and decode a JWT token
- * @param {string} token - JWT token to verify
- * @returns {Object} - Decoded token payload
- */
 const verifyToken = (token) => {
   try {
     const secret = process.env.JWT_SECRET;
@@ -49,11 +39,6 @@ const verifyToken = (token) => {
 
 
 
-/**
- * Extract token from Authorization header
- * @param {string} authHeader - Authorization header value
- * @returns {string|null} - Extracted token or null
- */
 const extractTokenFromHeader = (authHeader) => {
   if (!authHeader) {
     return null;

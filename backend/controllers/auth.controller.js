@@ -47,6 +47,20 @@ const signup = async (req, res) => {
       });
     }
 
+    // Check if username already exists (if provided)
+    if (username) {
+      const existingUserByUsername = await authService.findUserByUsername(username.trim());
+      if (existingUserByUsername) {
+        return res.status(409).json({
+          success: false,
+          error: {
+            code: 'USERNAME_EXISTS',
+            message: 'This username is already taken',
+          },
+        });
+      }
+    }
+
     // Hash the password
     const password_hash = await hashPassword(password);
 
@@ -86,6 +100,16 @@ const signup = async (req, res) => {
       });
     }
 
+    if (error.message.includes('Unique constraint failed on the fields: (`username`)')) {
+      return res.status(409).json({
+        success: false,
+        error: {
+          code: 'USERNAME_EXISTS',
+          message: 'This username is already taken',
+        },
+      });
+    }
+
     // Generic server error
     res.status(500).json({
       success: false,
@@ -104,28 +128,31 @@ const signup = async (req, res) => {
  */
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { identifier, password, email, username } = req.body;
+
+    // Support both old format (email/username separate) and new format (identifier)
+    const loginIdentifier = identifier || email || username;
 
     // Validate required fields
-    if (!email || !password) {
+    if (!loginIdentifier || !password) {
       return res.status(400).json({
         success: false,
         error: {
           code: 'VALIDATION_ERROR',
-          message: 'Email and password are required',
+          message: 'Email/username and password are required',
         },
       });
     }
 
-    // Find user by email
-    const user = await authService.findUserByEmail(email.toLowerCase().trim());
+    // Find user by email or username
+    const user = await authService.findUserByEmailOrUsername(loginIdentifier);
     
     if (!user) {
       return res.status(401).json({
         success: false,
         error: {
           code: 'INVALID_CREDENTIALS',
-          message: 'Invalid email or password',
+          message: 'Invalid credentials',
         },
       });
     }
@@ -138,7 +165,7 @@ const login = async (req, res) => {
         success: false,
         error: {
           code: 'INVALID_CREDENTIALS',
-          message: 'Invalid email or password',
+          message: 'Invalid credentials',
         },
       });
     }
@@ -162,7 +189,7 @@ const login = async (req, res) => {
           id: user.id,
           email: user.email,
           username: user.username,
-          created_at: user.created_at,
+          createdAt: user.createdAt,
         },
       },
     });
@@ -212,9 +239,9 @@ const getProfile = async (req, res) => {
           id: user.id,
           email: user.email,
           username: user.username,
-          created_at: user.created_at,
-          updated_at: user.updated_at,
-          is_active: user.is_active,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          isActive: user.isActive,
         },
       },
     });
