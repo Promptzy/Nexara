@@ -20,9 +20,11 @@ function NavBar() {
   }
 
   return (
-    <div className="bg-gradient-to-r from-[#272037] via-[#64557B] to-[#1D1A24] flex justify-around">
+    <div className="bg-[transparent] backdrop-blur-sm flex justify-around">
       <div className="my-4">
+        {/* <div className="my-2"> */}
         <Link className="text-[white] text-[2rem] font-bold" href="/">
+          {/* <Link className="text-[white] text-[1.5rem] font-bold" href="/"> */}
           Zenjira
         </Link>
       </div>
@@ -76,11 +78,11 @@ function NavBar() {
           <PopoverTrigger>
             <FontAwesomeIcon
               icon={faBars}
-              className="w-12 h-12 text-[1.5rem] cursor-pointer text-[white]"
+              className="w-12 h-12 text-[1.3rem] cursor-pointer text-[white]"
             />
           </PopoverTrigger>
-          <PopoverContent className="max-w-[10rem] py-0 my-0 px-0 mr-2">
-            <nav className="flex flex-col max-w-[10rem] bg-[linear-gradient(#272037_0%,_#64557B_30%,_#1D1A24_70%)] rounded-sm">
+          <PopoverContent className="max-w-[10rem] py-0 my-0 px-0 mr-2 bg-[transparent] backdrop-blur-md ">
+            <nav className="flex flex-col max-w-[10rem] bg-[transparent] backdrop-blur-sm rounded-sm">
               <Link href="/" className="px-6 mt-8 text-[#979696] text-[1.2rem]">
                 Home
               </Link>

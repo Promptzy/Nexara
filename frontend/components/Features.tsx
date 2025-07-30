@@ -111,7 +111,8 @@ const advancedFeatures = [
  */
 const Features: React.FC = () => {
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+    // <section className="pt-36  bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+    <section className="py-16 pt-36 md:py-36 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="text-center mb-16">
