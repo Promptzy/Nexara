@@ -1,33 +1,33 @@
-"use client";
+'use client'
 
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 
 interface ClientOnlyParticlesProps {
-  variant: "login" | "signup";
-  count?: number;
+  variant: 'login' | 'signup'
+  count?: number
 }
 
 export const ClientOnlyParticles: React.FC<ClientOnlyParticlesProps> = ({
   variant,
-  count = 6
+  count = 6,
 }) => {
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
   if (!mounted) {
-    return null;
+    return null
   }
 
   const colors = {
-    login: ["#a855f7", "#ec4899", "#3b82f6"],
-    signup: ["#3b82f6", "#a855f7", "#ec4899"],
-  };
+    login: ['#a855f7', '#ec4899', '#3b82f6'],
+    signup: ['#3b82f6', '#a855f7', '#ec4899'],
+  }
 
-  const particleColors = colors[variant];
+  const particleColors = colors[variant]
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -49,10 +49,10 @@ export const ClientOnlyParticles: React.FC<ClientOnlyParticlesProps> = ({
             duration: 3 + Math.random() * 2,
             repeat: Infinity,
             delay: Math.random() * 2,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
         />
       ))}
     </div>
-  );
-};
+  )
+}

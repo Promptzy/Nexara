@@ -1,27 +1,27 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader2, Mail, Lock, Sparkles } from "lucide-react";
-import { toast } from "sonner";
-import Link from "next/link";
-import { motion } from "framer-motion";
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Eye, EyeOff, Loader2, Mail, Lock, Sparkles } from 'lucide-react'
+import { toast } from 'sonner'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
-import { ConfettiCelebration } from "@/components/ui/ConfettiCelebration";
-import { ClientOnlyParticles } from "@/components/ui/ClientOnlyParticles";
-import { loginSchema, type LoginFormData } from "@/lib/validations";
-import { authService } from "@/lib/authService";
+import { ConfettiCelebration } from '@/components/ui/ConfettiCelebration'
+import { ClientOnlyParticles } from '@/components/ui/ClientOnlyParticles'
+import { loginSchema, type LoginFormData } from '@/lib/validations'
+import { authService } from '@/lib/authService'
 
 export function LoginForm() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [loginProgress, setLoginProgress] = useState(0);
+  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [showConfetti, setShowConfetti] = useState(false)
+  const [loginProgress, setLoginProgress] = useState(0)
 
   const {
     register,
@@ -30,77 +30,77 @@ export function LoginForm() {
     reset,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-  });
+  })
 
   const onSubmit = async (data: LoginFormData) => {
-    setIsLoading(true);
-    setLoginProgress(0);
-    
+    setIsLoading(true)
+    setLoginProgress(0)
+
     try {
       // Simulate progress steps
-      setLoginProgress(25);
-      await new Promise(resolve => setTimeout(resolve, 300));
-      
-      setLoginProgress(50);
-      await new Promise(resolve => setTimeout(resolve, 300));
-      
-      setLoginProgress(75);
-      const response = await authService.login(data);
-      
-      setLoginProgress(100);
-      await new Promise(resolve => setTimeout(resolve, 300));
-      
+      setLoginProgress(25)
+      await new Promise(resolve => setTimeout(resolve, 300))
+
+      setLoginProgress(50)
+      await new Promise(resolve => setTimeout(resolve, 300))
+
+      setLoginProgress(75)
+      const response = await authService.login(data)
+
+      setLoginProgress(100)
+      await new Promise(resolve => setTimeout(resolve, 300))
+
       if (response.success) {
-        setShowConfetti(true);
-        toast.success(response.message);
-        reset();
+        setShowConfetti(true)
+        toast.success(response.message)
+        reset()
         // In a real app, you would redirect to dashboard
         // router.push('/dashboard');
       } else {
-        toast.error(response.message);
+        toast.error(response.message)
       }
     } catch (error) {
-      toast.error("Something went wrong. Please try again.");
-      console.error("Login error:", error);
+      toast.error('Something went wrong. Please try again.')
+      console.error('Login error:', error)
     } finally {
       setTimeout(() => {
-        setIsLoading(false);
-        setLoginProgress(0);
-      }, 1000);
+        setIsLoading(false)
+        setLoginProgress(0)
+      }, 1000)
     }
-  };
+  }
 
   const handleGoogleLogin = async () => {
-    setIsLoading(true);
-    
+    setIsLoading(true)
+
     try {
-      const response = await authService.googleAuth();
-      
+      const response = await authService.googleAuth()
+
       if (response.success) {
-        toast.success(response.message);
+        toast.success(response.message)
         // In a real app, you would redirect to dashboard
       } else {
-        toast.error("Google login failed");
+        toast.error('Google login failed')
       }
     } catch (error) {
-      toast.error("Google login failed. Please try again.");
+      toast.error('Google login failed. Please try again.')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <div className="w-full max-w-md mx-auto">
       {/* Enhanced Card with multiple layers and effects */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className="relative group"
       >
         {/* Outer glow effect */}
         <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 rounded-3xl blur-lg opacity-25 group-hover:opacity-40 transition-opacity duration-500" />
-        
+
         {/* Main card */}
         <div className="relative bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 shadow-2xl overflow-hidden">
           {/* Animated background pattern */}
@@ -108,7 +108,7 @@ export function LoginForm() {
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-transparent to-pink-500/20" />
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.1),transparent_50%)]" />
           </div>
-          
+
           {/* Floating particles - client-only to avoid hydration mismatch */}
           <ClientOnlyParticles variant="login" count={8} />
 
@@ -117,21 +117,26 @@ export function LoginForm() {
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
-              transition={{ duration: 0.8, type: "spring", bounce: 0.4, delay: 0.2 }}
+              transition={{
+                duration: 0.8,
+                type: 'spring',
+                bounce: 0.4,
+                delay: 0.2,
+              }}
               className="relative mx-auto"
             >
               <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 shadow-2xl shadow-purple-500/50 relative overflow-hidden">
                 {/* Inner glow */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-400/50 via-pink-400/50 to-red-400/50 rounded-3xl" />
                 <Lock className="w-10 h-10 text-white relative z-10" />
-                
+
                 {/* Animated ring */}
                 <motion.div
                   className="absolute inset-0 rounded-3xl border-2 border-purple-400/50"
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                  transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
                 />
-                
+
                 {/* Corner sparkles */}
                 <Sparkles className="absolute -top-1 -right-1 w-5 h-5 text-yellow-400" />
                 <motion.div
@@ -141,7 +146,7 @@ export function LoginForm() {
                 />
               </div>
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -154,13 +159,13 @@ export function LoginForm() {
               <p className="text-slate-300/80 text-lg">
                 Continue your productivity journey
               </p>
-              
+
               {/* Animated underline */}
               <motion.div
                 className="w-16 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: 64 }}
-                transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
+                transition={{ delay: 0.8, duration: 0.8, ease: 'easeOut' }}
               />
             </motion.div>
           </div>
@@ -169,38 +174,50 @@ export function LoginForm() {
           {isLoading && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
+              animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               className="mb-6 relative"
             >
               <div className="w-full bg-slate-700/30 rounded-full h-3 overflow-hidden backdrop-blur-sm">
-                <motion.div 
+                <motion.div
                   className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 rounded-full relative overflow-hidden"
                   style={{ width: `${loginProgress}%` }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
                 >
                   {/* Shimmer effect */}
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                    animate={{ x: ["-100%", "100%"] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    animate={{ x: ['-100%', '100%'] }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
                   />
                 </motion.div>
               </div>
-              <p className="text-xs text-purple-300 mt-2 text-center">Signing you in...</p>
+              <p className="text-xs text-purple-300 mt-2 text-center">
+                Signing you in...
+              </p>
             </motion.div>
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="relative space-y-6">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="relative space-y-6"
+          >
             {/* Email Field */}
-            <motion.div 
+            <motion.div
               className="space-y-2"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
-              <Label htmlFor="email" className="text-slate-200 font-medium flex items-center gap-2">
+              <Label
+                htmlFor="email"
+                className="text-slate-200 font-medium flex items-center gap-2"
+              >
                 <Mail className="w-4 h-4 text-purple-400" />
                 Email Address
               </Label>
@@ -213,20 +230,20 @@ export function LoginForm() {
                     type="email"
                     placeholder="Enter your email address"
                     className="pl-12 pr-4 py-4 bg-slate-800/60 border-slate-600/50 text-white placeholder:text-slate-400 focus:border-purple-500/70 focus:ring-purple-500/30 rounded-lg backdrop-blur-sm transition-all duration-200 hover:bg-slate-800/80"
-                    {...register("email")}
+                    {...register('email')}
                     disabled={isLoading}
                   />
                   {/* Focus indicator */}
                   <motion.div
                     className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
                     initial={{ width: 0 }}
-                    whileFocus={{ width: "100%" }}
+                    whileFocus={{ width: '100%' }}
                     transition={{ duration: 0.3 }}
                   />
                 </div>
               </div>
               {errors.email && (
-                <motion.p 
+                <motion.p
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="text-sm text-red-400 flex items-center gap-2"
@@ -238,14 +255,17 @@ export function LoginForm() {
             </motion.div>
 
             {/* Password Field */}
-            <motion.div 
+            <motion.div
               className="space-y-2"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6, duration: 0.5 }}
             >
               <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-slate-200 font-medium flex items-center gap-2">
+                <Label
+                  htmlFor="password"
+                  className="text-slate-200 font-medium flex items-center gap-2"
+                >
                   <Lock className="w-4 h-4 text-purple-400" />
                   Password
                 </Label>
@@ -263,10 +283,10 @@ export function LoginForm() {
                   <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400 group-hover:text-purple-400 transition-colors duration-200" />
                   <Input
                     id="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Enter your password"
                     className="pl-12 pr-12 py-4 bg-slate-800/60 border-slate-600/50 text-white placeholder:text-slate-400 focus:border-purple-500/70 focus:ring-purple-500/30 rounded-lg backdrop-blur-sm transition-all duration-200 hover:bg-slate-800/80"
-                    {...register("password")}
+                    {...register('password')}
                     disabled={isLoading}
                   />
                   <motion.button
@@ -274,7 +294,9 @@ export function LoginForm() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400 hover:text-purple-400 transition-colors duration-200"
                     disabled={isLoading}
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? 'Hide password' : 'Show password'
+                    }
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -284,13 +306,13 @@ export function LoginForm() {
                   <motion.div
                     className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
                     initial={{ width: 0 }}
-                    whileFocus={{ width: "100%" }}
+                    whileFocus={{ width: '100%' }}
                     transition={{ duration: 0.3 }}
                   />
                 </div>
               </div>
               {errors.password && (
-                <motion.p 
+                <motion.p
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="text-sm text-red-400 flex items-center gap-2"
@@ -313,22 +335,26 @@ export function LoginForm() {
                 className="relative group"
               >
                 <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 rounded-xl blur-lg opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="relative w-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 hover:from-purple-600 hover:via-pink-600 hover:to-purple-700 text-white font-semibold py-4 rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl border-0 overflow-hidden"
                   disabled={isLoading}
                 >
                   {/* Button shimmer effect */}
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                    animate={{ x: isLoading ? ["-100%", "100%"] : "-100%" }}
-                    transition={{ duration: 1.5, repeat: isLoading ? Infinity : 0, ease: "easeInOut" }}
+                    animate={{ x: isLoading ? ['-100%', '100%'] : '-100%' }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: isLoading ? Infinity : 0,
+                      ease: 'easeInOut',
+                    }}
                   />
-                  
+
                   <div className="relative flex items-center justify-center gap-3">
                     {isLoading && <Loader2 className="h-5 w-5 animate-spin" />}
                     <span className="text-lg">
-                      {isLoading ? "Signing In..." : "Sign In to Zenjira"}
+                      {isLoading ? 'Signing In...' : 'Sign In to Zenjira'}
                     </span>
                     {!isLoading && <Sparkles className="w-5 h-5" />}
                   </div>
@@ -338,7 +364,7 @@ export function LoginForm() {
           </form>
 
           {/* Divider */}
-          <motion.div 
+          <motion.div
             className="relative my-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -376,16 +402,20 @@ export function LoginForm() {
                 {/* Button shimmer effect */}
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                  animate={{ x: ["-100%", "100%"] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  animate={{ x: ['-100%', '100%'] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
                 />
-                
+
                 <div className="relative flex items-center justify-center gap-3">
                   {isLoading ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
                   ) : (
-                    <motion.svg 
-                      className="h-5 w-5" 
+                    <motion.svg
+                      className="h-5 w-5"
                       viewBox="0 0 24 24"
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.5 }}
@@ -415,7 +445,7 @@ export function LoginForm() {
           </motion.div>
 
           {/* Sign Up Link */}
-          <motion.div 
+          <motion.div
             className="text-center text-sm mt-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -429,14 +459,16 @@ export function LoginForm() {
               Sign up for free
               <motion.span
                 animate={{ x: [0, 4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
               >
                 →
               </motion.span>
             </Link>
           </motion.div>
-
-
         </div>
       </motion.div>
 
@@ -449,5 +481,5 @@ export function LoginForm() {
         />
       )}
     </div>
-  );
+  )
 }

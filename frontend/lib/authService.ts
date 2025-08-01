@@ -2,29 +2,29 @@
 // Replace these with your actual API endpoints
 
 export interface SignUpData {
-  fullName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
+  fullName: string
+  email: string
+  password: string
+  confirmPassword: string
 }
 
 export interface LoginData {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export interface AuthResponse {
-  success: boolean;
-  message: string;
+  success: boolean
+  message: string
   user?: {
-    id: string;
-    email: string;
-    fullName: string;
-  };
-  token?: string;
+    id: string
+    email: string
+    fullName: string
+  }
+  token?: string
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api'
 
 export const authService = {
   async signUp(data: SignUpData): Promise<AuthResponse> {
@@ -39,15 +39,15 @@ export const authService = {
           email: data.email,
           password: data.password,
         }),
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
       if (!response.ok) {
         return {
           success: false,
           message: result.message || 'Sign up failed',
-        };
+        }
       }
 
       return {
@@ -55,12 +55,12 @@ export const authService = {
         message: result.message || 'Account created successfully!',
         user: result.user,
         token: result.token,
-      };
+      }
     } catch (error) {
       return {
         success: false,
         message: 'Network error. Please try again.',
-      };
+      }
     }
   },
 
@@ -72,15 +72,15 @@ export const authService = {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
       if (!response.ok) {
         return {
           success: false,
           message: result.message || 'Login failed',
-        };
+        }
       }
 
       return {
@@ -88,30 +88,30 @@ export const authService = {
         message: result.message || 'Login successful!',
         user: result.user,
         token: result.token,
-      };
+      }
     } catch (error) {
       return {
         success: false,
         message: 'Network error. Please try again.',
-      };
+      }
     }
   },
 
   async googleAuth(): Promise<AuthResponse> {
     try {
       // Redirect to Google OAuth endpoint
-      window.location.href = `${API_BASE_URL}/auth/google`;
-      
+      window.location.href = `${API_BASE_URL}/auth/google`
+
       // This will redirect, so we return a pending state
       return {
         success: true,
         message: 'Redirecting to Google...',
-      };
+      }
     } catch (error) {
       return {
         success: false,
         message: 'Google authentication failed. Please try again.',
-      };
+      }
     }
   },
-};
+}

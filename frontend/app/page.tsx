@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react'
 
-import Features from "../components/Features";
-import Services from '../components/Services';
-import ContactForm from '../components/ContactForm';
-import Footer from "../components/Footer";
-import NavBar from '@/components/NavBar';
+import Features from '../components/Features'
+import Services from '../components/Services'
+import ContactForm from '../components/ContactForm'
+import Footer from '../components/Footer'
+import NavBar from '@/components/NavBar'
 
 const Page = () => {
   return (
@@ -19,7 +19,7 @@ const Page = () => {
         <Footer />
       </div>
     </main>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

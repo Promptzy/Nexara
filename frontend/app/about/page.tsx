@@ -1,16 +1,15 @@
-
-"use client";
-import React from "react";
-import CTASection from "@/components/AboutUsComponents/CTASection";
-import FeaturesSection from "@/components/AboutUsComponents/FeaturesSection";
-import Footer from "@/components/AboutUsComponents/Footer";
-import GalaxyBackground from "@/components/AboutUsComponents/GalaxyBackground";
-import HeroSection from "@/components/AboutUsComponents/HeroSection";
-import MissionSection from "@/components/AboutUsComponents/MissionSection";
-import PlatformShowcase from "@/components/AboutUsComponents/PlatformShowcase";
-import TeamSection from "@/components/AboutUsComponents/TeamSection";
-import TimelineSection from "@/components/AboutUsComponents/TimelineSection";
-import NavBar from "@/components/NavBar";
+'use client'
+import React from 'react'
+import CTASection from '@/components/AboutUsComponents/CTASection'
+import FeaturesSection from '@/components/AboutUsComponents/FeaturesSection'
+import Footer from '@/components/AboutUsComponents/Footer'
+import GalaxyBackground from '@/components/AboutUsComponents/GalaxyBackground'
+import HeroSection from '@/components/AboutUsComponents/HeroSection'
+import MissionSection from '@/components/AboutUsComponents/MissionSection'
+import PlatformShowcase from '@/components/AboutUsComponents/PlatformShowcase'
+import TeamSection from '@/components/AboutUsComponents/TeamSection'
+import TimelineSection from '@/components/AboutUsComponents/TimelineSection'
+import NavBar from '@/components/NavBar'
 
 const AboutUsContent = () => {
   return (
@@ -30,12 +29,11 @@ const AboutUsContent = () => {
         <Footer />
       </div>
     </main>
-  );
-};
+  )
+}
 
 const AboutUsPage = () => {
-  return <AboutUsContent />;
-};
+  return <AboutUsContent />
+}
 
-export default AboutUsPage;
-
+export default AboutUsPage

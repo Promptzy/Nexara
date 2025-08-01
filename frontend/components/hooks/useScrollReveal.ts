@@ -1,49 +1,57 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react'
 
 export const useScrollReveal = (threshold = 0.1) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const currentRef = ref.current;
+    const currentRef = ref.current
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
+          setIsVisible(true)
         }
       },
       { threshold }
-    );
+    )
 
     if (currentRef) {
-      observer.observe(currentRef);
+      observer.observe(currentRef)
     }
 
     return () => {
       if (currentRef) {
-        observer.unobserve(currentRef);
+        observer.unobserve(currentRef)
       }
-    };
-  }, [threshold]);
+    }
+  }, [threshold])
 
-  return { ref, isVisible };
-};
+  return { ref, isVisible }
+}
 
-export const useSlideIn = (direction: 'up' | 'down' | 'left' | 'right' = 'up', delay = 0) => {
-  const { ref, isVisible } = useScrollReveal();
-  
+export const useSlideIn = (
+  direction: 'up' | 'down' | 'left' | 'right' = 'up',
+  delay = 0
+) => {
+  const { ref, isVisible } = useScrollReveal()
+
   const getTransform = () => {
     if (!isVisible) {
       switch (direction) {
-        case 'up': return 'translateY(50px)';
-        case 'down': return 'translateY(-50px)';
-        case 'left': return 'translateX(50px)';
-        case 'right': return 'translateX(-50px)';
-        default: return 'translateY(50px)';
+        case 'up':
+          return 'translateY(50px)'
+        case 'down':
+          return 'translateY(-50px)'
+        case 'left':
+          return 'translateX(50px)'
+        case 'right':
+          return 'translateX(-50px)'
+        default:
+          return 'translateY(50px)'
       }
     }
-    return 'translate(0)';
-  };
+    return 'translate(0)'
+  }
 
   return {
     ref,
@@ -52,24 +60,24 @@ export const useSlideIn = (direction: 'up' | 'down' | 'left' | 'right' = 'up', d
       opacity: isVisible ? 1 : 0,
       transition: `all 0.6s ease-out ${delay}s`,
     },
-  };
-};
+  }
+}
 
 export const useFadeIn = (delay = 0) => {
-  const { ref, isVisible } = useScrollReveal();
-  
+  const { ref, isVisible } = useScrollReveal()
+
   return {
     ref,
     style: {
       opacity: isVisible ? 1 : 0,
       transition: `opacity 0.6s ease-out ${delay}s`,
     },
-  };
-};
+  }
+}
 
 export const useScaleIn = (delay = 0) => {
-  const { ref, isVisible } = useScrollReveal();
-  
+  const { ref, isVisible } = useScrollReveal()
+
   return {
     ref,
     style: {
@@ -77,5 +85,5 @@ export const useScaleIn = (delay = 0) => {
       opacity: isVisible ? 1 : 0,
       transition: `all 0.6s ease-out ${delay}s`,
     },
-  };
-};
+  }
+}

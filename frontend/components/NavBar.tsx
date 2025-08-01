@@ -14,9 +14,9 @@ import { usePathname } from 'next/navigation'
 import { useTheme } from './contexts/ThemeContext'
 
 function NavBar() {
-  const [active, setActive] = useState('home');
-  const pathname = usePathname();
-  const { isDarkMode, toggleTheme } = useTheme();
+  const [active, setActive] = useState('home')
+  const pathname = usePathname()
+  const { isDarkMode, toggleTheme } = useTheme()
 
   function handleClick(link: string) {
     // sets the active link using the variable passed through to the function, used for conditional styling
@@ -88,12 +88,22 @@ function NavBar() {
           >
             <div className="relative w-5 h-5 md:w-6 md:h-6">
               {/* Sun icon */}
-              <svg className={`absolute inset-0 w-5 h-5 md:w-6 md:h-6 transition-all duration-300 ${isDarkMode ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className={`absolute inset-0 w-5 h-5 md:w-6 md:h-6 transition-all duration-300 ${isDarkMode ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <circle cx="12" cy="12" r="5" />
                 <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
               </svg>
               {/* Moon icon */}
-              <svg className={`absolute inset-0 w-5 h-5 md:w-6 md:h-6 transition-all duration-300 ${isDarkMode ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className={`absolute inset-0 w-5 h-5 md:w-6 md:h-6 transition-all duration-300 ${isDarkMode ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
               </svg>
             </div>
@@ -109,7 +119,10 @@ function NavBar() {
             </PopoverTrigger>
             <PopoverContent className="max-w-[10rem] py-0 my-0 px-0 mr-2 bg-[transparent] backdrop-blur-md ">
               <nav className="flex flex-col max-w-[10rem] bg-[transparent] backdrop-blur-sm rounded-sm">
-                <Link href="/" className="px-6 mt-8 text-[#979696] text-[1.2rem]">
+                <Link
+                  href="/"
+                  className="px-6 mt-8 text-[#979696] text-[1.2rem]"
+                >
                   Home
                 </Link>
 

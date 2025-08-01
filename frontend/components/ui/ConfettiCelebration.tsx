@@ -1,37 +1,37 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect } from "react";
-import ConfettiExplosion from "react-confetti-explosion";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect } from 'react'
+import ConfettiExplosion from 'react-confetti-explosion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface ConfettiCelebrationProps {
-  isActive: boolean;
-  variant?: "login" | "signup";
-  onComplete?: () => void;
+  isActive: boolean
+  variant?: 'login' | 'signup'
+  onComplete?: () => void
 }
 
 export const ConfettiCelebration: React.FC<ConfettiCelebrationProps> = ({
   isActive,
-  variant = "login",
-  onComplete
+  variant = 'login',
+  onComplete,
 }) => {
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false)
 
   const colors = {
-    login: ["#a855f7", "#ec4899", "#3b82f6", "#8b5cf6"],
-    signup: ["#3b82f6", "#a855f7", "#ec4899", "#06b6d4"],
-  };
+    login: ['#a855f7', '#ec4899', '#3b82f6', '#8b5cf6'],
+    signup: ['#3b82f6', '#a855f7', '#ec4899', '#06b6d4'],
+  }
 
   useEffect(() => {
     if (isActive) {
-      setShowConfetti(true);
+      setShowConfetti(true)
       const timer = setTimeout(() => {
-        setShowConfetti(false);
-        onComplete?.();
-      }, 3000);
-      return () => clearTimeout(timer);
+        setShowConfetti(false)
+        onComplete?.()
+      }, 3000)
+      return () => clearTimeout(timer)
     }
-  }, [isActive, onComplete]);
+  }, [isActive, onComplete])
 
   return (
     <AnimatePresence>
@@ -49,7 +49,7 @@ export const ConfettiCelebration: React.FC<ConfettiCelebrationProps> = ({
             width={1600}
             colors={colors[variant]}
           />
-          
+
           {/* Success message */}
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
@@ -67,18 +67,17 @@ export const ConfettiCelebration: React.FC<ConfettiCelebrationProps> = ({
                 🎉
               </motion.div>
               <h3 className="text-2xl font-bold text-white text-center">
-                {variant === "login" ? "Welcome Back!" : "Welcome to Zenjira!"}
+                {variant === 'login' ? 'Welcome Back!' : 'Welcome to Zenjira!'}
               </h3>
               <p className="text-slate-300 text-center mt-2">
-                {variant === "login" 
-                  ? "Successfully signed in to your account" 
-                  : "Your account has been created successfully"
-                }
+                {variant === 'login'
+                  ? 'Successfully signed in to your account'
+                  : 'Your account has been created successfully'}
               </p>
             </div>
           </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
-  );
-};
+  )
+}
