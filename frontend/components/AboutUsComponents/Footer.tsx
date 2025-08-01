@@ -1,10 +1,10 @@
-import React from 'react';
-import { Github, Linkedin, ArrowUp } from 'lucide-react';
+import React from 'react'
+import { Github, Linkedin, ArrowUp } from 'lucide-react'
 
 const Footer: React.FC = () => {
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
     <footer className="relative z-10 border-t border-neutral-800/50 bg-neutral-900/20 backdrop-blur-sm">
@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
               Reimagining project management with AI
             </p>
           </div>
-          
+
           {/* Social Links */}
           <div className="flex justify-center gap-4">
             <a
@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
               <Linkedin className="w-5 h-5 text-neutral-400 group-hover:text-blue-400" />
             </a>
           </div>
-          
+
           {/* Back to Top */}
           <div className="text-center md:text-right">
             <button
@@ -49,24 +49,30 @@ const Footer: React.FC = () => {
             </button>
           </div>
         </div>
-        
+
         <div className="mt-12 pt-8 border-t border-neutral-800/50 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-neutral-500 text-sm">
             © 2025 Zenjira. All rights reserved.
           </p>
-          
+
           <div className="flex gap-6 text-sm">
-            <a href="#" className="text-neutral-500 hover:text-neutral-300 transition-colors">
+            <a
+              href="#"
+              className="text-neutral-500 hover:text-neutral-300 transition-colors"
+            >
               Privacy Policy
             </a>
-            <a href="#" className="text-neutral-500 hover:text-neutral-300 transition-colors">
+            <a
+              href="#"
+              className="text-neutral-500 hover:text-neutral-300 transition-colors"
+            >
               Terms of Service
             </a>
           </div>
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

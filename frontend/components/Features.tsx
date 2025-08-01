@@ -54,7 +54,6 @@ const coreFeatures = [
   },
 ]
 
-
 const advancedFeatures = [
   {
     icon: Search,
