@@ -1,0 +1,239 @@
+name: Check Command - Run All Workflows
+
+on:
+  repository_dispatch:
+    types: [check-command]
+
+permissions:
+  contents: read
+  actions: write
+  issues: write
+  pull-requests: write
+  checks: write
+
+jobs:
+  run-all-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run all workflows for PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Check if this is a valid slash command dispatch event
+            if (!context.payload || !context.payload.client_payload) {
+              console.log('❌ This workflow should only be triggered by repository dispatch events');
+              core.setFailed('Invalid event trigger - expected repository dispatch');
+              return;
+            }
+            
+            // Get the actor from the comment author (the person who triggered the slash command)
+            const actor = context.payload.client_payload.github.payload.comment.user.login;
+            const command = context.payload.client_payload.slash_command.command;
+            
+            console.log('✅ Slash command detected');
+            console.log('Command:', command);
+            console.log('Actor:', actor);
+            
+            // Get issue data from the repository dispatch event
+            const issue = context.payload.client_payload.github.payload.issue;
+            const issueNumber = issue.number;
+            
+            if (!issue || !issueNumber) {
+              console.log('❌ Could not determine issue information');
+              core.setFailed('Missing issue information');
+              return;
+            }
+            
+            // Check if this is a pull request
+            if (!issue.pull_request) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `❌ The \`/check\` command can only be used on pull requests, not issues.`
+              });
+              return;
+            }
+            
+            console.log(`Processing /check command for PR #${issueNumber} by ${actor}`);
+            
+            // Get the PR details
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: issueNumber
+            });
+            
+            const headSha = pr.head.sha;
+            const prAuthor = pr.user.login;
+            
+            // React to the comment to show we're processing
+            try {
+              await github.rest.reactions.createForIssueComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: context.payload.client_payload.github.payload.comment.id,
+                content: 'rocket'
+              });
+            } catch (error) {
+              console.log('Could not react to comment:', error.message);
+            }
+            
+            // Post initial status comment
+            const statusComment = await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: `🚀 **Running all checks for PR #${issueNumber}**\n\nTriggered by @${actor}\n\n⏳ Please wait while I:\n- Approve any waiting workflows\n- Re-run failed workflows\n- Trigger fresh checks\n\n*This may take a few moments...*`
+            });
+            
+            let results = {
+              approved: 0,
+              rerun: 0,
+              triggered: 0,
+              errors: []
+            };
+            
+            try {
+              // Step 1: Get all workflow runs for this PR's head SHA
+              console.log(`Getting workflow runs for SHA: ${headSha}`);
+              
+              const workflowRuns = await github.rest.actions.listWorkflowRunsForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head_sha: headSha
+              });
+              
+              console.log(`Found ${workflowRuns.data.workflow_runs.length} workflow runs`);
+              
+              // Step 2: Approve any waiting workflows
+              const waitingRuns = workflowRuns.data.workflow_runs.filter(run => run.status === 'waiting');
+              console.log(`Found ${waitingRuns.length} waiting workflows`);
+              
+              for (const run of waitingRuns) {
+                try {
+                  await github.rest.actions.approveWorkflowRun({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    run_id: run.id
+                  });
+                  results.approved++;
+                  console.log(`✅ Approved workflow: ${run.name} (${run.id})`);
+                } catch (error) {
+                  console.log(`❌ Could not approve ${run.name}:`, error.message);
+                  results.errors.push(`Failed to approve ${run.name}: ${error.message}`);
+                }
+              }
+              
+              // Step 3: Re-run failed workflows
+              const failedRuns = workflowRuns.data.workflow_runs.filter(run => 
+                run.status === 'completed' && run.conclusion === 'failure'
+              );
+              console.log(`Found ${failedRuns.length} failed workflows`);
+              
+              for (const run of failedRuns) {
+                try {
+                  await github.rest.actions.reRunWorkflow({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    run_id: run.id
+                  });
+                  results.rerun++;
+                  console.log(`🔄 Re-ran workflow: ${run.name} (${run.id})`);
+                } catch (error) {
+                  console.log(`❌ Could not re-run ${run.name}:`, error.message);
+                  results.errors.push(`Failed to re-run ${run.name}: ${error.message}`);
+                }
+              }
+              
+              // Step 4: Trigger new workflow runs by dispatching workflow events
+              // We'll trigger the main PR workflows manually
+              const workflowsToTrigger = [
+                'labeler.yml',
+                'pr-size-labeler.yml', 
+                'code-quality.yml',
+                'frontend-checks.yml',
+                'backend-checks.yml',
+                'check-pr-labels.yml'
+              ];
+              
+              for (const workflowFile of workflowsToTrigger) {
+                try {
+                  // Check if workflow file exists first
+                  const workflows = await github.rest.actions.listRepoWorkflows({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo
+                  });
+                  
+                  const workflow = workflows.data.workflows.find(w => w.path.endsWith(workflowFile));
+                  
+                  if (workflow) {
+                    await github.rest.actions.createWorkflowDispatch({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      workflow_id: workflow.id,
+                      ref: pr.head.ref,
+                      inputs: {
+                        pr_number: issueNumber.toString(),
+                        triggered_by: actor
+                      }
+                    });
+                    results.triggered++;
+                    console.log(`🚀 Triggered workflow: ${workflowFile}`);
+                  }
+                } catch (error) {
+                  console.log(`Could not trigger ${workflowFile}:`, error.message);
+                  // Don't count this as an error since many workflows don't support manual dispatch
+                }
+              }
+              
+              // Step 5: Update the status comment with results
+              let updateBody = `✅ **Check command completed for PR #${issueNumber}**\n\n`;
+              updateBody += `**Results:**\n`;
+              updateBody += `- 🔓 Approved workflows: ${results.approved}\n`;
+              updateBody += `- 🔄 Re-ran failed workflows: ${results.rerun}\n`;
+              updateBody += `- 🚀 Triggered fresh checks: ${results.triggered}\n`;
+              
+              if (results.errors.length > 0) {
+                updateBody += `\n**⚠️ Some issues encountered:**\n`;
+                for (const error of results.errors.slice(0, 3)) { // Limit to first 3 errors
+                  updateBody += `- ${error}\n`;
+                }
+                if (results.errors.length > 3) {
+                  updateBody += `- ... and ${results.errors.length - 3} more\n`;
+                }
+              }
+              
+              updateBody += `\n**What happens next:**\n`;
+              updateBody += `- ✅ All approved workflows will start running automatically\n`;
+              updateBody += `- 🔍 Check the **Actions** tab to see workflow progress\n`;
+              updateBody += `- 📋 PR will be auto-labeled based on changes\n`;
+              updateBody += `- 🧪 Tests and quality checks will run\n`;
+              
+              if (actor !== prAuthor) {
+                updateBody += `\n*Command triggered by @${actor} for @${prAuthor}'s PR*`;
+              }
+              
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: statusComment.data.id,
+                body: updateBody
+              });
+              
+              console.log('✅ Check command completed successfully');
+              
+            } catch (error) {
+              console.log('❌ Error during check command execution:', error.message);
+              
+              // Update comment with error
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: statusComment.data.id,
+                body: `❌ **Check command failed for PR #${issueNumber}**\n\nError: ${error.message}\n\n**Alternative options:**\n- Try the \`/rerun\` command\n- Check the **Actions** tab for workflow status\n- Contact maintainers: @Va16hav07, @Pranjal6955`
+              });
+              
+              core.setFailed(`Check command failed: ${error.message}`);
+            }

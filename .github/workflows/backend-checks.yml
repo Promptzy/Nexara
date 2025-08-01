@@ -10,6 +10,15 @@ on:
     branches: [ main, develop ]
     paths:
       - 'backend/**'
+      - '.github/workflows/backend-checks.yml'
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to process'
+        required: false
+      triggered_by:
+        description: 'User who triggered this workflow'
+        required: false
 
 permissions:
   contents: read

@@ -31,12 +31,19 @@ jobs:
             // Get the actor from the comment author (the person who triggered the slash command)
             const actor = context.payload.client_payload.github.payload.comment.user.login;
             const command = context.payload.client_payload.slash_command.command;
-            const args = context.payload.client_payload.slash_command.args || [];
+            const argsObject = context.payload.client_payload.slash_command.args || {};
+            
+            // Convert args object to array for compatibility
+            const args = argsObject.all ? argsObject.all.trim().split(/\s+/).filter(Boolean) : [];
             
             console.log('✅ Slash command detected');
             console.log('Command:', command);
             console.log('Actor:', actor);
-            console.log('Args:', args);
+            console.log('Args object:', argsObject);
+            console.log('Args array:', args);
+            
+            // Authorization check - get authorized users list
+            const authorizedUsers = ['Va16hav07', 'Pranjal6955'];
             
             // Verify we have all required data
             if (!actor) {
@@ -88,13 +95,13 @@ jobs:
                 return;
               }
               
-              // Check if the user is the PR author
-              if (pr.data.user.login === actor) {
+              // Allow self-LGTM for authorized users
+              if (pr.data.user.login === actor && !authorizedUsers.includes(actor)) {
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: prNumber,
-                  body: `❌ @${actor}, you cannot LGTM your own pull request.`
+                  body: `❌ @${actor}, you cannot LGTM your own pull request unless you are a repository owner.`
                 });
                 core.setFailed('Cannot self-LGTM');
                 return;

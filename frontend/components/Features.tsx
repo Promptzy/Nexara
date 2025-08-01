@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import React from "react";
+import React from 'react'
 import {
   Workflow,
   Bot,
@@ -13,105 +13,98 @@ import {
   Calendar,
   Map,
   GitBranch,
-} from "lucide-react";
-import FeatureCard from "./FeatureCard";
+} from 'lucide-react'
+import FeatureCard from './FeatureCard'
 
-/**
- * Core Features - Essential Zenjira capabilities
- */
 const coreFeatures = [
   {
     icon: Workflow,
-    title: "Automation Designer",
+    title: 'Automation Designer',
     description:
       "Use n8n's drag-and-drop editor to automate Jira events like task transitions or sending Slack notifications.",
-    action: "Explore automation",
+    action: 'Explore automation',
   },
   {
     icon: Bot,
-    title: "AI Sprint Planner",
+    title: 'AI Sprint Planner',
     description:
-      "GPT‑4 helps generate sprints based on team capacity and priorities for optimal planning.",
-    action: "Try AI planner",
+      'GPT‑4 helps generate sprints based on team capacity and priorities for optimal planning.',
+    action: 'Try AI planner',
   },
   {
     icon: FileText,
-    title: "Smart Ticket Summaries",
+    title: 'Smart Ticket Summaries',
     description:
-      "Instantly summarize long issue descriptions with AI to save time and improve clarity.",
-    action: "See summaries",
+      'Instantly summarize long issue descriptions with AI to save time and improve clarity.',
+    action: 'See summaries',
   },
   {
     icon: MessageSquare,
-    title: "ChatOps Bot",
+    title: 'ChatOps Bot',
     description:
       "Use Slack or Microsoft Teams to ask things like 'What are today's blockers?' and get instant answers.",
-    action: "Setup ChatOps",
+    action: 'Setup ChatOps',
   },
   {
     icon: Users,
-    title: "Developer Load Balancer",
+    title: 'Developer Load Balancer',
     description:
-      "Distribute tasks more evenly to avoid burnout and optimize team productivity.",
-    action: "Balance workload",
+      'Distribute tasks more evenly to avoid burnout and optimize team productivity.',
+    action: 'Balance workload',
   },
-];
+]
 
-/**
- * Advanced Features - Powerful capabilities for enhanced productivity
- */
+
 const advancedFeatures = [
   {
     icon: Search,
-    title: "Semantic Search",
+    title: 'Semantic Search',
     description:
-      "Use Hugging Face models to search Jira issues based on meaning, not just keywords.",
-    action: "Try semantic search",
+      'Use Hugging Face models to search Jira issues based on meaning, not just keywords.',
+    action: 'Try semantic search',
   },
   {
     icon: TestTube,
-    title: "AI Test Case Generator",
+    title: 'AI Test Case Generator',
     description:
-      "Turn bug reports into suggested test cases automatically using machine learning.",
-    action: "Generate tests",
+      'Turn bug reports into suggested test cases automatically using machine learning.',
+    action: 'Generate tests',
     hasCodePreview: true,
   },
   {
     icon: BarChart3,
-    title: "Retrospective Insights",
+    title: 'Retrospective Insights',
     description:
       "Get reports on what worked and what didn't after every sprint with AI-powered analysis.",
-    action: "View insights",
+    action: 'View insights',
   },
   {
     icon: Calendar,
-    title: "Gantt and Calendar Views",
+    title: 'Gantt and Calendar Views',
     description:
-      "Visual tools to see due dates, timelines, and sprint plans in interactive formats.",
-    action: "Open calendar",
+      'Visual tools to see due dates, timelines, and sprint plans in interactive formats.',
+    action: 'Open calendar',
   },
   {
     icon: Map,
-    title: "Cross-Project Heatmap",
+    title: 'Cross-Project Heatmap',
     description:
-      "Identify bottlenecks and dependencies between multiple projects with visual insights.",
-    action: "View heatmap",
+      'Identify bottlenecks and dependencies between multiple projects with visual insights.',
+    action: 'View heatmap',
   },
   {
     icon: GitBranch,
-    title: "Auto Release Notes",
+    title: 'Auto Release Notes',
     description:
-      "Generate release notes from closed issues and merged pull requests automatically.",
-    action: "Generate notes",
+      'Generate release notes from closed issues and merged pull requests automatically.',
+    action: 'Generate notes',
   },
-];
+]
 
-/**
- * Features section component showcasing all Zenjira capabilities
- */
 const Features: React.FC = () => {
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+    // <section className="pt-36  bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+    <section className="py-16 pt-36 md:py-36 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="text-center mb-16">
@@ -120,7 +113,7 @@ const Features: React.FC = () => {
             <span className="text-blue-400 font-medium">Features</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Everything you need to{" "}
+            Everything you need to{' '}
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               supercharge your workflow
             </span>
@@ -142,7 +135,7 @@ const Features: React.FC = () => {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {coreFeatures.map((feature) => (
+            {coreFeatures.map(feature => (
               <FeatureCard key={feature.title} {...feature} />
             ))}
           </div>
@@ -158,14 +151,14 @@ const Features: React.FC = () => {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {advancedFeatures.map((feature) => (
+            {advancedFeatures.map(feature => (
               <FeatureCard key={feature.title} {...feature} />
             ))}
           </div>
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Features;
+export default Features

@@ -31,12 +31,16 @@ jobs:
             // Get the actor from the comment author (the person who triggered the slash command)
             const actor = context.payload.client_payload.github.payload.comment.user.login;
             const command = context.payload.client_payload.slash_command.command;
-            const args = context.payload.client_payload.slash_command.args || [];
+            const argsObject = context.payload.client_payload.slash_command.args || {};
+            
+            // Convert args object to array for compatibility
+            const args = argsObject.all ? argsObject.all.trim().split(/\s+/).filter(Boolean) : [];
             
             console.log('✅ Slash command detected');
             console.log('Command:', command);
             console.log('Actor:', actor);
-            console.log('Args:', args);
+            console.log('Args object:', argsObject);
+            console.log('Args array:', args);
             
             // Verify we have all required data
             if (!actor) {
