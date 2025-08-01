@@ -92,8 +92,20 @@ jobs:
       - name: Run tests (if available)
         run: |
           # Check if test script exists in package.json
-          if npm run test --dry-run > /dev/null 2>&1; then
-            npm run test -- --watchAll=false --coverage=false
+          if npm run test:run --dry-run > /dev/null 2>&1; then
+            # Run tests and handle the case where no test files are found
+            npm run test:run || if [ $? -eq 1 ]; then
+              # Check if failure is due to no test files
+              if npm run test:run 2>&1 | grep -q "No test files found"; then
+                echo "⚠️ No test files found. This is acceptable for projects without tests yet."
+                echo "Consider adding tests for better code quality."
+                exit 0
+              else
+                # Real test failure
+                echo "❌ Tests failed"
+                exit 1
+              fi
+            fi
           else
             echo "⚠️ No test script found. Consider adding tests for better code quality."
           fi
