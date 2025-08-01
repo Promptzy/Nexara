@@ -153,7 +153,6 @@
   transform: translateY(0) !important;
   transition-delay: calc(var(--stagger-index) * 150ms);
 }
-
 /* Custom animations for enhanced visual effects */
 @keyframes float {
   0%,
