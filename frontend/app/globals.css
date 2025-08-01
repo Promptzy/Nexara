@@ -1,7 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-
-/* Ensure animation duration classes are available */
 .duration-300 { transition-duration: 300ms; }
 .duration-500 { transition-duration: 500ms; }
 .duration-600 { transition-duration: 600ms; }
@@ -122,4 +119,32 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
 }

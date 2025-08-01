@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
-import Features from '../components/Features'
-import Footer from '../components/Footer'
+import Features from "../components/Features";
+import Footer from "../components/Footer";
 
 const page = () => {
   return (
@@ -9,7 +9,7 @@ const page = () => {
       <Features />
       <Footer />
     </main>
-  )
-}
+  );
+};
 
-export default page
+export default page;
