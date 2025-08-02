@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import 'tw-animate-css';
 
 @keyframes fadeIn {
   from {
@@ -154,8 +153,6 @@
   transform: translateY(0) !important;
   transition-delay: calc(var(--stagger-index) * 150ms);
 }
-
-/* Below are the css for about us section */
 /* Custom animations for enhanced visual effects */
 @keyframes float {
   0%,
