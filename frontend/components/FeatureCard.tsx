@@ -12,7 +12,6 @@ export interface FeatureCardProps {
   className?: string
 }
 
-
 const FeatureCard: React.FC<FeatureCardProps> = ({
   icon: Icon,
   title,
@@ -54,9 +53,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
             </div>
             <div className="font-mono text-sm space-y-1">
               <div className="text-slate-400">
-                1.{' '}
-                <span className="text-green-400">
-                </span>
+                1. <span className="text-green-400"></span>
               </div>
               <div className="text-slate-400">
                 2. <span className="text-purple-400">const</span>{' '}

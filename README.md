@@ -393,6 +393,20 @@ See the current leaderboard and detailed contribution stats in [CONTRIBUTORS.md]
 
 📚 Learn more about our contribution tracking system in [docs/CONTRIBUTION_TRACKING.md](./docs/CONTRIBUTION_TRACKING.md).
 
+<div align="center">
+
+### 🌟 Our Amazing Contributors
+
+<a href="https://github.com/Promptzy/Zenjira/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Promptzy/Zenjira" alt="Contributors" />
+</a>
+
+*Can't see the contributors graph? [View all contributors on GitHub →](https://github.com/Promptzy/Zenjira/graphs/contributors)*
+
+[![Contributors](https://img.shields.io/github/contributors/Promptzy/Zenjira?style=for-the-badge&color=orange)](https://github.com/Promptzy/Zenjira/graphs/contributors)
+
+</div>
+
 
 ## 📄 License
 

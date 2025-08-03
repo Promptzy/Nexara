@@ -1,16 +1,19 @@
-"use client"
+'use client'
 
 import React, { useState } from 'react'
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@/components/ui/button'
 import { Mail, Phone, Github, Linkedin } from 'lucide-react'
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [loading, setLoading] = useState(false)
-  const [touched, setTouched] = useState({ name: false, email: false, message: false })
-
+  const [touched, setTouched] = useState({
+    name: false,
+    email: false,
+    message: false,
+  })
 
   // Basic validation
   const errors = {
@@ -19,11 +22,15 @@ export default function ContactForm() {
     message: !form.message && touched.message ? 'Message is required' : '',
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setTouched({ ...touched, [e.target.name]: true })
   }
 
@@ -40,7 +47,10 @@ export default function ContactForm() {
   }
 
   return (
-    <section id="contact" className="py-16 bg-slate-950 text-white animate-fadeIn">
+    <section
+      id="contact"
+      className="py-16 bg-slate-950 text-white animate-fadeIn"
+    >
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 animate-fadeIn">
         <h2 className="text-3xl font-bold mb-8 text-center">Contact Us</h2>
         <form
@@ -64,7 +74,11 @@ export default function ContactForm() {
               className="focus:ring-2 focus:ring-blue-500"
               required
             />
-            {errors.name && <span id="name-error" className="text-red-400 text-xs">{errors.name}</span>}
+            {errors.name && (
+              <span id="name-error" className="text-red-400 text-xs">
+                {errors.name}
+              </span>
+            )}
           </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium mb-1">
@@ -83,7 +97,11 @@ export default function ContactForm() {
               className="focus:ring-2 focus:ring-blue-500"
               required
             />
-            {errors.email && <span id="email-error" className="text-red-400 text-xs">{errors.email}</span>}
+            {errors.email && (
+              <span id="email-error" className="text-red-400 text-xs">
+                {errors.email}
+              </span>
+            )}
           </div>
           <div>
             <label htmlFor="message" className="block text-sm font-medium mb-1">
@@ -102,7 +120,11 @@ export default function ContactForm() {
               className="focus:ring-2 focus:ring-blue-500"
               required
             />
-            {errors.message && <span id="message-error" className="text-red-400 text-xs">{errors.message}</span>}
+            {errors.message && (
+              <span id="message-error" className="text-red-400 text-xs">
+                {errors.message}
+              </span>
+            )}
           </div>
           <Button type="submit" disabled={loading} className="w-full mt-2">
             {loading ? 'Sending...' : 'Send Message'}

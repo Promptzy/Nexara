@@ -5,6 +5,7 @@ import Services from '../components/Services'
 import ContactForm from '../components/ContactForm'
 import Footer from '../components/Footer'
 import NavBar from '@/components/NavBar'
+import Aboutus from '@/app/about/page'
 
 const Page = () => {
   return (
@@ -13,6 +14,7 @@ const Page = () => {
         <NavBar />
       </div>
       <div className="mt-[-5rem]">
+        <Aboutus />
         <Features />
         <Services />
         <ContactForm />
