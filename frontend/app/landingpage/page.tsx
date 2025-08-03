@@ -1,10 +1,10 @@
 import React from 'react'
-import NavBar from '@/components/NavBar'
+import Navbar from './section/Navbar';
 
 const page = () => {
   return (
-    <main>
-
+    <main >
+      <Navbar />
     </main>
   )
 }
