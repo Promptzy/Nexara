@@ -1,0 +1,5 @@
+{
+  "name": "test",
+  "value": 123,
+  "nested": { "key": "value", "array": [1, 2, 3] }
+}
