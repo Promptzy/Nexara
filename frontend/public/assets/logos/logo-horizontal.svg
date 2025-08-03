@@ -1,0 +1,37 @@
+<svg width="200" height="64" viewBox="0 0 200 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Definitions for gradients -->
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6C7DEE;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6C7DEE;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Logo Icon (scaled down) -->
+  <g transform="translate(0, 0) scale(0.8)">
+    <!-- Background circle -->
+    <circle cx="32" cy="32" r="30" fill="url(#logoGradient)" stroke="white" stroke-width="2"/>
+    
+    <!-- Zen symbol -->
+    <g transform="translate(16, 16)">
+      <circle cx="16" cy="16" r="3" fill="white"/>
+      <path d="M8 12 Q16 8 24 12" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M8 20 Q16 16 24 20" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M8 28 Q16 24 24 28" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </g>
+  </g>
+  
+  <!-- Text "Zenjira" -->
+  <text x="70" y="42" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="700" fill="url(#textGradient)">
+    Zenjira
+  </text>
+  
+  <!-- Subtle tagline -->
+  <text x="70" y="55" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="400" fill="#6B7280">
+    Project Management
+  </text>
+</svg> 

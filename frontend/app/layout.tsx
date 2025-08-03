@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   title: 'Zenjira - AI-Powered Jira Management Platform',
   description:
     'Intelligent automation and AI-driven insights for modern development teams. Transform your Jira workflow with powerful features.',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({
@@ -29,9 +34,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   )

@@ -15,14 +15,15 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^0.2.3",
     "@radix-ui/react-popover": "^1.1.14",
+    "@radix-ui/react-slot": "^1.2.3",
     "@shadcn/ui": "^0.0.4",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "font-awesome-icons": "^1.6.0",
-    "@radix-ui/react-slot": "^1.2.3",
-    "class-variance-authority": "^0.7.1",
     "lucide-react": "^0.526.0",
     "next": "15.4.4",
     "react": "19.1.0",
