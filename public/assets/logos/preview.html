@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenjira Logo Preview</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .logo-section {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-section.dark {
+            background: #1e293b;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #374151;
+        }
+        
+        .dark .section-title {
+            color: #f8fafc;
+        }
+        
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            align-items: center;
+            justify-items: center;
+        }
+        
+        .logo-item {
+            text-align: center;
+            padding: 20px;
+            border: 2px dashed #e5e7eb;
+            border-radius: 12px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        }
+        
+        .dark .logo-item {
+            border-color: #4b5563;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(96, 165, 250, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(167, 139, 250, 0.2) 0%, transparent 50%);
+        }
+        
+        .logo-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+            margin-top: 10px;
+        }
+        
+        .dark .logo-name {
+            color: #9ca3af;
+        }
+        
+        .size-variants {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .size-label {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Zenjira Logo Preview</h1>
+        
+        <!-- For Light Backgrounds -->
+        <div class="logo-section">
+            <h2 class="section-title">For Light Backgrounds</h2>
+            <div class="logo-grid">
+                <div class="logo-item">
+                    <img src="logo-icon-for-light-bg.svg" alt="Zenjira Icon" width="64" height="64">
+                    <div class="logo-name">Icon Only (For Light Backgrounds)</div>
+                </div>
+                
+                <div class="logo-item">
+                    <img src="logo-horizontal-for-light-bg.svg" alt="Zenjira Horizontal" width="200" height="64">
+                    <div class="logo-name">Horizontal Layout (For Light Backgrounds)</div>
+                </div>
+                
+                <div class="logo-item">
+                    <img src="logo-vertical-for-light-bg.svg" alt="Zenjira Vertical" width="120" height="140">
+                    <div class="logo-name">Vertical Layout (For Light Backgrounds)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- For Dark Backgrounds -->
+        <div class="logo-section dark">
+            <h2 class="section-title">For Dark Backgrounds</h2>
+            <div class="logo-grid">
+                <div class="logo-item">
+                    <img src="logo-icon-for-dark-bg.svg" alt="Zenjira Icon Dark" width="64" height="64">
+                    <div class="logo-name">Icon Only (For Dark Backgrounds)</div>
+                </div>
+                
+                <div class="logo-item">
+                    <img src="logo-horizontal-for-dark-bg.svg" alt="Zenjira Horizontal Dark" width="200" height="64">
+                    <div class="logo-name">Horizontal Layout (For Dark Backgrounds)</div>
+                </div>
+                
+                <div class="logo-item">
+                    <img src="logo-vertical-for-dark-bg.svg" alt="Zenjira Vertical Dark" width="120" height="140">
+                    <div class="logo-name">Vertical Layout (For Dark Backgrounds)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Size Variations -->
+        <div class="logo-section">
+            <h2 class="section-title">Size Variations (Icon)</h2>
+            <div class="size-variants">
+                <div>
+                    <div class="size-label">16px</div>
+                    <img src="logo-icon-for-light-bg.svg" alt="Zenjira 16px" width="16" height="16">
+                </div>
+                <div>
+                    <div class="size-label">24px</div>
+                    <img src="logo-icon-for-light-bg.svg" alt="Zenjira 24px" width="24" height="24">
+                </div>
+                <div>
+                    <div class="size-label">32px</div>
+                    <img src="logo-icon-for-light-bg.svg" alt="Zenjira 32px" width="32" height="32">
+                </div>
+                <div>
+                    <div class="size-label">48px</div>
+                    <img src="logo-icon-for-light-bg.svg" alt="Zenjira 48px" width="48" height="48">
+                </div>
+                <div>
+                    <div class="size-label">64px</div>
+                    <img src="logo-icon-for-light-bg.svg" alt="Zenjira 64px" width="64" height="64">
+                </div>
+                <div>
+                    <div class="size-label">128px</div>
+                    <img src="logo-icon-for-light-bg.svg" alt="Zenjira 128px" width="128" height="128">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Usage Examples -->
+        <div class="logo-section">
+            <h2 class="section-title">Usage Examples</h2>
+            <div style="display: grid; gap: 30px;">
+                <div style="display: flex; align-items: center; gap: 15px; padding: 20px; background: #f8fafc; border-radius: 8px;">
+                    <img src="logo-horizontal-for-light-bg.svg" alt="Header Example" width="150" height="48">
+                    <span style="color: #64748b; font-size: 0.875rem;">Light Background Example</span>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 15px; padding: 20px; background: #1e293b; border-radius: 8px;">
+                    <img src="logo-horizontal-for-dark-bg.svg" alt="Dark Header Example" width="150" height="48">
+                    <span style="color: #94a3b8; font-size: 0.875rem;">Dark Background Example</span>
+                </div>
+                
+                <div style="text-align: center; padding: 20px; background: #f1f5f9; border-radius: 8px;">
+                    <img src="logo-vertical-for-light-bg.svg" alt="Mobile Example" width="80" height="93">
+                    <div style="color: #64748b; font-size: 0.875rem; margin-top: 10px;">Vertical Layout Example</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
