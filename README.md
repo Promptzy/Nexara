@@ -1,4 +1,4 @@
-### AI-Powered Jira Management Platform
+### AI-Powered Project Management Platform
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Slack](https://img.shields.io/badge/slack-join%20community-blueviolet.svg)](https://join.slack.com/t/promptzy/shared_invite/zt-3acy22kkh-R~nMYTl7op_MF5UaLnwdsA)
