@@ -1,27 +1,7 @@
-import React from 'react'
+import { redirect } from 'next/navigation'
 
-import Features from '../components/Features'
-import Services from '../components/Services'
-import ContactForm from '../components/ContactForm'
-import Footer from '../components/Footer'
-import NavBar from '@/components/NavBar'
-import Aboutus from '@/app/about/page'
-
-const Page = () => {
-  return (
-    <main className="min-h-screen">
-      <div className="sticky top-0 z-10">
-        <NavBar />
-      </div>
-      <div className="mt-[-5rem]">
-        <Aboutus />
-        <Features />
-        <Services />
-        <ContactForm />
-        <Footer />
-      </div>
-    </main>
-  )
+const page = () => {
+  redirect('/landingpage')
 }
 
-export default Page
+export default page

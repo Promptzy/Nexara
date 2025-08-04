@@ -3,7 +3,7 @@ import Navbar from './section/Navbar';
 
 const page = () => {
   return (
-    <main >
+    <main className="bg-black min-h-screen">
       <Navbar />
     </main>
   )
