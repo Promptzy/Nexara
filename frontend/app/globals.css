@@ -68,3 +68,17 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.488 0.243 264.376);
 }
+
+/* Custom Tailwind configuration for FlowingMenu component */
+@keyframes marquee {
+  from { transform: translateX(0%); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+}
+
+.translate-y-\[101\%\] {
+  transform: translateY(101%);
+}

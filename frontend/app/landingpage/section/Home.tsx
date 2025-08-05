@@ -1,16 +1,26 @@
+"use client";
+
 import React from 'react'
 import Button from '../components/button'
 import MagicBento from '../components/MagicBento'
 import FlowingMenu from '../components/FlowingMenu'
+import { 
+  CheckSquare, 
+  Users, 
+  BarChart3, 
+  Zap, 
+  GitBranch, 
+  Clock 
+} from 'lucide-react'
 
 const Home = () => {
   const demoItems = [
-    { link: '#', text: 'Task Management', image: 'https://picsum.photos/600/400?random=1' },
-    { link: '#', text: 'Team Collaboration', image: 'https://picsum.photos/600/400?random=2' },
-    { link: '#', text: 'AI Analytics', image: 'https://picsum.photos/600/400?random=3' },
-    { link: '#', text: 'Workflow Automation', image: 'https://picsum.photos/600/400?random=4' },
-    { link: '#', text: 'Project Tracking', image: 'https://picsum.photos/600/400?random=5' },
-    { link: '#', text: 'Real-time Updates', image: 'https://picsum.photos/600/400?random=6' }
+    { link: '#', text: 'Task Management', image: CheckSquare, color: '#3B82F6' },
+    { link: '#', text: 'Team Collaboration', image: Users, color: '#10B981' },
+    { link: '#', text: 'AI Analytics', image: BarChart3, color: '#F59E0B' },
+    { link: '#', text: 'Workflow Automation', image: Zap, color: '#EF4444' },
+    { link: '#', text: 'Project Tracking', image: GitBranch, color: '#8B5CF6' },
+    { link: '#', text: 'Real-time Updates', image: Clock, color: '#06B6D4' }
   ];
 
   return (

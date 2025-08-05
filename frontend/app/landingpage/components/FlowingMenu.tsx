@@ -6,7 +6,8 @@ import { gsap } from "gsap";
 interface MenuItemProps {
   link: string;
   text: string;
-  image: string;
+  image: string | React.ComponentType<any>;
+  color?: string;
 }
 
 interface FlowingMenuProps {
@@ -25,7 +26,7 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items = [] }) => {
   );
 };
 
-const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ link, text, image, color }) => {
   const itemRef = React.useRef<HTMLDivElement>(null);
   const marqueeRef = React.useRef<HTMLDivElement>(null);
   const marqueeInnerRef = React.useRef<HTMLDivElement>(null);
@@ -85,13 +86,30 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
         <span className="text-[#060010] uppercase font-normal text-[4vh] leading-[1.2] p-[1vh_1vw_0]">
           {text}
         </span>
-        <div
-          className="w-[200px] h-[7vh] my-[2em] mx-[2vw] p-[1em_0] rounded-[50px] bg-cover bg-center"
-          style={{ backgroundImage: `url(${image})` }}
-        />
+        <div className="w-[200px] h-[7vh] my-[2em] mx-[2vw] p-[1em_0] rounded-[50px] bg-cover bg-center flex items-center justify-center">
+          {typeof image === 'string' ? (
+            <div
+              className="w-full h-full rounded-[50px] bg-cover bg-center"
+              style={{ backgroundImage: `url(${image})` }}
+            />
+          ) : (
+            <div 
+              className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
+              style={{ 
+                backgroundColor: color ? `${color}20` : '#06001020',
+                boxShadow: color ? `0 4px 12px ${color}40` : '0 4px 12px #06001040'
+              }}
+            >
+              {React.createElement(image, { 
+                size: 32, 
+                style: { color: color || '#060010' }
+              })}
+            </div>
+          )}
+        </div>
       </React.Fragment>
     ));
-  }, [text, image]);
+  }, [text, image, color]);
 
   return (
     <div
@@ -121,26 +139,3 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
 };
 
 export default FlowingMenu;
-
-// Note: this is also needed
-// /** @type {import('tailwindcss').Config} */
-// export default {
-//   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-//   theme: {
-//     extend: {
-//       translate: {
-//         '101': '101%',
-//       },
-//       keyframes: {
-//         marquee: {
-//           'from': { transform: 'translateX(0%)' },
-//           'to': { transform: 'translateX(-50%)' }
-//         }
-//       },
-//       animation: {
-//         marquee: 'marquee 15s linear infinite'
-//       }
-//     }
-//   },
-//   plugins: [],
-// };
