@@ -11,6 +11,12 @@ import {
   Zap,
   GitBranch,
   Clock,
+  Sparkles,
+  Shield,
+  Zap as Lightning,
+  TrendingUp,
+  Globe,
+  Lock,
 } from 'lucide-react'
 
 const Home = () => {
@@ -65,7 +71,7 @@ const Home = () => {
 
           {/* Main Title */}
           <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
-            <span className="bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-purple-600 bg-clip-text text-transparent animate-gradient-x">
               Nexara
             </span>
           </h1>
@@ -158,22 +164,33 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Visual Panels */}
+      {/* Enhanced Bento Section */}
       <div className="px-4 py-20">
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-full px-4 py-2 mb-6">
+              <Sparkles className="w-4 h-4 text-purple-400" />
+              <span className="text-sm font-medium text-purple-300">
+                AI-Powered Features
+              </span>
+            </div>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              See Nexara in Action
+              Everything you need to
+              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                {' '}
+                scale your business
+              </span>
             </h2>
             <p className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
-              Experience the power of AI-driven project management with
-              intelligent automation and real-time collaboration
+              Experience the future of project management with intelligent
+              automation, real-time collaboration, and AI-driven insights that
+              transform how teams work together
             </p>
           </div>
 
           {/* Magic Bento Grid */}
-          <div className="flex justify-center">
+          <div className="flex justify-center mb-16">
             <MagicBento
               textAutoHide={true}
               enableStars={true}
@@ -186,6 +203,75 @@ const Home = () => {
               particleCount={12}
               glowColor="132, 0, 255"
             />
+          </div>
+
+          {/* Feature Highlights */}
+          <div className="grid md:grid-cols-3 gap-8 mt-20">
+            <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 border border-white/10 backdrop-blur-sm">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Lightning className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2">
+                Lightning Fast
+              </h3>
+              <p className="text-white/70 text-sm">
+                Built for speed with real-time updates and instant collaboration
+              </p>
+            </div>
+
+            <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 border border-white/10 backdrop-blur-sm">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2">
+                Enterprise Security
+              </h3>
+              <p className="text-white/70 text-sm">
+                Bank-level security with SOC 2 compliance and end-to-end
+                encryption
+              </p>
+            </div>
+
+            <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 border border-white/10 backdrop-blur-sm">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2">
+                AI Analytics
+              </h3>
+              <p className="text-white/70 text-sm">
+                Predictive insights and intelligent recommendations to optimize
+                workflow
+              </p>
+            </div>
+          </div>
+
+          {/* Stats Section */}
+          <div className="grid md:grid-cols-4 gap-8 mt-20">
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                99.9%
+              </div>
+              <div className="text-white/70 text-sm">Uptime</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                10,000+
+              </div>
+              <div className="text-white/70 text-sm">Teams</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                50+
+              </div>
+              <div className="text-white/70 text-sm">Integrations</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                24/7
+              </div>
+              <div className="text-white/70 text-sm">Support</div>
+            </div>
           </div>
         </div>
       </div>
@@ -209,8 +295,39 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      <style jsx>{gradientAnimation}</style>
     </div>
   )
 }
 
 export default Home
+
+// Add gradient animation styles
+const gradientAnimation = `
+  @keyframes gradient-x {
+    0%, 100% {
+      background-size: 200% 200%;
+      background-position: left center;
+    }
+    50% {
+      background-size: 200% 200%;
+      background-position: right center;
+    }
+  }
+  
+  .animate-gradient-x {
+    animation: gradient-x 3s ease infinite;
+    background: linear-gradient(
+      to right,
+      #a855f7,
+      #3b82f6,
+      #8b5cf6,
+      #a855f7
+    );
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+`

@@ -1,6 +1,24 @@
 'use client'
 import React, { useRef, useEffect, useState, useCallback } from 'react'
 import { gsap } from 'gsap'
+import {
+  Bot,
+  Users,
+  BarChart3,
+  Zap,
+  Link,
+  TrendingUp,
+  Sparkles,
+  Shield,
+  Zap as Lightning,
+  Globe,
+  Lock,
+  CheckCircle,
+  MessageSquare,
+  FileText,
+  Settings,
+  Target,
+} from 'lucide-react'
 
 export interface BentoCardProps {
   color?: string
@@ -9,6 +27,7 @@ export interface BentoCardProps {
   label?: string
   textAutoHide?: boolean
   disableAnimations?: boolean
+  icon?: React.ElementType
 }
 
 export interface BentoProps {
@@ -33,44 +52,51 @@ const MOBILE_BREAKPOINT = 768
 const cardData: BentoCardProps[] = [
   {
     color: '#060010',
-    title: 'AI-Powered Insights',
+    title: 'AI-Powered Task Management',
     description:
-      'Predictive analytics and intelligent recommendations to optimize your workflow',
+      'Intelligent task prioritization, smart scheduling, and automated workflow optimization with machine learning',
     label: 'AI Magic',
+    icon: Bot,
   },
   {
     color: '#060010',
-    title: 'Real-time Collaboration',
+    title: 'Real-time Team Collaboration',
     description:
-      'Live chat, video calls, and instant file sharing with your team',
+      'Live chat, video calls, instant file sharing, and seamless team communication with zero latency',
     label: 'Team Sync',
+    icon: Users,
   },
   {
     color: '#060010',
-    title: 'Smart Workflows',
+    title: 'Advanced Analytics Dashboard',
     description:
-      'Automated task routing, smart notifications, and intelligent prioritization',
-    label: 'Automation',
-  },
-  {
-    color: '#060010',
-    title: 'Analytics Dashboard',
-    description:
-      'Beautiful charts, real-time metrics, and customizable KPI tracking',
+      'Beautiful charts, real-time metrics, customizable KPI tracking, and predictive insights',
     label: 'Analytics',
+    icon: BarChart3,
   },
   {
     color: '#060010',
-    title: 'Integrations Hub',
-    description: 'Connect with Slack, GitHub, Figma, and 100+ popular tools',
-    label: 'Integrations',
-  },
-  {
-    color: '#060010',
-    title: 'Performance AI',
+    title: 'Smart Workflow Automation',
     description:
-      'Track velocity, predict delays, and optimize team productivity',
+      'Automated task routing, intelligent notifications, and smart prioritization that adapts to your team',
+    label: 'Automation',
+    icon: Zap,
+  },
+  {
+    color: '#060010',
+    title: 'Enterprise Integrations Hub',
+    description:
+      'Connect with Slack, GitHub, Figma, Jira, and 100+ popular tools with one-click setup',
+    label: 'Integrations',
+    icon: Link,
+  },
+  {
+    color: '#060010',
+    title: 'Performance AI & Insights',
+    description:
+      'Track velocity, predict delays, optimize productivity, and get actionable recommendations',
     label: 'Performance',
+    icon: TrendingUp,
   },
 ]
 
@@ -654,7 +680,8 @@ const MagicBento: React.FC<BentoProps> = ({
           }
           
           .card--border-glow:hover {
-            box-shadow: 0 4px 20px rgba(46, 24, 78, 0.4), 0 0 30px rgba(${glowColor}, 0.2);
+            box-shadow: 0 8px 32px rgba(46, 24, 78, 0.4), 0 0 40px rgba(${glowColor}, 0.3);
+            transform: translateY(-4px);
           }
           
           .particle::before {
@@ -720,7 +747,7 @@ const MagicBento: React.FC<BentoProps> = ({
       <BentoCardGrid gridRef={gridRef}>
         <div className="card-responsive grid gap-2">
           {cardData.map((card, index) => {
-            const baseClassName = `card flex flex-col justify-between relative aspect-[4/3] min-h-[200px] w-full max-w-full p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
+            const baseClassName = `card flex flex-col justify-between relative aspect-[4/3] min-h-[200px] w-full max-w-full p-6 rounded-[24px] border border-solid font-light overflow-hidden transition-all duration-500 ease-in-out hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.25)] ${
               enableBorderGlow ? 'card--border-glow' : ''
             }`
 
@@ -748,16 +775,23 @@ const MagicBento: React.FC<BentoProps> = ({
                   enableMagnetism={enableMagnetism}
                 >
                   <div className="card__header flex justify-between gap-3 relative text-white">
-                    <span className="card__label text-base">{card.label}</span>
+                    <div className="flex items-center gap-2">
+                      {card.icon && (
+                        <card.icon className="w-5 h-5 text-purple-400" />
+                      )}
+                      <span className="card__label text-lg font-medium bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+                        {card.label}
+                      </span>
+                    </div>
                   </div>
                   <div className="card__content flex flex-col relative text-white">
                     <h3
-                      className={`card__title font-normal text-base m-0 mb-1 ${textAutoHide ? 'text-clamp-1' : ''}`}
+                      className={`card__title font-semibold text-lg m-0 mb-3 ${textAutoHide ? 'text-clamp-1' : ''}`}
                     >
                       {card.title}
                     </h3>
                     <p
-                      className={`card__description text-xs leading-5 opacity-90 ${textAutoHide ? 'text-clamp-2' : ''}`}
+                      className={`card__description text-sm leading-6 opacity-80 ${textAutoHide ? 'text-clamp-2' : ''}`}
                     >
                       {card.description}
                     </p>
@@ -882,16 +916,23 @@ const MagicBento: React.FC<BentoProps> = ({
                 }}
               >
                 <div className="card__header flex justify-between gap-3 relative text-white">
-                  <span className="card__label text-base">{card.label}</span>
+                  <div className="flex items-center gap-2">
+                    {card.icon && (
+                      <card.icon className="w-5 h-5 text-purple-400" />
+                    )}
+                    <span className="card__label text-lg font-medium bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+                      {card.label}
+                    </span>
+                  </div>
                 </div>
                 <div className="card__content flex flex-col relative text-white">
                   <h3
-                    className={`card__title font-normal text-base m-0 mb-1 ${textAutoHide ? 'text-clamp-1' : ''}`}
+                    className={`card__title font-semibold text-lg m-0 mb-3 ${textAutoHide ? 'text-clamp-1' : ''}`}
                   >
                     {card.title}
                   </h3>
                   <p
-                    className={`card__description text-xs leading-5 opacity-90 ${textAutoHide ? 'text-clamp-2' : ''}`}
+                    className={`card__description text-sm leading-6 opacity-80 ${textAutoHide ? 'text-clamp-2' : ''}`}
                   >
                     {card.description}
                   </p>
