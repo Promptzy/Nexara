@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import logo from '../assests/logo-icon-for-dark-bg.svg'
+import logo from '../assets/logo-icon-for-dark-bg.svg'
 import Button from '../components/button'
 
 const navlinks = [
