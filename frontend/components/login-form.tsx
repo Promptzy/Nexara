@@ -1,19 +1,49 @@
+'use client'
 import { GalleryVerticalEnd } from 'lucide-react'
 import Image from 'next/image'
 import logo from '@/app/landingpage/assests/logo-icon-for-dark-bg.svg'
+import { useState } from 'react'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { ButtonLoading } from '@/components/ui/loading'
+import { useLoadingState } from '@/hooks/useLoadingState'
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
+  const { isLoading, withLoading } = useLoadingState()
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  })
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    await withLoading(async () => {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      // Handle login logic here
+      console.log('Login attempt:', formData)
+      return true
+    })
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData((prev: any) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center gap-4">
             <div className="flex items-center justify-center">
@@ -51,10 +81,14 @@ export function LoginForm({
               </Label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="m@example.com"
                 required
-                className="bg-white/5 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400/20"
+                value={formData.email}
+                onChange={handleInputChange}
+                disabled={isLoading}
+                className="bg-white/5 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400/20 disabled:opacity-50"
               />
             </div>
             <div className="grid gap-3">
@@ -66,17 +100,24 @@ export function LoginForm({
               </Label>
               <Input
                 id="password"
+                name="password"
                 type="password"
                 placeholder="Enter your password"
                 required
-                className="bg-white/5 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400/20"
+                value={formData.password}
+                onChange={handleInputChange}
+                disabled={isLoading}
+                className="bg-white/5 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400/20 disabled:opacity-50"
               />
             </div>
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold py-3 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25"
+              disabled={isLoading}
+              className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold py-3 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
-              Sign In
+              <ButtonLoading loading={isLoading} loadingText="Signing In...">
+                Sign In
+              </ButtonLoading>
             </Button>
           </div>
           <div className="relative text-center text-sm">
@@ -91,7 +132,8 @@ export function LoginForm({
             <Button
               variant="outline"
               type="button"
-              className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300"
+              disabled={isLoading}
+              className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -108,7 +150,8 @@ export function LoginForm({
             <Button
               variant="outline"
               type="button"
-              className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300"
+              disabled={isLoading}
+              className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
