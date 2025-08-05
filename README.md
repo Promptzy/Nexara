@@ -1,4 +1,16 @@
-### AI-Powered Project Management Platform
+## AI-Powered Project Management Platform
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/assets/logos/logo-icon-for-dark-bg.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="public/assets/logos/logo-icon-for-light-bg.svg" />
+    <img
+      alt="Zenjira Logo"
+      src="public/assets/logos/logo-icon-for-light-bg.svg"
+      style="max-width: 200px; width: 100%; height: auto;"
+    />
+  </picture>
+</p>
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Slack](https://img.shields.io/badge/slack-join%20community-blueviolet.svg)](https://join.slack.com/t/promptzy/shared_invite/zt-3acy22kkh-R~nMYTl7op_MF5UaLnwdsA)
