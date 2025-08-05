@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './section/Navbar'
 import Home from './section/Home'
 import Features from './section/Features'
+import Footer from './section/Footer'
 import Threads from './components/Threads'
 
 const page = () => {
@@ -14,6 +15,7 @@ const page = () => {
         <Navbar />
         <Home />
         <Features />
+        <Footer />
       </div>
     </main>
   )
