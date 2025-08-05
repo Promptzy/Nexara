@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from './section/Navbar'
 import Home from './section/Home'
+import Features from './section/Features'
 import Threads from './components/Threads'
 
 const page = () => {
@@ -12,6 +13,7 @@ const page = () => {
       <div className="relative z-10">
         <Navbar />
         <Home />
+        <Features />
       </div>
     </main>
   )

@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import logo from '../assets/logo-icon-for-dark-bg.svg'
+import logo from '../assests/logo-icon-for-dark-bg.svg'
 import Button from '../components/button'
 
 const navlinks = [
@@ -17,21 +17,37 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      const scrollY = window.scrollY
+      setIsScrolled(scrollY > 50)
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    // Throttle scroll events for better performance
+    let ticking = false
+    const throttledHandleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', throttledHandleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', throttledHandleScroll)
   }, [])
 
   return (
-    <section className="py-4 fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <section className="py-4 fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out">
       <div className="container mx-auto px-4">
         <div
           className={`
-                    border border-white/15 rounded-full p-2 px-4 items-center bg-black/80 backdrop-blur-md
-                    transition-all duration-500 ease-in-out
-                    ${isScrolled ? 'w-full' : 'w-fit mx-auto max-w-2xl'}
+                    border border-white/15 rounded-full p-2 px-4 items-center backdrop-blur-md
+                    transition-all duration-700 ease-out
+                    ${isScrolled 
+                      ? 'w-full bg-black/90 shadow-lg shadow-black/20' 
+                      : 'w-fit mx-auto max-w-2xl bg-black/60 hover:bg-black/70'
+                    }
                     grid grid-cols-2 lg:grid-cols-3
                 `}
         >
@@ -40,19 +56,25 @@ export default function Navbar() {
             <Image
               src={logo}
               alt="Zenjira logo"
-              className="h-8 lg:h-10 w-auto"
+              className={`transition-all duration-500 ease-out ${
+                isScrolled ? 'h-8 lg:h-9' : 'h-8 lg:h-10'
+              } w-auto`}
             />
           </div>
 
           {/* Desktop Navigation Links */}
           <div className="hidden lg:flex justify-center items-center space-x-6">
-            {navlinks.map(link => (
+            {navlinks.map((link, index) => (
               <a
                 key={link.label}
                 href={link.href}
-                className="text-white/80 hover:text-white transition-colors duration-200 text-sm font-medium"
+                className="text-white/80 hover:text-white transition-all duration-300 ease-out text-sm font-medium relative group"
+                style={{
+                  transitionDelay: `${index * 50}ms`
+                }}
               >
                 {link.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 ease-out group-hover:w-full"></span>
               </a>
             ))}
           </div>
@@ -61,7 +83,7 @@ export default function Navbar() {
           <div className="flex justify-end items-center gap-2">
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2"
+              className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-all duration-300 ease-out"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               <svg
@@ -74,7 +96,9 @@ export default function Navbar() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={`transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-90' : ''}`}
+                className={`transition-all duration-500 ease-out ${
+                  isMobileMenuOpen ? 'rotate-180 scale-110' : 'rotate-0 scale-100'
+                }`}
               >
                 <line x1="3" y1="12" x2="21" y2="12"></line>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -86,13 +110,13 @@ export default function Navbar() {
             <div className="hidden sm:flex items-center gap-2">
               <Button
                 variant="secondary"
-                className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2"
+                className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 transition-all duration-300 ease-out hover:scale-105"
               >
                 Login
               </Button>
               <Button
                 variant="primary"
-                className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2"
+                className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 transition-all duration-300 ease-out hover:scale-105"
               >
                 Signup
               </Button>
@@ -103,27 +127,40 @@ export default function Navbar() {
         {/* Mobile Menu */}
         <div
           className={`
-                    lg:hidden mt-4 overflow-hidden transition-all duration-300 ease-in-out
-                    ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}
+                    lg:hidden mt-4 overflow-hidden transition-all duration-500 ease-out
+                    ${isMobileMenuOpen 
+                      ? 'max-h-96 opacity-100 translate-y-0' 
+                      : 'max-h-0 opacity-0 -translate-y-4'
+                    }
                 `}
         >
-          <div className="bg-black/90 backdrop-blur-md border border-white/15 rounded-2xl p-4">
+          <div className="bg-black/90 backdrop-blur-md border border-white/15 rounded-2xl p-4 transform transition-all duration-500 ease-out">
             <div className="flex flex-col space-y-4">
-              {navlinks.map(link => (
+              {navlinks.map((link, index) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  className="text-white/80 hover:text-white transition-colors duration-200 py-2 text-center"
+                  className="text-white/80 hover:text-white transition-all duration-300 ease-out py-2 text-center relative group"
+                  style={{
+                    transitionDelay: `${index * 100}ms`
+                  }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.label}
+                  <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-white transition-all duration-300 ease-out group-hover:w-full group-hover:left-0"></span>
                 </a>
               ))}
               <div className="flex gap-2 pt-2">
-                <Button variant="secondary" className="flex-1 text-sm">
+                <Button 
+                  variant="secondary" 
+                  className="flex-1 text-sm transition-all duration-300 ease-out hover:scale-105"
+                >
                   Login
                 </Button>
-                <Button variant="primary" className="flex-1 text-sm">
+                <Button 
+                  variant="primary" 
+                  className="flex-1 text-sm transition-all duration-300 ease-out hover:scale-105"
+                >
                   Signup
                 </Button>
               </div>

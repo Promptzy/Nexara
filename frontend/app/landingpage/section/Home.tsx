@@ -88,7 +88,7 @@ const Home = () => {
               variant="primary"
               className="px-8 py-4 text-lg font-semibold"
             >
-              Get Started - Free Trial
+             Start Free Trial
             </Button>
 
             <Button
