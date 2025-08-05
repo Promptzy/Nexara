@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Zenjira - AI-Powered Jira Management Platform',
+  title: 'Nexara - AI-Powered Project Management Platform',
   description:
-    'Intelligent automation and AI-driven insights for modern development teams. Transform your Jira workflow with powerful features.',
+    'Intelligent automation and AI-driven insights for modern development teams.',
 }
 
 export default function RootLayout({
