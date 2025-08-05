@@ -71,8 +71,12 @@
 
 /* Custom Tailwind configuration for FlowingMenu component */
 @keyframes marquee {
-  from { transform: translateX(0%); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-marquee {

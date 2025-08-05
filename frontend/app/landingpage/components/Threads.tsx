@@ -1,12 +1,12 @@
-"use client";
-import React, { useEffect, useRef } from "react";
-import { Renderer, Program, Mesh, Triangle, Color } from "ogl";
+'use client'
+import React, { useEffect, useRef } from 'react'
+import { Renderer, Program, Mesh, Triangle, Color } from 'ogl'
 
 interface ThreadsProps {
-  color?: [number, number, number];
-  amplitude?: number;
-  distance?: number;
-  enableMouseInteraction?: boolean;
+  color?: [number, number, number]
+  amplitude?: number
+  distance?: number
+  enableMouseInteraction?: boolean
 }
 
 const vertexShader = `
@@ -17,7 +17,7 @@ void main() {
   vUv = uv;
   gl_Position = vec4(position, 0.0, 1.0);
 }
-`;
+`
 
 const fragmentShader = `
 precision highp float;
@@ -124,7 +124,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 void main() {
     mainImage(gl_FragColor, gl_FragCoord.xy);
 }
-`;
+`
 
 const Threads: React.FC<ThreadsProps> = ({
   color = [1, 1, 1],
@@ -133,21 +133,21 @@ const Threads: React.FC<ThreadsProps> = ({
   enableMouseInteraction = false,
   ...rest
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const animationFrameId = useRef<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
+  const animationFrameId = useRef<number | null>(null)
 
   useEffect(() => {
-    if (!containerRef.current) return;
-    const container = containerRef.current;
+    if (!containerRef.current) return
+    const container = containerRef.current
 
-    const renderer = new Renderer({ alpha: true });
-    const gl = renderer.gl;
-    gl.clearColor(0, 0, 0, 0);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    container.appendChild(gl.canvas);
+    const renderer = new Renderer({ alpha: true })
+    const gl = renderer.gl
+    gl.clearColor(0, 0, 0, 0)
+    gl.enable(gl.BLEND)
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+    container.appendChild(gl.canvas)
 
-    const geometry = new Triangle(gl);
+    const geometry = new Triangle(gl)
     const program = new Program(gl, {
       vertex: vertexShader,
       fragment: fragmentShader,
@@ -165,72 +165,70 @@ const Threads: React.FC<ThreadsProps> = ({
         uDistance: { value: distance },
         uMouse: { value: new Float32Array([0.5, 0.5]) },
       },
-    });
+    })
 
-    const mesh = new Mesh(gl, { geometry, program });
+    const mesh = new Mesh(gl, { geometry, program })
 
     function resize() {
-      const { clientWidth, clientHeight } = container;
-      renderer.setSize(clientWidth, clientHeight);
-      program.uniforms.iResolution.value.r = clientWidth;
-      program.uniforms.iResolution.value.g = clientHeight;
-      program.uniforms.iResolution.value.b = clientWidth / clientHeight;
+      const { clientWidth, clientHeight } = container
+      renderer.setSize(clientWidth, clientHeight)
+      program.uniforms.iResolution.value.r = clientWidth
+      program.uniforms.iResolution.value.g = clientHeight
+      program.uniforms.iResolution.value.b = clientWidth / clientHeight
     }
-    window.addEventListener("resize", resize);
-    resize();
+    window.addEventListener('resize', resize)
+    resize()
 
-    let currentMouse = [0.5, 0.5];
-    let targetMouse = [0.5, 0.5];
+    let currentMouse = [0.5, 0.5]
+    let targetMouse = [0.5, 0.5]
 
     function handleMouseMove(e: MouseEvent) {
-      const rect = container.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = 1.0 - (e.clientY - rect.top) / rect.height;
-      targetMouse = [x, y];
+      const rect = container.getBoundingClientRect()
+      const x = (e.clientX - rect.left) / rect.width
+      const y = 1.0 - (e.clientY - rect.top) / rect.height
+      targetMouse = [x, y]
     }
     function handleMouseLeave() {
-      targetMouse = [0.5, 0.5];
+      targetMouse = [0.5, 0.5]
     }
     if (enableMouseInteraction) {
-      container.addEventListener("mousemove", handleMouseMove);
-      container.addEventListener("mouseleave", handleMouseLeave);
+      container.addEventListener('mousemove', handleMouseMove)
+      container.addEventListener('mouseleave', handleMouseLeave)
     }
 
     function update(t: number) {
       if (enableMouseInteraction) {
-        const smoothing = 0.05;
-        currentMouse[0] += smoothing * (targetMouse[0] - currentMouse[0]);
-        currentMouse[1] += smoothing * (targetMouse[1] - currentMouse[1]);
-        program.uniforms.uMouse.value[0] = currentMouse[0];
-        program.uniforms.uMouse.value[1] = currentMouse[1];
+        const smoothing = 0.05
+        currentMouse[0] += smoothing * (targetMouse[0] - currentMouse[0])
+        currentMouse[1] += smoothing * (targetMouse[1] - currentMouse[1])
+        program.uniforms.uMouse.value[0] = currentMouse[0]
+        program.uniforms.uMouse.value[1] = currentMouse[1]
       } else {
-        program.uniforms.uMouse.value[0] = 0.5;
-        program.uniforms.uMouse.value[1] = 0.5;
+        program.uniforms.uMouse.value[0] = 0.5
+        program.uniforms.uMouse.value[1] = 0.5
       }
-      program.uniforms.iTime.value = t * 0.001;
+      program.uniforms.iTime.value = t * 0.001
 
-      renderer.render({ scene: mesh });
-      animationFrameId.current = requestAnimationFrame(update);
+      renderer.render({ scene: mesh })
+      animationFrameId.current = requestAnimationFrame(update)
     }
-    animationFrameId.current = requestAnimationFrame(update);
+    animationFrameId.current = requestAnimationFrame(update)
 
     return () => {
       if (animationFrameId.current)
-        cancelAnimationFrame(animationFrameId.current);
-      window.removeEventListener("resize", resize);
+        cancelAnimationFrame(animationFrameId.current)
+      window.removeEventListener('resize', resize)
 
       if (enableMouseInteraction) {
-        container.removeEventListener("mousemove", handleMouseMove);
-        container.removeEventListener("mouseleave", handleMouseLeave);
+        container.removeEventListener('mousemove', handleMouseMove)
+        container.removeEventListener('mouseleave', handleMouseLeave)
       }
-      if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
-      gl.getExtension("WEBGL_lose_context")?.loseContext();
-    };
-  }, [color, amplitude, distance, enableMouseInteraction]);
+      if (container.contains(gl.canvas)) container.removeChild(gl.canvas)
+      gl.getExtension('WEBGL_lose_context')?.loseContext()
+    }
+  }, [color, amplitude, distance, enableMouseInteraction])
 
-  return (
-    <div ref={containerRef} className="w-full h-full relative" {...rest} />
-  );
-};
+  return <div ref={containerRef} className="w-full h-full relative" {...rest} />
+}
 
-export default Threads;
+export default Threads
