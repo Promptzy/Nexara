@@ -10,13 +10,9 @@ const compat = new FlatCompat({
 })
 
 const config = [
-  ...compat.extends('next/core-web-vitals'),
-  {
-    files: ['**/*.{js,jsx,ts,tsx}'],
-    rules: {
-      // Add any custom rules here
-    },
-  },
+  ...compat.config({
+    extends: ['next/core-web-vitals'],
+  }),
   {
     ignores: ['.next/**', 'node_modules/**', 'out/**', '.vercel/**'],
   },
