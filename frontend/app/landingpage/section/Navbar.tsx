@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import logo from '../assests/logo-icon-for-dark-bg.svg'
 import Button from '../components/button'
+import Link from 'next/link'
 
 const navlinks = [
   { label: 'Home', href: '/' },
@@ -31,11 +32,13 @@ export default function Navbar() {
         >
           {/* Logo */}
           <div className="flex items-center">
-            <Image
-              src={logo}
-              alt="Zenjira logo"
-              className="h-8 lg:h-10 w-auto transition-all duration-500 ease-out hover:scale-110"
-            />
+            <Link href="/">
+              <Image
+                src={logo}
+                alt="Zenjira logo"
+                className="h-8 lg:h-10 w-auto transition-all duration-500 ease-out hover:scale-110"
+              />
+            </Link>
           </div>
 
           {/* Desktop Navigation Links */}
@@ -86,18 +89,22 @@ export default function Navbar() {
 
             {/* Desktop Buttons */}
             <div className="hidden sm:flex items-center gap-2">
-              <Button
-                variant="secondary"
-                className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 transition-all duration-300 ease-out hover:scale-105 hover:shadow-lg"
-              >
-                Login
-              </Button>
-              <Button
-                variant="primary"
-                className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 transition-all duration-300 ease-out hover:scale-105 hover:shadow-lg"
-              >
-                Signup
-              </Button>
+              <Link href="/login">
+                <Button
+                  variant="secondary"
+                  className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 transition-all duration-300 ease-out hover:scale-105 hover:shadow-lg"
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button
+                  variant="primary"
+                  className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 transition-all duration-300 ease-out hover:scale-105 hover:shadow-lg"
+                >
+                  Signup
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -130,18 +137,24 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="flex gap-2 pt-2">
-                <Button
-                  variant="secondary"
-                  className="flex-1 text-sm transition-all duration-300 ease-out hover:scale-105"
-                >
-                  Login
-                </Button>
-                <Button
-                  variant="primary"
-                  className="flex-1 text-sm transition-all duration-300 ease-out hover:scale-105"
-                >
-                  Signup
-                </Button>
+                <Link href="/login" className="flex-1">
+                  <Button
+                    variant="secondary"
+                    className="w-full text-sm transition-all duration-300 ease-out hover:scale-105"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link href="/signup" className="flex-1">
+                  <Button
+                    variant="primary"
+                    className="w-full text-sm transition-all duration-300 ease-out hover:scale-105"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Signup
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

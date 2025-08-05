@@ -1,7 +1,19 @@
-import React from 'react'
+import { SignupForm } from '@/components/signup-form'
+import Threads from '@/app/landingpage/components/Threads'
 
-const page = () => {
-  return <div>page</div>
+export default function SignupPage() {
+  return (
+    <main className="bg-black min-h-screen relative">
+      <div className="fixed inset-0 w-full h-full z-0">
+        <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
+      </div>
+      <div className="relative z-10 flex min-h-screen items-center justify-center p-6">
+        <div className="w-full max-w-md">
+          <div className="bg-gradient-to-br from-black/70 via-black/60 to-black/70 backdrop-blur-md border border-white/15 rounded-2xl p-8 shadow-xl shadow-black/30 hover:shadow-2xl hover:shadow-black/40 transform hover:scale-105 transition-all duration-700 ease-out">
+            <SignupForm />
+          </div>
+        </div>
+      </div>
+    </main>
+  )
 }
-
-export default page
