@@ -1,43 +1,42 @@
 'use client'
 
 import React from 'react'
-import {
-  Zap,
-  Users,
-  BarChart3,
-  Shield,
-  GitBranch,
-} from 'lucide-react'
+import { Zap, Users, BarChart3, Shield, GitBranch } from 'lucide-react'
 
 const Features = () => {
   const coreFeatures = [
     {
       title: 'AI-Powered Automation',
-      description: 'Intelligent workflow automation that learns and optimizes your processes.',
+      description:
+        'Intelligent workflow automation that learns and optimizes your processes.',
       icon: Zap,
       color: '#3B82F6',
     },
     {
       title: 'Real-time Collaboration',
-      description: 'Work together seamlessly with live updates and instant notifications.',
+      description:
+        'Work together seamlessly with live updates and instant notifications.',
       icon: Users,
       color: '#10B981',
     },
     {
       title: 'Advanced Analytics',
-      description: 'Get deep insights with AI-driven analytics and predictive modeling.',
+      description:
+        'Get deep insights with AI-driven analytics and predictive modeling.',
       icon: BarChart3,
       color: '#F59E0B',
     },
     {
       title: 'Enterprise Security',
-      description: 'SOC 2 compliant with end-to-end encryption and role-based access.',
+      description:
+        'SOC 2 compliant with end-to-end encryption and role-based access.',
       icon: Shield,
       color: '#EF4444',
     },
     {
       title: 'Smart Project Tracking',
-      description: 'Track progress with intelligent milestone detection and automation.',
+      description:
+        'Track progress with intelligent milestone detection and automation.',
       icon: GitBranch,
       color: '#8B5CF6',
     },
@@ -52,7 +51,8 @@ const Features = () => {
             Powerful Features for Modern Teams
           </h2>
           <p className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed mb-16">
-            Everything you need to manage projects efficiently with AI-powered insights
+            Everything you need to manage projects efficiently with AI-powered
+            insights
           </p>
         </div>
 
@@ -78,7 +78,7 @@ const Features = () => {
               <p className="text-white/70 leading-relaxed mb-6">
                 {feature.description}
               </p>
-              <button 
+              <button
                 className="px-6 py-3 bg-white/10 border border-white/20 text-white font-medium rounded-xl hover:bg-white/20 transition-colors duration-300 group-hover:border-white/40"
                 style={{ color: feature.color }}
               >
@@ -95,7 +95,8 @@ const Features = () => {
               Ready to Transform Your Workflow?
             </h3>
             <p className="text-xl text-white/70 mb-8 max-w-2xl mx-auto">
-              Join thousands of teams already using Nexara to streamline their project management
+              Join thousands of teams already using Nexara to streamline their
+              project management
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="px-8 py-4 bg-white text-black font-semibold rounded-2xl hover:bg-white/90 transition-colors duration-300">

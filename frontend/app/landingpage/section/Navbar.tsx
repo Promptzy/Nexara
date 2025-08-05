@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import logo from '../assests/logo-icon-for-dark-bg.svg'
 import Button from '../components/button'
@@ -12,53 +12,29 @@ const navlinks = [
 ]
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY
-      setIsScrolled(scrollY > 50)
-    }
-
-    // Throttle scroll events for better performance
-    let ticking = false
-    const throttledHandleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          handleScroll()
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-
-    window.addEventListener('scroll', throttledHandleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', throttledHandleScroll)
-  }, [])
-
   return (
-    <section className="py-4 fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out">
+    <section className="py-4 fixed top-0 left-0 right-0 z-50">
       <div className="container mx-auto px-4">
         <div
           className={`
-                    border border-white/15 rounded-full p-2 px-4 items-center backdrop-blur-md
-                    transition-all duration-700 ease-out
-                    ${isScrolled 
-                      ? 'w-full bg-black/90 shadow-lg shadow-black/20' 
-                      : 'w-fit mx-auto max-w-2xl bg-black/60 hover:bg-black/70'
-                    }
-                    grid grid-cols-2 lg:grid-cols-3
-                `}
+            border border-white/15 rounded-full p-2 px-4 items-center backdrop-blur-md
+            w-fit mx-auto max-w-2xl bg-gradient-to-r from-black/70 via-black/60 to-black/70
+            hover:from-black/80 hover:via-black/70 hover:to-black/80
+            shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40
+            transform hover:scale-105 hover:-translate-y-1
+            transition-all duration-700 ease-out
+            grid grid-cols-2 lg:grid-cols-3
+            animate-float
+          `}
         >
           {/* Logo */}
           <div className="flex items-center">
             <Image
               src={logo}
               alt="Zenjira logo"
-              className={`transition-all duration-500 ease-out ${
-                isScrolled ? 'h-8 lg:h-9' : 'h-8 lg:h-10'
-              } w-auto`}
+              className="h-8 lg:h-10 w-auto transition-all duration-500 ease-out hover:scale-110"
             />
           </div>
 
@@ -70,11 +46,11 @@ export default function Navbar() {
                 href={link.href}
                 className="text-white/80 hover:text-white transition-all duration-300 ease-out text-sm font-medium relative group"
                 style={{
-                  transitionDelay: `${index * 50}ms`
+                  transitionDelay: `${index * 50}ms`,
                 }}
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 ease-out group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-white to-white/70 transition-all duration-300 ease-out group-hover:w-full"></span>
               </a>
             ))}
           </div>
@@ -83,7 +59,7 @@ export default function Navbar() {
           <div className="flex justify-end items-center gap-2">
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-all duration-300 ease-out"
+              className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-all duration-300 ease-out hover:scale-110"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               <svg
@@ -97,7 +73,9 @@ export default function Navbar() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className={`transition-all duration-500 ease-out ${
-                  isMobileMenuOpen ? 'rotate-180 scale-110' : 'rotate-0 scale-100'
+                  isMobileMenuOpen
+                    ? 'rotate-180 scale-110'
+                    : 'rotate-0 scale-100'
                 }`}
               >
                 <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -110,13 +88,13 @@ export default function Navbar() {
             <div className="hidden sm:flex items-center gap-2">
               <Button
                 variant="secondary"
-                className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 transition-all duration-300 ease-out hover:scale-105"
+                className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 transition-all duration-300 ease-out hover:scale-105 hover:shadow-lg"
               >
                 Login
               </Button>
               <Button
                 variant="primary"
-                className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 transition-all duration-300 ease-out hover:scale-105"
+                className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 transition-all duration-300 ease-out hover:scale-105 hover:shadow-lg"
               >
                 Signup
               </Button>
@@ -127,14 +105,15 @@ export default function Navbar() {
         {/* Mobile Menu */}
         <div
           className={`
-                    lg:hidden mt-4 overflow-hidden transition-all duration-500 ease-out
-                    ${isMobileMenuOpen 
-                      ? 'max-h-96 opacity-100 translate-y-0' 
-                      : 'max-h-0 opacity-0 -translate-y-4'
-                    }
-                `}
+            lg:hidden mt-4 overflow-hidden transition-all duration-500 ease-out
+            ${
+              isMobileMenuOpen
+                ? 'max-h-96 opacity-100 translate-y-0'
+                : 'max-h-0 opacity-0 -translate-y-4'
+            }
+          `}
         >
-          <div className="bg-black/90 backdrop-blur-md border border-white/15 rounded-2xl p-4 transform transition-all duration-500 ease-out">
+          <div className="bg-gradient-to-br from-black/90 via-black/80 to-black/90 backdrop-blur-md border border-white/15 rounded-2xl p-4 transform transition-all duration-500 ease-out shadow-xl">
             <div className="flex flex-col space-y-4">
               {navlinks.map((link, index) => (
                 <a
@@ -142,23 +121,23 @@ export default function Navbar() {
                   href={link.href}
                   className="text-white/80 hover:text-white transition-all duration-300 ease-out py-2 text-center relative group"
                   style={{
-                    transitionDelay: `${index * 100}ms`
+                    transitionDelay: `${index * 100}ms`,
                   }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.label}
-                  <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-white transition-all duration-300 ease-out group-hover:w-full group-hover:left-0"></span>
+                  <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-white to-white/70 transition-all duration-300 ease-out group-hover:w-full group-hover:left-0"></span>
                 </a>
               ))}
               <div className="flex gap-2 pt-2">
-                <Button 
-                  variant="secondary" 
+                <Button
+                  variant="secondary"
                   className="flex-1 text-sm transition-all duration-300 ease-out hover:scale-105"
                 >
                   Login
                 </Button>
-                <Button 
-                  variant="primary" 
+                <Button
+                  variant="primary"
                   className="flex-1 text-sm transition-all duration-300 ease-out hover:scale-105"
                 >
                   Signup
@@ -168,6 +147,22 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+        }
+
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   )
 }

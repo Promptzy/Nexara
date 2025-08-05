@@ -78,19 +78,16 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <div className="flex items-center mb-4">
-              <Image
-                src={logo}
-                alt="Nexara logo"
-                className="h-8 w-auto mr-3"
-              />
+              <Image src={logo} alt="Nexara logo" className="h-8 w-auto mr-3" />
               <span className="text-white text-xl font-semibold">Nexara</span>
             </div>
             <p className="text-white/70 text-sm leading-relaxed mb-6 max-w-md">
-              Streamline your project management with intelligent automation, 
-              seamless collaboration, and powerful insights. Transform how your team works.
+              Streamline your project management with intelligent automation,
+              seamless collaboration, and powerful insights. Transform how your
+              team works.
             </p>
             <div className="flex space-x-4">
-              {socialLinks.map((social) => (
+              {socialLinks.map(social => (
                 <a
                   key={social.name}
                   href={social.href}
@@ -113,7 +110,7 @@ export default function Footer() {
               Product
             </h3>
             <ul className="space-y-3">
-              {footerLinks.product.map((link) => (
+              {footerLinks.product.map(link => (
                 <li key={link.label}>
                   <a
                     href={link.href}
@@ -133,7 +130,7 @@ export default function Footer() {
               Company
             </h3>
             <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
+              {footerLinks.company.map(link => (
                 <li key={link.label}>
                   <a
                     href={link.href}
@@ -153,7 +150,7 @@ export default function Footer() {
               Support
             </h3>
             <ul className="space-y-3">
-              {footerLinks.support.map((link) => (
+              {footerLinks.support.map(link => (
                 <li key={link.label}>
                   <a
                     href={link.href}
@@ -173,7 +170,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             {/* Legal Links */}
             <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm">
-              {footerLinks.legal.map((link) => (
+              {footerLinks.legal.map(link => (
                 <a
                   key={link.label}
                   href={link.href}
