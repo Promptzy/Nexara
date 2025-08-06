@@ -1,10 +1,10 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import { ArrowUp } from 'lucide-react'
 
 export default function BackToTopInlineButton() {
   const [isVisible, setIsVisible] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
     const toggleVisibility = () => {
@@ -24,6 +24,8 @@ export default function BackToTopInlineButton() {
   return (
     <button
       onClick={scrollToTop}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
         position: 'fixed',
         bottom: 30,
@@ -31,7 +33,7 @@ export default function BackToTopInlineButton() {
         zIndex: 1000,
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
         backdropFilter: 'blur(6px)',
-        border: 'none',
+        border: isHovered ? '2px solid white' : 'none',  // border on hover
         borderRadius: '50%',
         width: 50,
         height: 50,
@@ -39,6 +41,7 @@ export default function BackToTopInlineButton() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        transition: 'border 0.3s ease',  // smooth border transition
       }}
     >
       <ArrowUp size={24} color="white" />
