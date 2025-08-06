@@ -33,7 +33,7 @@ export default function BackToTopInlineButton() {
         zIndex: 1000,
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
         backdropFilter: 'blur(6px)',
-        border: isHovered ? '2px solid white' : 'none',  // border on hover
+        border: isHovered ? '2px solid white' : 'none', // border on hover
         borderRadius: '50%',
         width: 50,
         height: 50,
@@ -41,7 +41,7 @@ export default function BackToTopInlineButton() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        transition: 'border 0.3s ease',  // smooth border transition
+        transition: 'border 0.3s ease', // smooth border transition
       }}
     >
       <ArrowUp size={24} color="white" />
