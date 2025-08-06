@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { LoadingProvider } from '@/components/providers/LoadingProvider'
-import BackToTopWrapper from '@/components/BackToTopWrapper' // ✅ Your wrapper component
+import BackToTopInlineButton from '@/components/BackToTopInlineButton'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,7 +33,7 @@ export default function RootLayout({
       >
         <LoadingProvider>
           {children}
-          <BackToTopWrapper /> {/* ✅ This mounts your client-side back to top button */}
+          <BackToTopInlineButton />
         </LoadingProvider>
       </body>
     </html>
