@@ -1,4 +1,21 @@
-### AI-Powered Project Management Platform
+<div align="center">
+
+# AI-Powered Project Management Platform
+
+</div>
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/assets/logos/logo-icon-for-dark-bg.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="public/assets/logos/logo-icon-for-light-bg.svg" />
+    <img
+      alt="Zenjira Logo"
+      src="public/assets/logos/logo-icon-for-light-bg.svg"
+      style="width: 200px; height: auto;" />
+  </picture>
+</p>
+
+<div align="center">
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Slack](https://img.shields.io/badge/slack-join%20community-blueviolet.svg)](https://join.slack.com/t/promptzy/shared_invite/zt-3acy22kkh-R~nMYTl7op_MF5UaLnwdsA)
@@ -7,8 +24,11 @@
 [![Automation Status](https://img.shields.io/badge/automation-fully%20active-green.svg)](#-automated-contribution-system)
 
 *Intelligent automation and AI-driven insights for modern development teams*
+</div>
+
 
 ---
+
 
 ## 🤖 Automated Contribution System
 
