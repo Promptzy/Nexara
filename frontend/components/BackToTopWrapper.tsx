@@ -7,11 +7,7 @@ export default function BackToTopButton() {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true)
-      } else {
-        setIsVisible(false)
-      }
+      setIsVisible(window.scrollY > 300)
     }
 
     window.addEventListener('scroll', toggleVisibility)
@@ -25,25 +21,52 @@ export default function BackToTopButton() {
   if (!isVisible) return null
 
   return (
-    <button
-      onClick={scrollToTop}
-      style={{
-        position: 'fixed',
-        bottom: 30,
-        right: 30,
-        zIndex: 1000,
-        backgroundColor: '#007bff',
-        color: 'white',
-        border: 'none',
-        borderRadius: '50%',
-        width: 50,
-        height: 50,
-        fontSize: 24,
-        cursor: 'pointer',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-      }}
-    >
-      ↑
-    </button>
+    <>
+      <style>
+        {`
+          @keyframes gradient-x {
+            0% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
+            100% {
+              background-position: 0% 50%;
+            }
+          }
+
+          .gradient-text {
+            background: linear-gradient(to right, #a78bfa, #60a5fa, #c084fc);
+            background-size: 200% 200%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-x 4s ease infinite;
+          }
+
+          .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            border: none;
+            border-radius: 50%;
+            width: 52px;
+            height: 52px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+          }
+        `}
+      </style>
+
+      <button onClick={scrollToTop} className="back-to-top">
+        <span className="gradient-text">↑</span>
+      </button>
+    </>
   )
 }
