@@ -9,7 +9,7 @@
     <source media="(prefers-color-scheme: dark)" srcset="public/assets/logos/logo-icon-for-dark-bg.svg" />
     <source media="(prefers-color-scheme: light)" srcset="public/assets/logos/logo-icon-for-light-bg.svg" />
     <img
-      alt="Zenjira Logo"
+      alt="Nexara Logo"
       src="public/assets/logos/logo-icon-for-light-bg.svg"
       style="width: 200px; height: auto;" />
   </picture>
@@ -233,7 +233,7 @@ Connect with fellow developers, get technical support, and stay updated on the l
 
 ```mermaid
 gantt
-    title Zenjira Development Timeline
+    title Nexara Development Timeline
     dateFormat  MM-DD
     section Phase 1
     Jira Clone Foundation    :active, p1, 08-01, 08-31
@@ -283,8 +283,8 @@ gantt
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-org/zenjira.git
-   cd zenjira
+   git clone https://github.com/your-org/Nexara.git
+   cd Nexara
    ```
 
 2. **Install dependencies**
@@ -436,7 +436,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Built with ❤️ by the Zenjira Team**
+**Built with ❤️ by the Nexara Team**
 
 *Transforming development workflows, one sprint at a time.*
 
