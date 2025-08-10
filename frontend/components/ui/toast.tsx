@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -12,36 +12,54 @@ interface ToastConfig {
   borderColor: string
   textColor: string
   iconColor: string
+  borderRadius: string
+  borderStyle: string
+  shadowStyle: string
 }
 
 const toastConfigs: Record<ToastType, ToastConfig> = {
   success: {
     icon: CheckCircle,
-    bgColor: 'bg-gradient-to-br from-black/80 via-black/70 to-black/80',
-    borderColor: 'border-white/15',
-    textColor: 'text-white/80',
+    bgColor:
+      'bg-gradient-to-br from-green-900/80 via-green-800/70 to-green-900/80',
+    borderColor: 'border-green-500/30',
+    textColor: 'text-green-100',
     iconColor: 'text-green-400',
+    borderRadius: 'rounded-2xl',
+    borderStyle: 'border border-green-500/20',
+    shadowStyle: 'shadow-lg shadow-green-500/10',
   },
   error: {
     icon: AlertCircle,
-    bgColor: 'bg-gradient-to-br from-black/80 via-black/70 to-black/80',
-    borderColor: 'border-white/15',
-    textColor: 'text-white/80',
+    bgColor: 'bg-gradient-to-br from-red-900/80 via-red-800/70 to-red-900/80',
+    borderColor: 'border-red-500/30',
+    textColor: 'text-red-100',
     iconColor: 'text-red-400',
+    borderRadius: 'rounded-2xl',
+    borderStyle: 'border border-red-500/20',
+    shadowStyle: 'shadow-lg shadow-red-500/10',
   },
   warning: {
     icon: AlertTriangle,
-    bgColor: 'bg-gradient-to-br from-black/80 via-black/70 to-black/80',
-    borderColor: 'border-white/15',
-    textColor: 'text-white/80',
+    bgColor:
+      'bg-gradient-to-br from-yellow-900/80 via-yellow-800/70 to-yellow-900/80',
+    borderColor: 'border-yellow-500/30',
+    textColor: 'text-yellow-100',
     iconColor: 'text-yellow-400',
+    borderRadius: 'rounded-2xl',
+    borderStyle: 'border border-yellow-500/20',
+    shadowStyle: 'shadow-lg shadow-yellow-500/10',
   },
   info: {
     icon: Info,
-    bgColor: 'bg-gradient-to-br from-black/80 via-black/70 to-black/80',
-    borderColor: 'border-white/15',
-    textColor: 'text-white/80',
+    bgColor:
+      'bg-gradient-to-br from-blue-900/80 via-blue-800/70 to-blue-900/80',
+    borderColor: 'border-blue-500/30',
+    textColor: 'text-blue-100',
     iconColor: 'text-blue-400',
+    borderRadius: 'rounded-2xl',
+    borderStyle: 'border border-blue-500/20',
+    shadowStyle: 'shadow-lg shadow-blue-500/10',
   },
 }
 
@@ -52,6 +70,7 @@ export interface Toast {
   title: string
   message?: string
   duration?: number
+  isRemoving?: boolean
   action?: {
     label: string
     onClick: () => void
@@ -91,7 +110,16 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   }
 
   const removeToast = (id: string) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id))
+    setToasts(prev =>
+      prev.map(toast =>
+        toast.id === id ? { ...toast, isRemoving: true } : toast
+      )
+    )
+
+    // Remove from DOM after animation completes
+    setTimeout(() => {
+      setToasts(prev => prev.filter(toast => toast.id !== id))
+    }, 250)
   }
 
   const clearToasts = () => {
@@ -131,27 +159,37 @@ function ToastItem({
   return (
     <div
       className={cn(
-        'relative flex items-start gap-4 p-8 rounded-2xl border backdrop-blur-md transition-all duration-300 transform',
-        'animate-in slide-in-from-right-full',
+        'relative flex items-start gap-4 p-6 backdrop-blur-md transition-all duration-300 ease-out transform',
+        toast.isRemoving
+          ? 'slide-out-to-top-center'
+          : 'animate-in slide-in-from-top-center',
         config.bgColor,
+        config.borderRadius,
+        config.borderStyle,
         config.borderColor,
-        'hover:scale-105 hover:shadow-lg'
+        'hover:scale-[1.02] hover:shadow-xl',
+        toast.isRemoving ? '' : config.shadowStyle
       )}
     >
       {/* Icon */}
-      <div className={cn('flex-shrink-0 mt-0.5', config.iconColor)}>
-        <Icon className="w-6 h-6" />
+      <div
+        className={cn(
+          'flex-shrink-0 mt-1 p-2 rounded-lg bg-white/5 backdrop-blur-sm',
+          config.iconColor
+        )}
+      >
+        <Icon className="w-5 h-5" />
       </div>
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        <h4 className={cn('font-medium text-lg mb-2', config.textColor)}>
+        <h4 className={cn('font-semibold text-base mb-1', config.textColor)}>
           {toast.title}
         </h4>
         {toast.message && (
           <p
             className={cn(
-              'text-sm opacity-80 leading-relaxed',
+              'text-sm opacity-90 leading-relaxed',
               config.textColor
             )}
           >
@@ -162,7 +200,7 @@ function ToastItem({
           <button
             onClick={toast.action.onClick}
             className={cn(
-              'mt-3 text-sm font-medium underline underline-offset-2 hover:opacity-80 transition-opacity',
+              'mt-2 text-sm font-medium text-blue-300 hover:text-blue-200 transition-colors',
               config.textColor
             )}
           >
@@ -175,7 +213,7 @@ function ToastItem({
       <button
         onClick={() => onRemove(toast.id)}
         className={cn(
-          'flex-shrink-0 p-1 rounded-lg hover:bg-white/10 transition-colors',
+          'flex-shrink-0 p-1.5 rounded-md hover:bg-white/10 transition-colors',
           config.textColor
         )}
       >
@@ -188,7 +226,7 @@ function ToastItem({
           <div
             className={cn(
               'h-full transition-all duration-300 ease-linear',
-              config.borderColor.replace('/15', '/40')
+              config.borderColor.replace('/20', '/50')
             )}
             style={{
               animation: `shrink ${toast.duration}ms linear forwards`,
@@ -233,38 +271,4 @@ export function useToastHelpers() {
       addToast({ type: 'info', title, message, ...options })
     },
   }
-}
-
-// Add CSS animations
-const style = document.createElement('style')
-style.textContent = `
-  @keyframes shrink {
-    from { width: 100%; }
-    to { width: 0%; }
-  }
-  
-  @keyframes slide-in-from-right-full {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-  
-  .animate-in {
-    animation-fill-mode: both;
-  }
-  
-  .slide-in-from-right-full {
-    animation-name: slide-in-from-right-full;
-    animation-duration: 300ms;
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  }
-`
-
-if (typeof document !== 'undefined') {
-  document.head.appendChild(style)
 }
