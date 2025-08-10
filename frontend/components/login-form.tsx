@@ -3,6 +3,7 @@ import { GalleryVerticalEnd } from 'lucide-react'
 import Image from 'next/image'
 import logo from '@/app/landingpage/assests/logo-icon-for-dark-bg.svg'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -10,12 +11,17 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ButtonLoading } from '@/components/ui/loading'
 import { useLoadingState } from '@/hooks/useLoadingState'
+import { useToastMessage } from '@/hooks/useToastMessage'
+import { apiService } from '@/lib/api'
+import { authManager } from '@/lib/auth'
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
   const { isLoading, withLoading } = useLoadingState()
+  const router = useRouter()
+  const showToast = useToastMessage()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -25,11 +31,26 @@ export function LoginForm({
     e.preventDefault()
 
     await withLoading(async () => {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      // Handle login logic here
-      console.log('Login attempt:', formData)
-      return true
+      try {
+        const response = await apiService.login(formData)
+
+        // Store authentication data
+        authManager.login(response.data.token, response.data.user)
+
+        // Show success toast
+        showToast.success('Login successful!', 'Welcome back to Zenjira')
+
+        // Redirect to dashboard
+        router.push('/userdashboard')
+        return true
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : 'Login failed. Please try again.'
+        showToast.error('Login failed', errorMessage)
+        return false
+      }
     })
   }
 
@@ -71,6 +92,7 @@ export function LoginForm({
               </a>
             </div>
           </div>
+
           <div className="flex flex-col gap-6">
             <div className="grid gap-3">
               <Label

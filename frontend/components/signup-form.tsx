@@ -3,6 +3,7 @@ import { GalleryVerticalEnd } from 'lucide-react'
 import Image from 'next/image'
 import logo from '@/app/landingpage/assests/logo-icon-for-dark-bg.svg'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -10,28 +11,71 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ButtonLoading } from '@/components/ui/loading'
 import { useLoadingState } from '@/hooks/useLoadingState'
+import { useToastMessage } from '@/hooks/useToastMessage'
+import { apiService } from '@/lib/api'
+import { authManager } from '@/lib/auth'
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
   const { isLoading, withLoading } = useLoadingState()
+  const router = useRouter()
+  const showToast = useToastMessage()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
   })
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({})
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setValidationErrors({})
+
+    // Client-side validation
+    const errors: Record<string, string> = {}
+
+    if (formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = 'Passwords do not match'
+    }
+
+    if (formData.password.length < 8) {
+      errors.password = 'Password must be at least 8 characters long'
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors)
+      return
+    }
 
     await withLoading(async () => {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      // Handle signup logic here
-      console.log('Signup attempt:', formData)
-      return true
+      try {
+        const signupData = {
+          email: formData.email,
+          password: formData.password,
+          username: formData.name || undefined,
+        }
+
+        const response = await apiService.signup(signupData)
+
+        // Show success toast
+        showToast.success('Account created!', 'Please log in to continue')
+
+        // Redirect to login page
+        router.push('/login')
+        return true
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : 'Signup failed. Please try again.'
+        showToast.error('Signup failed', errorMessage)
+        return false
+      }
     })
   }
 
@@ -73,6 +117,7 @@ export function SignupForm({
               </a>
             </div>
           </div>
+
           <div className="flex flex-col gap-6">
             <div className="grid gap-3">
               <Label
@@ -128,8 +173,17 @@ export function SignupForm({
                 value={formData.password}
                 onChange={handleInputChange}
                 disabled={isLoading}
-                className="bg-white/5 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400/20 disabled:opacity-50"
+                className={`bg-white/5 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400/20 disabled:opacity-50 ${
+                  validationErrors.password
+                    ? 'border-red-500/50 focus:border-red-400 focus:ring-red-400/20'
+                    : ''
+                }`}
               />
+              {validationErrors.password && (
+                <p className="text-red-400 text-xs">
+                  {validationErrors.password}
+                </p>
+              )}
             </div>
             <div className="grid gap-3">
               <Label
@@ -147,8 +201,17 @@ export function SignupForm({
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
                 disabled={isLoading}
-                className="bg-white/5 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400/20 disabled:opacity-50"
+                className={`bg-white/5 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400/20 disabled:opacity-50 ${
+                  validationErrors.confirmPassword
+                    ? 'border-red-500/50 focus:border-red-400 focus:ring-red-400/20'
+                    : ''
+                }`}
               />
+              {validationErrors.confirmPassword && (
+                <p className="text-red-400 text-xs">
+                  {validationErrors.confirmPassword}
+                </p>
+              )}
             </div>
             <Button
               type="submit"

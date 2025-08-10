@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { LoadingProvider } from '@/components/providers/LoadingProvider'
+import { ToastProvider } from '@/components/ui/toast'
 import BackToTopInlineButton from '@/components/BackToTopInlineButton'
 
 const geistSans = Geist({
@@ -32,8 +33,10 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <LoadingProvider>
-          {children}
-          <BackToTopInlineButton />
+          <ToastProvider>
+            {children}
+            <BackToTopInlineButton />
+          </ToastProvider>
         </LoadingProvider>
       </body>
     </html>

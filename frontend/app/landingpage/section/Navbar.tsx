@@ -9,6 +9,7 @@ const navlinks = [
   { label: 'Home', href: '/' },
   { label: 'Features', href: '/features' },
   { label: 'Integrations', href: '/integrations' },
+  { label: 'Toast Demo', href: '/toast-demo' },
   { label: 'FAQ', href: '/faq' },
 ]
 
