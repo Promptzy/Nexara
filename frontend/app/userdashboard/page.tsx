@@ -1,19 +1,30 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { PageLoading, ContentLoading } from '@/components/ui/page-loading'
-import { Loading } from '@/components/ui/loading'
+import { PageLoading } from '@/components/ui/page-loading'
 import Threads from '@/app/landingpage/components/Threads'
+
+// Types
+interface Project {
+  id: number
+  name: string
+  status: 'active' | 'completed' | 'pending'
+}
+
+interface UserData {
+  name: string
+  email: string
+  projects: Project[]
+}
 
 export default function UserDashboard() {
   const [isLoading, setIsLoading] = useState(true)
-  const [userData, setUserData] = useState<any>(null)
+  const [userData, setUserData] = useState<UserData | null>(null)
 
   useEffect(() => {
-    // Simulate loading user data
     const loadUserData = async () => {
       try {
-        await new Promise(resolve => setTimeout(resolve, 2000))
+        await new Promise(resolve => setTimeout(resolve, 2000)) // Simulate API delay
         setUserData({
           name: 'John Doe',
           email: 'john@example.com',
@@ -37,6 +48,10 @@ export default function UserDashboard() {
     return <PageLoading message="Loading your dashboard..." />
   }
 
+  const activeCount = userData?.projects.filter(p => p.status === 'active').length || 0
+  const completedCount = userData?.projects.filter(p => p.status === 'completed').length || 0
+  const inProgressCount = userData?.projects.filter(p => p.status === 'pending').length || 0
+
   return (
     <main className="bg-black min-h-screen relative">
       <div className="fixed inset-0 w-full h-full z-0">
@@ -45,6 +60,7 @@ export default function UserDashboard() {
       <div className="relative z-10">
         <div className="container mx-auto px-6 py-8">
           <div className="max-w-6xl mx-auto">
+
             {/* Header */}
             <div className="mb-8">
               <h1 className="text-4xl font-bold text-white mb-2">
@@ -57,77 +73,32 @@ export default function UserDashboard() {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-md border border-white/15 rounded-2xl p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white/60 text-sm">Active Projects</p>
-                    <p className="text-3xl font-bold text-white">3</p>
-                  </div>
-                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center">
-                    <svg
-                      className="w-6 h-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
+              {/* Active Projects */}
+              <StatCard
+                title="Active Projects"
+                count={activeCount}
+                gradientFrom="purple-500"
+                gradientTo="blue-500"
+                iconPath="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
 
-              <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 backdrop-blur-md border border-white/15 rounded-2xl p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white/60 text-sm">Completed</p>
-                    <p className="text-3xl font-bold text-white">12</p>
-                  </div>
-                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
-                    <svg
-                      className="w-6 h-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
+              {/* Completed */}
+              <StatCard
+                title="Completed"
+                count={completedCount}
+                gradientFrom="green-500"
+                gradientTo="emerald-500"
+                iconPath="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
 
-              <div className="bg-gradient-to-br from-orange-500/20 to-red-500/20 backdrop-blur-md border border-white/15 rounded-2xl p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white/60 text-sm">In Progress</p>
-                    <p className="text-3xl font-bold text-white">5</p>
-                  </div>
-                  <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
-                    <svg
-                      className="w-6 h-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
+              {/* In Progress */}
+              <StatCard
+                title="In Progress"
+                count={inProgressCount}
+                gradientFrom="orange-500"
+                gradientTo="red-500"
+                iconPath="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </div>
 
             {/* Projects Section */}
@@ -140,19 +111,15 @@ export default function UserDashboard() {
               </div>
 
               <div className="space-y-4">
-                {userData?.projects.map((project: any) => (
+                {userData?.projects.map(project => (
                   <div
                     key={project.id}
                     className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-white font-semibold">
-                          {project.name}
-                        </h3>
-                        <p className="text-white/60 text-sm">
-                          Last updated 2 hours ago
-                        </p>
+                        <h3 className="text-white font-semibold">{project.name}</h3>
+                        <p className="text-white/60 text-sm">Last updated 2 hours ago</p> {/* Placeholder */}
                       </div>
                       <div className="flex items-center gap-2">
                         <span
@@ -160,8 +127,8 @@ export default function UserDashboard() {
                             project.status === 'active'
                               ? 'bg-green-500/20 text-green-400'
                               : project.status === 'completed'
-                                ? 'bg-blue-500/20 text-blue-400'
-                                : 'bg-orange-500/20 text-orange-400'
+                              ? 'bg-blue-500/20 text-blue-400'
+                              : 'bg-orange-500/20 text-orange-400'
                           }`}
                         >
                           {project.status}
@@ -187,9 +154,46 @@ export default function UserDashboard() {
                 ))}
               </div>
             </div>
+
           </div>
         </div>
       </div>
     </main>
+  )
+}
+
+// 📦 Reusable StatCard Component
+function StatCard({
+  title,
+  count,
+  gradientFrom,
+  gradientTo,
+  iconPath,
+}: {
+  title: string
+  count: number
+  gradientFrom: string
+  gradientTo: string
+  iconPath: string
+}) {
+  return (
+    <div className={`bg-gradient-to-br from-${gradientFrom}/20 to-${gradientTo}/20 backdrop-blur-md border border-white/15 rounded-2xl p-6`}>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-white/60 text-sm">{title}</p>
+          <p className="text-3xl font-bold text-white">{count}</p>
+        </div>
+        <div className={`w-12 h-12 bg-gradient-to-r from-${gradientFrom} to-${gradientTo} rounded-xl flex items-center justify-center`}>
+          <svg
+            className="w-6 h-6 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={iconPath} />
+          </svg>
+        </div>
+      </div>
+    </div>
   )
 }

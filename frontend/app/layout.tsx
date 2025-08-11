@@ -1,8 +1,12 @@
+'use client'
+
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { LoadingProvider } from '@/components/providers/LoadingProvider'
 import BackToTopInlineButton from '@/components/BackToTopInlineButton'
+import Leaderboard from '@/components/Leaderboard'
+import { usePathname } from 'next/navigation'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -25,6 +29,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const pathname = usePathname()
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -32,7 +38,8 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <LoadingProvider>
-          {children}
+          {/* Show leaderboard only on /leaderboard */}
+          {pathname === '/leaderboard' ? <Leaderboard /> : children}
           <BackToTopInlineButton />
         </LoadingProvider>
       </body>
