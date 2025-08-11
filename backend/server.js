@@ -34,7 +34,6 @@ app.use('/api/auth', authRoutes);
 const leaderboardRoutes = require('./routes/leaderboard.routes');
 app.use('/api/leaderboard', leaderboardRoutes);
 
-
 const {
   globalErrorHandler,
   handleNotFound,

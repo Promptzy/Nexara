@@ -1,4 +1,4 @@
-const { getRegularContributors } = require("../services/leaderboard.service");
+const { getRegularContributors } = require('../services/leaderboard.service');
 
 async function getDevsLeaderboard(req, res) {
   try {

@@ -1,7 +1,7 @@
-const axios = require("axios");
+const axios = require('axios');
 
-const owner = "Promptzy";
-const repo = "Nexara";
+const owner = 'Promptzy';
+const repo = 'Nexara';
 
 async function getRegularContributors() {
   try {
@@ -12,12 +12,12 @@ async function getRegularContributors() {
     );
 
     let contributors = contributorsRes.data
-      .filter(c => !c.login.toLowerCase().includes("gssoc"))
-      .filter(c => !c.login.includes("[bot]"));
+      .filter(c => !c.login.toLowerCase().includes('gssoc'))
+      .filter(c => !c.login.includes('[bot]'));
 
     // 2️⃣ Fetch commits + issues closed for each contributor
     const results = await Promise.all(
-      contributors.map(async (contributor) => {
+      contributors.map(async contributor => {
         const username = contributor.login;
 
         // Commits count (same as PRs + direct commits)
@@ -41,7 +41,7 @@ async function getRegularContributors() {
 
     return results;
   } catch (error) {
-    console.error("Error fetching contributors:", error.message);
+    console.error('Error fetching contributors:', error.message);
     return [];
   }
 }
