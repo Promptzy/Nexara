@@ -1,5 +1,5 @@
-"use client"
-import FlowingMenu from "../components/FlowingMenu"
+'use client'
+import FlowingMenu from '../components/FlowingMenu'
 import {
   CheckSquare,
   Users,
@@ -19,21 +19,21 @@ import {
   Brain,
   CheckCircle,
   Bolt,
-} from "lucide-react"
+} from 'lucide-react'
 
 const HomeContent = () => {
   const demoItems = [
     {
-      link: "#",
-      text: "Task Management",
+      link: '#',
+      text: 'Task Management',
       image: CheckSquare,
-      color: "#3B82F6",
+      color: '#3B82F6',
     },
-    { link: "#", text: "Team Collaboration", image: Users, color: "#10B981" },
-    { link: "#", text: "AI Analytics", image: BarChart3, color: "#F59E0B" },
-    { link: "#", text: "Workflow Automation", image: Zap, color: "#EF4444" },
-    { link: "#", text: "Project Tracking", image: GitBranch, color: "#8B5CF6" },
-    { link: "#", text: "Real-time Updates", image: Clock, color: "#06B6D4" },
+    { link: '#', text: 'Team Collaboration', image: Users, color: '#10B981' },
+    { link: '#', text: 'AI Analytics', image: BarChart3, color: '#F59E0B' },
+    { link: '#', text: 'Workflow Automation', image: Zap, color: '#EF4444' },
+    { link: '#', text: 'Project Tracking', image: GitBranch, color: '#8B5CF6' },
+    { link: '#', text: 'Real-time Updates', image: Clock, color: '#06B6D4' },
   ]
 
   return (
@@ -64,7 +64,8 @@ const HomeContent = () => {
           </h1>
 
           <p className="text-2xl md:text-3xl text-white/70 max-w-4xl mx-auto mb-12 leading-relaxed">
-            The most advanced project management platform that transforms how teams collaborate and deliver results
+            The most advanced project management platform that transforms how
+            teams collaborate and deliver results
           </p>
 
           {/* CTA Buttons */}
@@ -124,12 +125,15 @@ const HomeContent = () => {
               <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-300">
                 <Brain className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-3xl font-bold text-white mb-6">AI Intelligence</h3>
+              <h3 className="text-3xl font-bold text-white mb-6">
+                AI Intelligence
+              </h3>
               <p className="text-white/70 text-lg leading-relaxed mb-6">
-                Advanced machine learning that predicts project outcomes and optimizes workflows automatically for maximum efficiency.
+                Advanced machine learning that predicts project outcomes and
+                optimizes workflows automatically for maximum efficiency.
               </p>
               <button className="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-2 mx-auto group">
-                Learn More 
+                Learn More
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -139,12 +143,15 @@ const HomeContent = () => {
               <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-300">
                 <Bolt className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-3xl font-bold text-white mb-6">Lightning Speed</h3>
+              <h3 className="text-3xl font-bold text-white mb-6">
+                Lightning Speed
+              </h3>
               <p className="text-white/70 text-lg leading-relaxed mb-6">
-                Sub-50ms response times with real-time collaboration that keeps your team in perfect sync across the globe.
+                Sub-50ms response times with real-time collaboration that keeps
+                your team in perfect sync across the globe.
               </p>
               <button className="text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-2 mx-auto group">
-                Learn More 
+                Learn More
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -154,12 +161,15 @@ const HomeContent = () => {
               <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-300">
                 <Shield className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-3xl font-bold text-white mb-6">Enterprise Security</h3>
+              <h3 className="text-3xl font-bold text-white mb-6">
+                Enterprise Security
+              </h3>
               <p className="text-white/70 text-lg leading-relaxed mb-6">
-                Military-grade encryption with SOC 2 Type II compliance and zero-trust architecture for complete peace of mind.
+                Military-grade encryption with SOC 2 Type II compliance and
+                zero-trust architecture for complete peace of mind.
               </p>
               <button className="text-green-400 hover:text-green-300 font-semibold flex items-center gap-2 mx-auto group">
-                Learn More 
+                Learn More
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -174,7 +184,8 @@ const HomeContent = () => {
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Loved by
               <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                {" "}Industry Leaders
+                {' '}
+                Industry Leaders
               </span>
             </h2>
           </div>
@@ -182,20 +193,36 @@ const HomeContent = () => {
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-black text-white mb-2">2M+</div>
-              <div className="text-white/60 text-sm uppercase tracking-wider">Active Users</div>
+              <div className="text-4xl md:text-5xl font-black text-white mb-2">
+                2M+
+              </div>
+              <div className="text-white/60 text-sm uppercase tracking-wider">
+                Active Users
+              </div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-black text-white mb-2">99.99%</div>
-              <div className="text-white/60 text-sm uppercase tracking-wider">Uptime</div>
+              <div className="text-4xl md:text-5xl font-black text-white mb-2">
+                99.99%
+              </div>
+              <div className="text-white/60 text-sm uppercase tracking-wider">
+                Uptime
+              </div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-black text-white mb-2">500+</div>
-              <div className="text-white/60 text-sm uppercase tracking-wider">Integrations</div>
+              <div className="text-4xl md:text-5xl font-black text-white mb-2">
+                500+
+              </div>
+              <div className="text-white/60 text-sm uppercase tracking-wider">
+                Integrations
+              </div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-black text-white mb-2">24/7</div>
-              <div className="text-white/60 text-sm uppercase tracking-wider">Support</div>
+              <div className="text-4xl md:text-5xl font-black text-white mb-2">
+                24/7
+              </div>
+              <div className="text-white/60 text-sm uppercase tracking-wider">
+                Support
+              </div>
             </div>
           </div>
 
@@ -203,11 +230,16 @@ const HomeContent = () => {
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex justify-center mb-6">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+                <Star
+                  key={i}
+                  className="w-6 h-6 text-yellow-400 fill-yellow-400"
+                />
               ))}
             </div>
             <blockquote className="text-2xl md:text-3xl text-white/80 mb-8 leading-relaxed">
-              "Nexara transformed our entire development workflow. The AI insights are absolutely game-changing for our team's productivity."
+              "Nexara transformed our entire development workflow. The AI
+              insights are absolutely game-changing for our team's
+              productivity."
             </blockquote>
             <div className="text-white font-bold text-lg">Sarah Chen</div>
             <div className="text-white/60">CTO, TechCorp</div>
@@ -227,7 +259,7 @@ const HomeContent = () => {
           <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed">
             Join over 2 million users building the future with Nexara
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
             <button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-12 py-5 rounded-2xl font-bold text-xl transition-all duration-300 shadow-2xl hover:scale-105">
               Start Free Trial
@@ -256,7 +288,7 @@ const HomeContent = () => {
             </p>
           </div>
 
-          <div style={{ height: "600px", position: "relative" }}>
+          <div style={{ height: '600px', position: 'relative' }}>
             <FlowingMenu items={demoItems} />
           </div>
         </div>
