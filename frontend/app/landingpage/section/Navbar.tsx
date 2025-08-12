@@ -67,7 +67,7 @@ export default function Navbar() {
 
             {/* Center: Desktop Nav (spaced) */}
             <div className="hidden lg:flex items-center gap-1 ml-2">
-              {navlinks.map((l) => {
+              {navlinks.map(l => {
                 const active = pathname === l.href
                 return (
                   <Link
@@ -76,9 +76,9 @@ export default function Navbar() {
                     className={`
                       relative px-3 py-2 text-sm font-medium rounded-md transition
                       focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40
-                      ${active
-                        ? 'text-white'
-                        : 'text-white/60 hover:text-white'}
+                      ${
+                        active ? 'text-white' : 'text-white/60 hover:text-white'
+                      }
                     `}
                   >
                     <span>{l.label}</span>
@@ -99,10 +99,7 @@ export default function Navbar() {
 
             {/* Right: Actions */}
             <div className="flex items-center gap-2 ml-auto">
-              <Link
-                href="/login"
-                className="hidden md:inline-flex"
-              >
+              <Link href="/login" className="hidden md:inline-flex">
                 <Button
                   variant="secondary"
                   className="px-4 py-2 text-sm font-medium hover:scale-[1.03] transition"
@@ -110,10 +107,7 @@ export default function Navbar() {
                   Login
                 </Button>
               </Link>
-              <Link
-                href="/signup"
-                className="hidden md:inline-flex"
-              >
+              <Link href="/signup" className="hidden md:inline-flex">
                 <Button
                   variant="primary"
                   className="px-4 py-2 text-sm font-semibold shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 hover:-translate-y-0.5 transition"
@@ -127,7 +121,7 @@ export default function Navbar() {
                 aria-label="Toggle menu"
                 aria-expanded={open}
                 aria-controls="mobile-nav"
-                onClick={() => setOpen((p) => !p)}
+                onClick={() => setOpen(p => !p)}
                 className={`
                   lg:hidden relative h-10 w-10 inline-flex items-center justify-center rounded-xl
                   border border-white/10 bg-white/5 hover:bg-white/10
@@ -170,7 +164,7 @@ export default function Navbar() {
           >
             <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.07] to-white/[0.02] backdrop-blur-xl p-5 space-y-4 shadow-[0_12px_48px_-12px_rgba(0,0,0,0.7)]">
               <div className="grid gap-1">
-                {navlinks.map((l) => {
+                {navlinks.map(l => {
                   const active = pathname === l.href
                   return (
                     <Link
@@ -179,13 +173,17 @@ export default function Navbar() {
                       className={`
                         group relative rounded-lg px-4 py-3 text-sm font-medium
                         transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40
-                        ${active
-                          ? 'text-white bg-white/10'
-                          : 'text-white/70 hover:text-white hover:bg-white/5'}
+                        ${
+                          active
+                            ? 'text-white bg-white/10'
+                            : 'text-white/70 hover:text-white hover:bg-white/5'
+                        }
                       `}
                     >
                       {l.label}
-                      {active && <span className="absolute inset-0 rounded-lg ring-1 ring-white/15" />}
+                      {active && (
+                        <span className="absolute inset-0 rounded-lg ring-1 ring-white/15" />
+                      )}
                     </Link>
                   )
                 })}
