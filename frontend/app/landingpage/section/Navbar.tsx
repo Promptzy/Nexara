@@ -5,6 +5,7 @@ import logo from '../assests/logo-icon-for-dark-bg.svg'
 import Button from '../components/button'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { Menu, X } from 'lucide-react'
 
 const navlinks = [
   { label: 'Home', href: '/' },
@@ -20,7 +21,7 @@ export default function Navbar() {
   const pathname = usePathname()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10)
+    const onScroll = () => setScrolled(window.scrollY > 20)
     onScroll()
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
@@ -33,183 +34,128 @@ export default function Navbar() {
   return (
     <header
       className={`
-        fixed inset-x-0 top-0 z-50 pt-4 transition-all duration-500
+        fixed inset-x-0 top-0 z-50 transition-all duration-300
+        ${scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/10' : 'bg-transparent'}
       `}
     >
-      <nav className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 flex justify-center">
-        <div className="w-full max-w-5xl flex flex-col items-stretch">
-          {/* Pill Navbar */}
-          <div
-            className={`
-              relative flex items-center gap-4 rounded-full border border-white/10
-              px-4 md:px-6 h-14 md:h-16
-              bg-black/55 ${scrolled ? 'backdrop-blur-xl shadow-[0_8px_32px_-8px_rgba(0,0,0,0.65)]' : 'backdrop-blur-md'}
-              transition-all duration-500
-            `}
+      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-lg p-1"
           >
-            {/* Left: Logo */}
-            <Link
-              href="/"
-              className="group flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-md"
-            >
-              <span className="relative inline-flex">
-                <Image
-                  src={logo}
-                  alt="Logo"
-                  className="h-8 w-auto md:h-9 transition-transform duration-300 group-hover:scale-110"
-                  priority
-                />
-              </span>
-              <span className="hidden sm:inline-block text-sm font-medium tracking-wide text-white/80 group-hover:text-white transition-colors">
-                Nexara
-              </span>
-            </Link>
+            <Image
+              src={logo}
+              alt="Nexara"
+              className="h-8 w-8 lg:h-10 lg:w-10 transition-transform duration-300 group-hover:scale-110"
+              priority
+            />
+            <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+              Nexara
+            </span>
+          </Link>
 
-            {/* Center: Desktop Nav (spaced) */}
-            <div className="hidden lg:flex items-center gap-1 ml-2">
-              {navlinks.map(l => {
-                const active = pathname === l.href
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-8">
+            {navlinks.map(link => {
+              const active = pathname === link.href
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`
+                    relative text-sm font-medium transition-colors duration-200
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-md px-2 py-1
+                    ${active ? 'text-white' : 'text-white/70 hover:text-white'}
+                  `}
+                >
+                  {link.label}
+                  {active && (
+                    <span className="absolute inset-0 rounded-md bg-white/10" />
+                  )}
+                </Link>
+              )
+            })}
+          </div>
+
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center gap-4">
+            <Link href="/login">
+              <Button
+                variant="secondary"
+                className="px-6 py-2.5 text-sm font-medium bg-white/5 hover:bg-white/10 border-white/20 hover:border-white/30 text-white"
+              >
+                Sign In
+              </Button>
+            </Link>
+            <Link href="/signup">
+              <Button
+                variant="primary"
+                className="px-6 py-2.5 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40"
+              >
+                Get Started
+              </Button>
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setOpen(!open)}
+            className="lg:hidden p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+            aria-label="Toggle menu"
+            aria-expanded={open}
+          >
+            {open ? (
+              <X className="h-5 w-5 text-white" />
+            ) : (
+              <Menu className="h-5 w-5 text-white" />
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {open && (
+          <div className="lg:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-black/90 backdrop-blur-xl rounded-xl border border-white/10 mt-4 shadow-2xl">
+              {navlinks.map(link => {
+                const active = pathname === link.href
                 return (
                   <Link
-                    key={l.href}
-                    href={l.href}
+                    key={link.href}
+                    href={link.href}
                     className={`
-                      relative px-3 py-2 text-sm font-medium rounded-md transition
-                      focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40
-                      ${
-                        active ? 'text-white' : 'text-white/60 hover:text-white'
-                      }
+                      block px-3 py-2 rounded-lg text-base font-medium transition-colors duration-200
+                      ${active ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'}
                     `}
                   >
-                    <span>{l.label}</span>
-                    <span
-                      className={`
-                        absolute left-1/2 -bottom-0.5 h-px w-0 bg-gradient-to-r from-white/0 via-white/70 to-white/0
-                        transition-all duration-500
-                        ${active ? 'w-full -translate-x-1/2' : 'group-hover:w-full group-hover:-translate-x-1/2'}
-                      `}
-                    />
-                    {active && (
-                      <span className="pointer-events-none absolute inset-0 rounded-md bg-white/[0.05] ring-1 ring-white/10" />
-                    )}
+                    {link.label}
                   </Link>
                 )
               })}
-            </div>
-
-            {/* Right: Actions */}
-            <div className="flex items-center gap-2 ml-auto">
-              <Link href="/login" className="hidden md:inline-flex">
-                <Button
-                  variant="secondary"
-                  className="px-4 py-2 text-sm font-medium hover:scale-[1.03] transition"
-                >
-                  Login
-                </Button>
-              </Link>
-              <Link href="/signup" className="hidden md:inline-flex">
-                <Button
-                  variant="primary"
-                  className="px-4 py-2 text-sm font-semibold shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 hover:-translate-y-0.5 transition"
-                >
-                  Get Started
-                </Button>
-              </Link>
-
-              {/* Mobile Toggle */}
-              <button
-                aria-label="Toggle menu"
-                aria-expanded={open}
-                aria-controls="mobile-nav"
-                onClick={() => setOpen(p => !p)}
-                className={`
-                  lg:hidden relative h-10 w-10 inline-flex items-center justify-center rounded-xl
-                  border border-white/10 bg-white/5 hover:bg-white/10
-                  focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40
-                  transition-all duration-300
-                  ${open ? 'rotate-90' : 'rotate-0'}
-                `}
-              >
-                <div className="relative w-5 h-5">
-                  <span
-                    className={`
-                      absolute inset-x-0 top-1 h-0.5 bg-white transition
-                      ${open ? 'translate-y-2 rotate-45' : ''}
-                    `}
-                  />
-                  <span
-                    className={`
-                      absolute inset-x-0 top-1/2 -translate-y-1/2 h-0.5 bg-white transition
-                      ${open ? 'opacity-0' : 'opacity-100'}
-                    `}
-                  />
-                  <span
-                    className={`
-                      absolute inset-x-0 bottom-1 h-0.5 bg-white transition
-                      ${open ? '-translate-y-2 -rotate-45' : ''}
-                    `}
-                  />
-                </div>
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Panel (aligned with pill) */}
-          <div
-            id="mobile-nav"
-            className={`
-              lg:hidden overflow-hidden transition-[max-height,opacity,margin] duration-500 ease
-              ${open ? 'max-h-[520px] opacity-100 mt-3' : 'max-h-0 opacity-0 mt-0'}
-            `}
-          >
-            <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.07] to-white/[0.02] backdrop-blur-xl p-5 space-y-4 shadow-[0_12px_48px_-12px_rgba(0,0,0,0.7)]">
-              <div className="grid gap-1">
-                {navlinks.map(l => {
-                  const active = pathname === l.href
-                  return (
-                    <Link
-                      key={l.href}
-                      href={l.href}
-                      className={`
-                        group relative rounded-lg px-4 py-3 text-sm font-medium
-                        transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40
-                        ${
-                          active
-                            ? 'text-white bg-white/10'
-                            : 'text-white/70 hover:text-white hover:bg-white/5'
-                        }
-                      `}
+              <div className="pt-4 border-t border-white/10">
+                <div className="flex flex-col gap-3 px-3">
+                  <Link href="/login">
+                    <Button
+                      variant="secondary"
+                      className="w-full py-2.5 text-sm font-medium bg-white/5 hover:bg-white/10 border-white/20 hover:border-white/30 text-white"
                     >
-                      {l.label}
-                      {active && (
-                        <span className="absolute inset-0 rounded-lg ring-1 ring-white/15" />
-                      )}
-                    </Link>
-                  )
-                })}
-              </div>
-              <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-              <div className="flex gap-3">
-                <Link href="/login" className="flex-1">
-                  <Button
-                    variant="secondary"
-                    className="w-full py-2 text-sm font-medium"
-                  >
-                    Login
-                  </Button>
-                </Link>
-                <Link href="/signup" className="flex-1">
-                  <Button
-                    variant="primary"
-                    className="w-full py-2 text-sm font-semibold"
-                  >
-                    Get Started
-                  </Button>
-                </Link>
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/signup">
+                    <Button
+                      variant="primary"
+                      className="w-full py-2.5 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white shadow-lg shadow-purple-500/25"
+                    >
+                      Get Started
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </nav>
     </header>
   )
