@@ -237,9 +237,9 @@ const HomeContent = () => {
               ))}
             </div>
             <blockquote className="text-2xl md:text-3xl text-white/80 mb-8 leading-relaxed">
-              "Nexara transformed our entire development workflow. The AI
-              insights are absolutely game-changing for our team's
-              productivity."
+              &ldquo;Nexara transformed our entire development workflow. The AI
+              insights are absolutely game-changing for our team&rsquo;s
+              productivity.&rdquo;
             </blockquote>
             <div className="text-white font-bold text-lg">Sarah Chen</div>
             <div className="text-white/60">CTO, TechCorp</div>
