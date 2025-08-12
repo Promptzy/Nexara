@@ -31,6 +31,9 @@ app.get('/health', (req, res) => {
 const authRoutes = require('./routes/auth.routes');
 app.use('/api/auth', authRoutes);
 
+const leaderboardRoutes = require('./routes/leaderboard.routes');
+app.use('/api/leaderboard', leaderboardRoutes);
+
 const {
   globalErrorHandler,
   handleNotFound,
