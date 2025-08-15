@@ -49,7 +49,11 @@ async function getBoard(req, res, next) {
 
 async function listColumns(req, res, next) {
   try {
-    const columns = await projectService.getColumnsByBoardId(req.params.id, req.user.id);
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(400).json({ success: false, message: 'User ID missing' });
+    }
+    const columns = await projectService.getColumnsByBoardId(req.params.id, userId);
     res.json(columns);
   } catch (err) {
     next(err);
