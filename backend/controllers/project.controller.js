@@ -7,7 +7,6 @@ async function listProjects(req, res, next) {
       return res.status(400).json({ success: false, message: 'User ID missing' });
     }
 
-    const projects = await prisma.project.findMany({
     const projects = await projectService.getAllProjects(userId);
 
     res.json({ success: true, data: projects });
