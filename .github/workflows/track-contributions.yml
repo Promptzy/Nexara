@@ -20,7 +20,7 @@ on:
       process_all_past:
         description: 'Process all past merged PRs'
         required: false
-        default: 'false'
+        default: false
         type: boolean
 
 permissions:
@@ -31,6 +31,10 @@ jobs:
   track-contribution:
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
+    env:
+      # Make token available to all steps and scripts
+      GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+      PAT_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -54,73 +58,53 @@ jobs:
           github-token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const { execSync } = require('child_process');
-            
+
             console.log('🤖 Track Contributions Workflow Started');
             console.log('======================================');
             console.log('Event type:', context.eventName);
-            
-            // Check if we should process all past contributions
+
+            const env = {
+              ...process.env,
+              GITHUB_TOKEN: process.env.PAT_TOKEN || process.env.GITHUB_TOKEN,
+              PAT_TOKEN: process.env.PAT_TOKEN || process.env.GITHUB_TOKEN
+            };
+
             if (context.eventName === 'workflow_dispatch' && context.payload.inputs.process_all_past === 'true') {
               console.log('🔄 Processing all past merged PRs...');
               try {
                 execSync(`cd .github/scripts && node fetch-past-contributions.js`, {
-                  stdio: 'inherit'
+                  stdio: 'inherit',
+                  env
                 });
                 console.log('✅ Past contributions processing completed successfully');
                 return;
               } catch (error) {
                 console.error('❌ Past contributions processing failed:', error.message);
-                console.error('Error details:', error);
                 core.setFailed(`Failed to process past contributions: ${error.message}`);
                 return;
               }
             }
-            
+
             let prNumber, username, labels;
-            
             if (context.eventName === 'workflow_dispatch') {
-              // Manual trigger - get data from inputs
               prNumber = context.payload.inputs.pr_number;
               username = context.payload.inputs.username;
               labels = context.payload.inputs.labels ? context.payload.inputs.labels.split(',').map(l => l.trim()) : [];
-              
-              console.log('Manual trigger detected');
-              console.log('Input PR Number:', prNumber);
-              console.log('Input Username:', username);
-              console.log('Input Labels:', labels);
             } else {
-              // Automatic trigger from merged PR
               prNumber = context.payload.pull_request.number;
               username = context.payload.pull_request.user.login;
               labels = context.payload.pull_request.labels.map(label => label.name);
-              
-              console.log('Automatic trigger from PR merge');
-              console.log('PR Information:');
-              console.log('Number:', prNumber);
-              console.log('Username:', username);
-              console.log('Labels:', labels);
-              console.log('Action:', context.payload.action);
-              console.log('Merged:', context.payload.pull_request.merged);
-              console.log('Base branch:', context.payload.pull_request.base.ref);
-              console.log('Head branch:', context.payload.pull_request.head.ref);
-              
-              // Check if this is a valid merged PR
-              if (!context.payload.pull_request.merged) {
-                console.log('⚠️ PR was not merged, skipping tracking');
-                return;
-              }
+              if (!context.payload.pull_request.merged) return;
             }
-            
-            // Run the contribution tracking script
+
             try {
-              console.log('Starting contribution tracking...');
               execSync(`cd .github/scripts && node track-contribution.js "${username}" "${labels.join(',')}" ${prNumber}`, {
-                stdio: 'inherit'
+                stdio: 'inherit',
+                env
               });
               console.log('✅ Contribution tracking completed successfully');
             } catch (error) {
               console.error('❌ Contribution tracking failed:', error.message);
-              console.error('Error details:', error);
               core.setFailed(`Failed to track contribution: ${error.message}`);
             }
 
@@ -132,6 +116,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Update contributor leaderboard for PR #${{ github.event.pull_request.number }}"
+            git commit -m "Update contributor leaderboard for PR #${{ github.event.pull_request.number || github.event.inputs.pr_number }}"
             git push
           fi
