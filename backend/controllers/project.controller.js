@@ -51,7 +51,7 @@ async function getBoard(req, res, next) {
       return res.status(400).json({ success: false, message: 'User ID missing' });
     }
     const board = await projectService.getBoardById(req.params.id, userId);
-    if (!board) return res.status(404).json({ message: 'Board not found' });
+    if (!board) return res.status(404).json({ success: false, message: 'Board not found' });
     res.json(board);
   } catch (err) {
     next(err);
