@@ -65,7 +65,7 @@ async function listColumns(req, res, next) {
       return res.status(400).json({ success: false, message: 'User ID missing' });
     }
     const columns = await projectService.getColumnsByBoardId(req.params.id, userId);
-    res.json(columns);
+    res.json({ success: true, data: columns });
   } catch (err) {
     next(err);
   }
