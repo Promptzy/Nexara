@@ -23,7 +23,7 @@ async function getProject(req, res, next) {
       return res.status(400).json({ success: false, message: 'User ID missing' });
     }
     const project = await projectService.getProjectById(req.params.id, userId);
-    if (!project) return res.status(404).json({ message: 'Project not found' });
+    if (!project) return res.status(404).json({ success: false, message: 'Project not found' });
     res.json({ success: true, data: project });
   } catch (err) {
     next(err);
