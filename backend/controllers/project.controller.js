@@ -8,7 +8,7 @@ async function listProjects(req, res, next) {
     }
 
     const projects = await prisma.project.findMany({
-      where: { userId }
+      where: { ownerId: userId }
     });
 
     res.json({ success: true, data: projects });
