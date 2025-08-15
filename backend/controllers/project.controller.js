@@ -39,7 +39,11 @@ async function listBoards(req, res, next) {
 
 async function getBoard(req, res, next) {
   try {
-    const board = await projectService.getBoardById(req.params.id, req.user.id);
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(400).json({ success: false, message: 'User ID missing' });
+    }
+    const board = await projectService.getBoardById(req.params.id, userId);
     if (!board) return res.status(404).json({ message: 'Board not found' });
     res.json(board);
   } catch (err) {
