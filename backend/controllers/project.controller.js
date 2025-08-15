@@ -30,7 +30,11 @@ async function getProject(req, res, next) {
 
 async function listBoards(req, res, next) {
   try {
-    const boards = await projectService.getBoardsByProjectId(req.params.id, req.user.id);
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(400).json({ success: false, message: 'User ID missing' });
+    }
+    const boards = await projectService.getBoardsByProjectId(req.params.id, userId);
     res.json(boards);
   } catch (err) {
     next(err);
