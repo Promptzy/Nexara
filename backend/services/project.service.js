@@ -1,7 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-
 async function getAllProjects(userId) {
   return prisma.project.findMany({
     where: { ownerId: userId },
@@ -43,5 +42,5 @@ module.exports = {
   getProjectById,
   getBoardsByProjectId,
   getBoardById,
-  getColumnsByBoardId
+  getColumnsByBoardId,
 };
