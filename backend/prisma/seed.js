@@ -69,10 +69,6 @@
 //     await prisma.$disconnect();
 //   });
 
-
-
-
-
 const { PrismaClient } = require('@prisma/client');
 const { hashPassword } = require('../utils/password');
 
@@ -138,13 +134,14 @@ async function main() {
       ],
     });
 
-    console.log(`📊 Seeded Project, Board, and Columns for user: ${user.username}`);
+    console.log(
+      `📊 Seeded Project, Board, and Columns for user: ${user.username}`
+    );
     console.log(`\n🔑 Default Admin Credentials:`);
     console.log(`   Email: ${adminUser.email}`);
     console.log(`   Username: ${adminUser.username}`);
     console.log(`   Password: ${adminUser.password}`);
     console.log(`\n⚠️ Change password after first login!`);
-
   } catch (error) {
     console.error(`❌ Failed during seeding:`, error.message);
     throw error;
@@ -159,4 +156,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
