@@ -24,19 +24,19 @@ jobs:
               core.setFailed('Invalid event trigger - expected repository dispatch');
               return;
             }
-            
+
             const slashCommand = context.payload.client_payload.slash_command;
             const label = slashCommand.command;
             const actor = context.payload.client_payload.github.payload.comment.user.login;
-            
+
             console.log('✅ Slash command detected');
             console.log('Command:', slashCommand.command);
             console.log('Actor:', actor);
-            
+
             // Get issue data from the repository dispatch event
             const issue = context.payload.client_payload.github.payload.issue;
             const issueNumber = issue.number;
-            
+
             try {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,

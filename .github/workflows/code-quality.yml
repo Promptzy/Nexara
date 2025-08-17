@@ -2,39 +2,39 @@ name: Code Quality & Formatting
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
-      - 'frontend/**'
-      - 'backend/**'
-      - '*.js'
-      - '*.ts'
-      - '*.json'
-      - '.github/workflows/code-quality.yml'
+      - "frontend/**"
+      - "backend/**"
+      - "*.js"
+      - "*.ts"
+      - "*.json"
+      - ".github/workflows/code-quality.yml"
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
-      - 'frontend/**'
-      - 'backend/**'
-      - '*.js'
-      - '*.ts'
-      - '*.json'
-      - '.github/workflows/code-quality.yml'
+      - "frontend/**"
+      - "backend/**"
+      - "*.js"
+      - "*.ts"
+      - "*.json"
+      - ".github/workflows/code-quality.yml"
   pull_request_target:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
-      - 'frontend/**'
-      - 'backend/**'
-      - '*.js'
-      - '*.ts'
-      - '*.json'
-      - '.github/workflows/code-quality.yml'
+      - "frontend/**"
+      - "backend/**"
+      - "*.js"
+      - "*.ts"
+      - "*.json"
+      - ".github/workflows/code-quality.yml"
   workflow_dispatch:
     inputs:
       pr_number:
-        description: 'PR number to process'
+        description: "PR number to process"
         required: false
       triggered_by:
-        description: 'User who triggered this workflow'
+        description: "User who triggered this workflow"
         required: false
 
 permissions:
@@ -46,7 +46,7 @@ jobs:
   code-quality:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -63,17 +63,17 @@ jobs:
             # For pushes, compare against the previous commit
             CHANGED_FILES=$(git diff --name-only HEAD~1..HEAD)
           fi
-          
+
           echo "Changed files:"
           echo "$CHANGED_FILES"
-          
+
           # Check if frontend files were changed
           if echo "$CHANGED_FILES" | grep -q "^frontend/"; then
             echo "frontend_changed=true" >> $GITHUB_OUTPUT
           else
             echo "frontend_changed=false" >> $GITHUB_OUTPUT
           fi
-          
+
           # Check if backend files were changed
           if echo "$CHANGED_FILES" | grep -q "^backend/"; then
             echo "backend_changed=true" >> $GITHUB_OUTPUT
@@ -85,7 +85,7 @@ jobs:
         if: steps.changed-files.outputs.frontend_changed == 'true' || steps.changed-files.outputs.backend_changed == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
           # Don't cache npm globally - we'll handle it per directory
 
       - name: Install and check frontend
@@ -94,7 +94,7 @@ jobs:
           echo "🔍 Checking frontend code quality..."
           cd frontend
           npm ci
-          
+
           echo "📝 Checking Prettier formatting..."
           npx prettier --check . || {
             echo "❌ Frontend formatting issues found!"
@@ -105,13 +105,13 @@ jobs:
             echo "  cd frontend && npx prettier --write ."
             exit 1
           }
-          
+
           echo "🔍 Running ESLint..."
           npm run lint
-          
+
           echo "🔍 Checking TypeScript..."
           npx tsc --noEmit
-          
+
           echo "🧪 Running tests..."
           npm run test:run || if [ $? -eq 1 ]; then
             # Check if failure is due to no test files
@@ -124,7 +124,7 @@ jobs:
               exit 1
             fi
           fi
-          
+
           echo "✅ Frontend checks passed!"
 
       - name: Install and check backend
@@ -133,7 +133,7 @@ jobs:
           echo "🔍 Checking backend code quality..."
           cd backend
           npm ci
-          
+
           echo "📝 Checking Prettier formatting..."
           npm run format:check || {
             echo "❌ Backend formatting issues found!"
@@ -144,7 +144,7 @@ jobs:
             echo "  cd backend && npm run format"
             exit 1
           }
-          
+
           echo "✅ Backend checks passed!"
 
   comment-on-pr:

@@ -6,10 +6,10 @@ on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: 'PR number to process'
+        description: "PR number to process"
         required: false
       triggered_by:
-        description: 'User who triggered this workflow'
+        description: "User who triggered this workflow"
         required: false
 
 permissions:
@@ -28,14 +28,14 @@ jobs:
             const prNumber = context.payload.pull_request.number;
             const labels = context.payload.pull_request.labels.map(label => label.name);
             const difficultyLabels = ['level 1', 'level 2', 'level 3'];
-            
+
             const hasDifficultyLabel = labels.some(label => 
               difficultyLabels.includes(label.toLowerCase())
             );
-            
+
             console.log('PR labels:', labels);
             console.log('Has difficulty label:', hasDifficultyLabel);
-            
+
             if (!hasDifficultyLabel) {
               // Check if we already commented about missing labels
               const comments = await github.rest.issues.listComments({

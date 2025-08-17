@@ -7,7 +7,7 @@
   description: "Critical priority - needs immediate attention"
 
 - name: "priority: high"
-  color: "d93f0b" 
+  color: "d93f0b"
   description: "High priority"
 
 - name: "priority: medium"

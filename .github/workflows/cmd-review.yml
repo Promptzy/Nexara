@@ -24,22 +24,22 @@ jobs:
               core.setFailed('Invalid event trigger - expected repository dispatch');
               return;
             }
-            
+
             const slashCommand = context.payload.client_payload.slash_command;
             const args = slashCommand.args.unnamed;
             // Extract the first argument - could be in arg1 or all
             const user = args.arg1 || args.all || null;
             const actor = context.payload.client_payload.github.payload.comment.user.login;
-            
+
             console.log('✅ Slash command detected');
             console.log('Command:', slashCommand.command);
             console.log('Actor:', actor);
             console.log('Args:', args);
-            
+
             // Get issue data from the repository dispatch event
             const issue = context.payload.client_payload.github.payload.issue;
             const issueNumber = issue.number;
-            
+
             if (!user) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
@@ -50,7 +50,7 @@ jobs:
               core.setFailed('No user mentioned');
               return;
             }
-            
+
             if (!issue.pull_request) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
@@ -61,9 +61,9 @@ jobs:
               core.setFailed('Not a pull request');
               return;
             }
-            
+
             const username = user.replace(/^@/, '');
-            
+
             try {
               await github.rest.pulls.requestReviewers({
                 owner: context.repo.owner,

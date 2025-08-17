@@ -25,7 +25,7 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const author = context.payload.sender.login;
-            
+
             // Check if this is an issue or pull request
             if (context.eventName === 'issues') {
               const issueNumber = context.payload.issue.number;
@@ -42,24 +42,24 @@ jobs:
               if (userIssues.data.total_count === 1) {
                 // First issue
                 welcomeMessage = `👋 Welcome to **${repo}**, @${author}! 
-            
+
             Thank you for creating your first issue! 🎉
-            
+
             Here are a few things to keep in mind:
             - 📋 Please make sure your issue has a clear title and description
             - 🏷️ Add appropriate labels if you have permission
             - 🔍 Check if similar issues already exist
             - 📝 Provide as much context as possible to help us understand the problem
-            
+
             Our team will review your issue soon. Feel free to ask questions or provide additional information! 💬`;
               } else {
                 // Returning contributor
                 welcomeMessage = `👋 Hello again, @${author}! 
-            
+
             Thanks for creating issue **#${issueNumber}**: "${issueTitle}"
-            
+
             We appreciate your continued contribution to **${repo}**! 🙏
-            
+
             Our team will review this issue and get back to you soon. ⏰`;
               }
               
@@ -88,34 +88,34 @@ jobs:
               if (userPRs.data.total_count === 1) {
                 // First pull request
                 welcomeMessage = `🎉 Welcome to **${repo}**, @${author}! 
-            
+
             Thank you for your first pull request! This is awesome! 🚀
-            
+
             **Pull Request**: #${prNumber} - "${prTitle}"
             ${isDraft ? '📝 **Status**: Draft' : '✅ **Status**: Ready for review'}
-            
+
             Here's what happens next:
             - 🔍 Our team will review your changes
             - 💬 We might ask questions or request changes
             - ✅ Once approved, your contribution will be merged!
-            
+
             **Tips for a smooth review process:**
             - 📋 Make sure your PR description explains what changes you made and why
             - ✅ Ensure all tests pass (if applicable)
             - 📖 Follow our coding standards and contribution guidelines
             - 🔄 Keep your branch up to date with the main branch
-            
+
             Thank you for contributing to open source! 💖`;
               } else {
                 // Returning contributor
                 welcomeMessage = `👋 Hello again, @${author}! 
-            
+
             Thanks for submitting pull request **#${prNumber}**: "${prTitle}" 🔧
-            
+
             ${isDraft ? '📝 **Status**: Draft - Let us know when it is ready for review!' : '✅ **Status**: Ready for review'}
-            
+
             We appreciate your continued contributions to **${repo}**! 🙏
-            
+
             Our team will review your changes soon. ⏰`;
               }
               

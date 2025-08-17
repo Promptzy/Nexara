@@ -64,11 +64,9 @@ const updateIssueStatus = async (req, res) => {
     ];
     const { status } = req.body;
     if (!allowedStatusValues.includes(status)) {
-      return res
-        .status(400)
-        .json({
-          error: `Invalid status value. Allowed values are: ${allowedStatusValues.join(', ')}`,
-        });
+      return res.status(400).json({
+        error: `Invalid status value. Allowed values are: ${allowedStatusValues.join(', ')}`,
+      });
     }
     const issue = await issueService.updateIssueStatus(id, status);
     res.json(issue);

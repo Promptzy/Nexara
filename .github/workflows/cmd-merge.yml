@@ -124,42 +124,42 @@ jobs:
                 console.log('Error closing linked issues:', error.message);
               }
             }
-            
+
             // Check if this is a valid slash command dispatch event
             if (!context.payload || !context.payload.client_payload) {
               console.log('❌ This workflow should only be triggered by repository dispatch events');
               core.setFailed('Invalid event trigger - expected repository dispatch');
               return;
             }
-            
+
             // Debug: Log the full client payload structure
             console.log('Client payload structure:', JSON.stringify(context.payload.client_payload, null, 2));
-            
+
             // Get the actor from the comment author (the person who triggered the slash command)
             const actor = context.payload.client_payload.github.payload.comment.user.login;
             const command = context.payload.client_payload.slash_command.command;
-            
+
             console.log('✅ Slash command detected');
             console.log('Command:', command);
             console.log('Actor:', actor);
-            
+
             // Verify we have all required data
             if (!actor) {
               console.log('❌ Could not determine actor from payload');
               core.setFailed('Missing actor information');
               return;
             }
-            
+
             // Get issue data from the repository dispatch event
             const issue = context.payload.client_payload.github.payload.issue;
             const issueNumber = issue.number;
-            
+
             if (!issue || !issueNumber) {
               console.log('❌ Could not determine issue information');
               core.setFailed('Missing issue information');
               return;
             }
-            
+
             // Simple authorization check - allow Va16hav07 and Pranjal6955
             const authorizedUsers = ['Va16hav07', 'Pranjal6955'];
             if (!authorizedUsers.includes(actor)) {
@@ -172,7 +172,7 @@ jobs:
               core.setFailed(`User ${actor} is not authorized to merge.`);
               return;
             }
-            
+
             if (!issue.pull_request) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
@@ -183,9 +183,9 @@ jobs:
               core.setFailed('Not a pull request');
               return;
             }
-            
+
             const prNumber = issueNumber;
-            
+
             // Check PR status before attempting to merge
             try {
               const pr = await github.rest.pulls.get({
@@ -269,7 +269,7 @@ jobs:
               console.log('Error checking PR status:', error.message);
               // Continue with merge attempt even if status check fails
             }
-            
+
             try {
               await github.rest.pulls.merge({
                 owner: context.repo.owner,

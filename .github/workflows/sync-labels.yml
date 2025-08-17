@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/labels.yml'
+      - ".github/labels.yml"
   workflow_dispatch:
 
 permissions:
@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+
       - name: Sync labels
         uses: EndBug/label-sync@v2
         with:
