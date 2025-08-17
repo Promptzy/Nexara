@@ -17,7 +17,13 @@ const createIssue = async (req, res) => {
     // abhi hardcode kar diya userId, baad me req.user se aayega
     const issue = await issueService.createIssue(projectId, {
       ...req.body,
-      reporterId: req.body.reporterId || 'temp-user-id',
+    // Validate that reporterId is provided
+    if (!req.body.reporterId) {
+      return res.status(400).json({ error: 'reporterId is required' });
+    }
+    const issue = await issueService.createIssue(projectId, {
+      ...req.body,
+      reporterId: req.body.reporterId,
     });
     res.status(201).json(issue);
   } catch (err) {
