@@ -78,11 +78,13 @@ npm run db:seed
 ## 🏃‍♂️ Running the Server
 
 ### Development Mode
+
 ```bash
 npm run dev
 ```
 
 ### Production Mode
+
 ```bash
 npm start
 ```
@@ -92,14 +94,17 @@ The server will start on `http://localhost:5000` (or your configured PORT).
 ## 📡 API Endpoints
 
 ### Health Check
+
 - **GET** `/health` - Server health status
 
 ### Authentication
+
 - **POST** `/api/auth/register` - User registration
 - **POST** `/api/auth/login` - User login
 - **POST** `/api/auth/logout` - User logout
 
 ### Projects
+
 - **GET** `/api/project` - Get all projects
 - **POST** `/api/project` - Create new project
 - **GET** `/api/project/:id` - Get project by ID
@@ -107,6 +112,7 @@ The server will start on `http://localhost:5000` (or your configured PORT).
 - **DELETE** `/api/project/:id` - Delete project
 
 ### Leaderboard
+
 - **GET** `/api/leaderboard` - Get leaderboard data
 
 ## 🗃️ Database Schema
@@ -187,10 +193,13 @@ The API includes comprehensive error handling:
 ## 📊 Monitoring
 
 ### Health Check
+
 Visit `http://localhost:5000/health` to verify server status.
 
 ### Logs
+
 The server provides detailed console logging for:
+
 - Server startup
 - Database connections
 - Request errors
@@ -212,6 +221,7 @@ npx prisma migrate reset
 ## 🧹 Code Quality
 
 The project includes:
+
 - **Prettier** for code formatting
 - **ESLint** for code linting
 - **Husky** for pre-commit hooks
@@ -220,18 +230,23 @@ The project includes:
 ## 🚀 Deployment
 
 ### Environment Variables
+
 Ensure all required environment variables are set in production:
+
 - `DATABASE_URL`
 - `JWT_SECRET`
 - `NODE_ENV=production`
 
 ### Database
+
 Run migrations before starting the server:
+
 ```bash
 npm run db:migrate
 ```
 
 ### Process Management
+
 The server handles graceful shutdown on SIGTERM and SIGINT signals.
 
 ## 🤝 Contributing

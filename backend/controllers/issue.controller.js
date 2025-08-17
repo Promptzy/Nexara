@@ -1,4 +1,3 @@
-
 const issueService = require('../services/issue.service');
 
 const listIssues = async (req, res) => {
@@ -32,7 +31,6 @@ const createIssue = async (req, res) => {
   }
 };
 
-
 const getIssue = async (req, res) => {
   try {
     const { id } = req.params;
@@ -57,10 +55,20 @@ const updateIssue = async (req, res) => {
 const updateIssueStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const allowedStatusValues = ['open', 'in_progress', 'closed', 'resolved', 'reopened'];
+    const allowedStatusValues = [
+      'open',
+      'in_progress',
+      'closed',
+      'resolved',
+      'reopened',
+    ];
     const { status } = req.body;
     if (!allowedStatusValues.includes(status)) {
-      return res.status(400).json({ error: `Invalid status value. Allowed values are: ${allowedStatusValues.join(', ')}` });
+      return res
+        .status(400)
+        .json({
+          error: `Invalid status value. Allowed values are: ${allowedStatusValues.join(', ')}`,
+        });
     }
     const issue = await issueService.updateIssueStatus(id, status);
     res.json(issue);
@@ -72,15 +80,19 @@ const updateIssueStatus = async (req, res) => {
 const addComment = async (req, res) => {
   try {
     const { id } = req.params;
-     if (
+    if (
       typeof req.body.content !== 'string' ||
       req.body.content.trim().length === 0
     ) {
-      return res.status(400).json({ error: 'Content is required and cannot be empty.' });
+      return res
+        .status(400)
+        .json({ error: 'Content is required and cannot be empty.' });
     }
-     const { userId, content } = req.body;
+    const { userId, content } = req.body;
     if (!userId) {
-      return res.status(400).json({ error: 'userId is required to add a comment' });
+      return res
+        .status(400)
+        .json({ error: 'userId is required to add a comment' });
     }
     const comment = await issueService.addComment(id, userId, content);
     res.status(201).json(comment);
