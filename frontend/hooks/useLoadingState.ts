@@ -88,7 +88,7 @@ export function useAsyncLoading<T>(
 
   useEffect(() => {
     execute()
-  }, dependencies)
+  }, [execute])
 
   return {
     ...loadingState,
