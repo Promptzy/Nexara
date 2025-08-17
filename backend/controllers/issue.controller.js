@@ -66,6 +66,12 @@ const updateIssueStatus = async (req, res) => {
 const addComment = async (req, res) => {
   try {
     const { id } = req.params;
+    if (
+      typeof req.body.content !== 'string' ||
+      req.body.content.trim().length === 0
+    ) {
+      return res.status(400).json({ error: 'Content is required and cannot be empty.' });
+    }
     const { userId, content } = req.body;
     if (!userId) {
       return res.status(400).json({ error: 'userId is required to add a comment' });
