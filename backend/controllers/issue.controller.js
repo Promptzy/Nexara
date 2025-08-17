@@ -66,7 +66,11 @@ const updateIssueStatus = async (req, res) => {
 const addComment = async (req, res) => {
   try {
     const { id } = req.params;
-    const comment = await issueService.addComment(id, req.body.userId || 'temp-user-id', req.body.content);
+    const { userId, content } = req.body;
+    if (!userId) {
+      return res.status(400).json({ error: 'userId is required to add a comment' });
+    }
+    const comment = await issueService.addComment(id, userId, content);
     res.status(201).json(comment);
   } catch (err) {
     res.status(500).json({ error: err.message });
