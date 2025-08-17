@@ -1,9 +1,7 @@
-
-
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const listIssues = async (projectId) => {
+const listIssues = async projectId => {
   return prisma.issue.findMany({
     where: { projectId },
     include: { comments: true },
@@ -22,7 +20,7 @@ const createIssue = async (projectId, data) => {
   });
 };
 
-const getIssue = async (issueId) => {
+const getIssue = async issueId => {
   return prisma.issue.findUnique({
     where: { id: issueId },
     include: { comments: true, reporter: true, project: true },
@@ -53,7 +51,7 @@ const addComment = async (issueId, userId, content) => {
   });
 };
 
-const listComments = async (issueId) => {
+const listComments = async issueId => {
   return prisma.comment.findMany({
     where: { issueId },
     include: { user: true },
