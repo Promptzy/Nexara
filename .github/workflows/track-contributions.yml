@@ -20,7 +20,7 @@ on:
       process_all_past:
         description: 'Process all past merged PRs'
         required: false
-        default: 'false'
+        default: false
         type: boolean
 
 permissions:
@@ -42,6 +42,145 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+
+      - name: Debug workflow inputs
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Working directory: $(pwd)"
+          echo "Files in root: $(ls -la)"
+          echo "GitHub directory exists: $(test -d .github && echo 'yes' || echo 'no')"
+          echo "Scripts directory exists: $(test -d .github/scripts && echo 'yes' || echo 'no')"
+          if [ -d .github/scripts ]; then
+            echo "Files in scripts directory: $(ls -la .github/scripts/)"
+          fi
+
+      - name: Create scripts directory and basic script if missing
+        run: |
+          mkdir -p .github/scripts
+          
+          # Create basic package.json if it doesn't exist
+          if [ ! -f .github/scripts/package.json ]; then
+            cat > .github/scripts/package.json << 'EOF'
+          {
+            "name": "contribution-tracker",
+            "version": "1.0.0",
+            "description": "Track GitHub contributions",
+            "main": "track-contribution.js",
+            "dependencies": {},
+            "scripts": {
+              "start": "node track-contribution.js"
+            }
+          }
+          EOF
+          fi
+          
+          # Create basic contribution tracking script if it doesn't exist
+          if [ ! -f .github/scripts/track-contribution.js ]; then
+            cat > .github/scripts/track-contribution.js << 'EOF'
+          const fs = require('fs');
+          const path = require('path');
+          
+          const username = process.argv[2];
+          const labelsString = process.argv[3];
+          const prNumber = process.argv[4];
+          
+          console.log(`Tracking contribution for: ${username}, Labels: ${labelsString}, PR: ${prNumber}`);
+          
+          // Initialize contributors data
+          const contributorsPath = path.join(process.cwd(), '../../contributors.json');
+          let contributors = {};
+          
+          try {
+            if (fs.existsSync(contributorsPath)) {
+              contributors = JSON.parse(fs.readFileSync(contributorsPath, 'utf8'));
+            }
+          } catch (error) {
+            console.log('Creating new contributors file');
+            contributors = {};
+          }
+          
+          // Initialize user if not exists
+          if (!contributors[username]) {
+            contributors[username] = {
+              "level 1": 0,
+              "level 2": 0,
+              "level 3": 0,
+              "total_prs": 0,
+              "points": 0
+            };
+          }
+          
+          // Parse labels
+          const labels = labelsString ? labelsString.split(',').map(l => l.trim().toLowerCase()) : [];
+          console.log('Parsed labels:', labels);
+          
+          // Update contribution based on labels
+          let pointsAdded = 0;
+          if (labels.includes('level 1')) {
+            contributors[username]["level 1"]++;
+            pointsAdded = 4;
+          } else if (labels.includes('level 2')) {
+            contributors[username]["level 2"]++;
+            pointsAdded = 7;
+          } else if (labels.includes('level 3')) {
+            contributors[username]["level 3"]++;
+            pointsAdded = 10;
+          } else {
+            console.log('No valid difficulty label found, tracking as general contribution');
+          }
+          
+          contributors[username].total_prs++;
+          contributors[username].points += pointsAdded;
+          
+          // Save contributors file
+          fs.writeFileSync(contributorsPath, JSON.stringify(contributors, null, 2));
+          
+          // Update CONTRIBUTORS.md
+          const contributorsMarkdownPath = path.join(process.cwd(), '../../CONTRIBUTORS.md');
+          updateContributorsMarkdown(contributors, contributorsMarkdownPath);
+          
+          console.log(`✅ Updated ${username}: +${pointsAdded} points, Total: ${contributors[username].points} points`);
+          
+          function updateContributorsMarkdown(contributors, filePath) {
+            // Sort contributors by points (descending)
+            const sortedContributors = Object.entries(contributors)
+              .sort(([,a], [,b]) => b.points - a.points)
+              .filter(([,data]) => data.total_prs > 0);
+          
+            let markdown = `# 🏆 Contributors Leaderboard
+
+          Thank you to all our amazing contributors! This leaderboard tracks contributions based on merged pull requests.
+
+          ## 📊 Scoring System
+
+          - **Level 1** (🟢): 4 points
+          - **Level 2** (🟡): 7 points  
+          - **Level 3** (🔴): 10 points
+
+          > **Note:** The scoring system applies only to GSSOC contributors.
+
+          ## 🎯 Leaderboard
+
+          | Rank | Username | Level 1 PRs | Level 2 PRs | Level 3 PRs | Total PRs | Total Points |
+          |------|----------|-------------|-------------|-------------|-----------|--------------|
+          `;
+
+            if (sortedContributors.length === 0) {
+              markdown += '| - | *No contributions yet* | - | - | - | - | - |\n';
+            } else {
+              sortedContributors.forEach(([username, data], index) => {
+                const rank = index + 1;
+                markdown += `| ${rank} | ${username} | ${data["level 1"]} | ${data["level 2"]} | ${data["level 3"]} | ${data.total_prs} | ${data.points} |\n`;
+              });
+            }
+
+            markdown += `\n---\n\n*Last updated: ${new Date().toISOString().split('T')[0]}*\n\n*To contribute, make sure your PR has one of the difficulty labels: \`level 1\`, \`level 2\`, or \`level 3\`*\n`;
+
+            fs.writeFileSync(filePath, markdown);
+          }
+          EOF
+          fi
 
       - name: Install dependencies
         run: |
@@ -78,60 +217,39 @@ jobs:
             
             let prNumber, username, labels;
             
-            if (context.eventName === 'workflow_dispatch') {
-              // Manual trigger - get data from inputs
-              prNumber = context.payload.inputs.pr_number;
-              username = context.payload.inputs.username;
-              labels = context.payload.inputs.labels ? context.payload.inputs.labels.split(',').map(l => l.trim()) : [];
-              
-              console.log('Manual trigger detected');
-              console.log('Input PR Number:', prNumber);
-              console.log('Input Username:', username);
-              console.log('Input Labels:', labels);
-            } else {
-              // Automatic trigger from merged PR
-              prNumber = context.payload.pull_request.number;
-              username = context.payload.pull_request.user.login;
-              labels = context.payload.pull_request.labels.map(label => label.name);
-              
-              console.log('Automatic trigger from PR merge');
-              console.log('PR Information:');
-              console.log('Number:', prNumber);
-              console.log('Username:', username);
-              console.log('Labels:', labels);
-              console.log('Action:', context.payload.action);
-              console.log('Merged:', context.payload.pull_request.merged);
-              console.log('Base branch:', context.payload.pull_request.base.ref);
-              console.log('Head branch:', context.payload.pull_request.head.ref);
-              
-              // Check if this is a valid merged PR
-              if (!context.payload.pull_request.merged) {
-                console.log('⚠️ PR was not merged, skipping tracking');
-                return;
-              }
-            }
+            echo "Tracking contribution:"
+            echo "  PR Number: $PR_NUMBER"
+            echo "  Username: $USERNAME"
+            echo "  Labels: $LABELS"
             
-            // Run the contribution tracking script
-            try {
-              console.log('Starting contribution tracking...');
-              execSync(`cd .github/scripts && node track-contribution.js "${username}" "${labels.join(',')}" ${prNumber}`, {
-                stdio: 'inherit'
-              });
-              console.log('✅ Contribution tracking completed successfully');
-            } catch (error) {
-              console.error('❌ Contribution tracking failed:', error.message);
-              console.error('Error details:', error);
-              core.setFailed(`Failed to track contribution: ${error.message}`);
-            }
+            cd .github/scripts
+            node track-contribution.js "$USERNAME" "$LABELS" "$PR_NUMBER"
+          fi
 
       - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add contributors.json CONTRIBUTORS.md
+          
+          # Check if files exist and add them
+          if [ -f contributors.json ]; then
+            git add contributors.json
+          fi
+          if [ -f CONTRIBUTORS.md ]; then
+            git add CONTRIBUTORS.md
+          fi
+          
+          # Check if there are changes to commit
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Update contributor leaderboard for PR #${{ github.event.pull_request.number }}"
+            COMMIT_MESSAGE="Update contributor leaderboard"
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              COMMIT_MESSAGE="$COMMIT_MESSAGE for PR #${{ github.event.pull_request.number }}"
+            elif [ "${{ github.event.inputs.pr_number }}" != "" ]; then
+              COMMIT_MESSAGE="$COMMIT_MESSAGE for PR #${{ github.event.inputs.pr_number }}"
+            fi
+            
+            git commit -m "$COMMIT_MESSAGE"
             git push
           fi

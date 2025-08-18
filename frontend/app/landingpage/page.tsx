@@ -19,7 +19,7 @@ const page = () => {
           <Home />
         </div>
       </div>
-      
+
       {/* Rest of the content with different background */}
       <div className="relative z-10 bg-black">
         <HomeContent />

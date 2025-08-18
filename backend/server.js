@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const projectRoutes = require('./routes/project.routes');
 
 const { validateEnv } = require('./config/env');
 const { testConnection, disconnectDatabase } = require('./config/database');
@@ -30,6 +31,10 @@ app.get('/health', (req, res) => {
 
 const authRoutes = require('./routes/auth.routes');
 app.use('/api/auth', authRoutes);
+
+const leaderboardRoutes = require('./routes/leaderboard.routes');
+app.use('/api/leaderboard', leaderboardRoutes);
+app.use('/api/project', projectRoutes);
 
 const {
   globalErrorHandler,

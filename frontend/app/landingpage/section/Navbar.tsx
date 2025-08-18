@@ -1,181 +1,162 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import logo from '../assests/logo-icon-for-dark-bg.svg'
 import Button from '../components/button'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { Menu, X } from 'lucide-react'
 
 const navlinks = [
   { label: 'Home', href: '/' },
   { label: 'Features', href: '/features' },
   { label: 'Integrations', href: '/integrations' },
   { label: 'FAQ', href: '/faq' },
+  { label: 'Pricing', href: '/pricing' },
 ]
 
 export default function Navbar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    onScroll()
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    setOpen(false) // close on route change
+  }, [pathname])
 
   return (
-    <section className="py-4 fixed top-0 left-0 right-0 z-50">
-      <div className="container mx-auto px-4">
-        <div
-          className={`
-            border border-white/15 rounded-full p-2 px-4 items-center backdrop-blur-md
-            w-fit mx-auto max-w-2xl bg-gradient-to-r from-black/70 via-black/60 to-black/70
-            hover:from-black/80 hover:via-black/70 hover:to-black/80
-            shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40
-            transform hover:scale-105 hover:-translate-y-1
-            transition-all duration-700 ease-out
-            grid grid-cols-2 lg:grid-cols-3
-            animate-float
-          `}
-        >
+    <header
+      className={`
+        fixed inset-x-0 top-0 z-50 transition-all duration-300
+        ${scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/10' : 'bg-transparent'}
+      `}
+    >
+      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <div className="flex items-center">
-            <Link href="/">
-              <Image
-                src={logo}
-                alt="Zenjira logo"
-                className="h-8 lg:h-10 w-auto transition-all duration-500 ease-out hover:scale-110"
-              />
+          <Link
+            href="/"
+            className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-lg p-1"
+          >
+            <Image
+              src={logo}
+              alt="Nexara"
+              className="h-8 w-8 lg:h-10 lg:w-10 transition-transform duration-300 group-hover:scale-110"
+              priority
+            />
+            <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+              Nexara
+            </span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-8">
+            {navlinks.map(link => {
+              const active = pathname === link.href
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`
+                    relative text-sm font-medium transition-colors duration-200
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-md px-2 py-1
+                    ${active ? 'text-white' : 'text-white/70 hover:text-white'}
+                  `}
+                >
+                  {link.label}
+                  {active && (
+                    <span className="absolute inset-0 rounded-md bg-white/10" />
+                  )}
+                </Link>
+              )
+            })}
+          </div>
+
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center gap-4">
+            <Link href="/login">
+              <Button
+                variant="secondary"
+                className="px-6 py-2.5 text-sm font-medium bg-white/5 hover:bg-white/10 border-white/20 hover:border-white/30 text-white"
+              >
+                Sign In
+              </Button>
+            </Link>
+            <Link href="/signup">
+              <Button
+                variant="primary"
+                className="px-6 py-2.5 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40"
+              >
+                Get Started
+              </Button>
             </Link>
           </div>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex justify-center items-center space-x-6">
-            {navlinks.map((link, index) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-white/80 hover:text-white transition-all duration-300 ease-out text-sm font-medium relative group"
-                style={{
-                  transitionDelay: `${index * 50}ms`,
-                }}
-              >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-white to-white/70 transition-all duration-300 ease-out group-hover:w-full"></span>
-              </a>
-            ))}
-          </div>
-
-          {/* Desktop Buttons & Mobile Menu Toggle */}
-          <div className="flex justify-end items-center gap-2">
-            {/* Mobile Menu Button */}
-            <button
-              className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-all duration-300 ease-out hover:scale-110"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className={`transition-all duration-500 ease-out ${
-                  isMobileMenuOpen
-                    ? 'rotate-180 scale-110'
-                    : 'rotate-0 scale-100'
-                }`}
-              >
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            </button>
-
-            {/* Desktop Buttons */}
-            <div className="hidden sm:flex items-center gap-2">
-              <Link href="/login">
-                <Button
-                  variant="secondary"
-                  className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 transition-all duration-300 ease-out hover:scale-105 hover:shadow-lg"
-                >
-                  Login
-                </Button>
-              </Link>
-              <Link href="/signup">
-                <Button
-                  variant="primary"
-                  className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 transition-all duration-300 ease-out hover:scale-105 hover:shadow-lg"
-                >
-                  Signup
-                </Button>
-              </Link>
-            </div>
-          </div>
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setOpen(!open)}
+            className="lg:hidden p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+            aria-label="Toggle menu"
+            aria-expanded={open}
+          >
+            {open ? (
+              <X className="h-5 w-5 text-white" />
+            ) : (
+              <Menu className="h-5 w-5 text-white" />
+            )}
+          </button>
         </div>
 
         {/* Mobile Menu */}
-        <div
-          className={`
-            lg:hidden mt-4 overflow-hidden transition-all duration-500 ease-out
-            ${
-              isMobileMenuOpen
-                ? 'max-h-96 opacity-100 translate-y-0'
-                : 'max-h-0 opacity-0 -translate-y-4'
-            }
-          `}
-        >
-          <div className="bg-gradient-to-br from-black/90 via-black/80 to-black/90 backdrop-blur-md border border-white/15 rounded-2xl p-4 transform transition-all duration-500 ease-out shadow-xl">
-            <div className="flex flex-col space-y-4">
-              {navlinks.map((link, index) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="text-white/80 hover:text-white transition-all duration-300 ease-out py-2 text-center relative group"
-                  style={{
-                    transitionDelay: `${index * 100}ms`,
-                  }}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.label}
-                  <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-white to-white/70 transition-all duration-300 ease-out group-hover:w-full group-hover:left-0"></span>
-                </a>
-              ))}
-              <div className="flex gap-2 pt-2">
-                <Link href="/login" className="flex-1">
-                  <Button
-                    variant="secondary"
-                    className="w-full text-sm transition-all duration-300 ease-out hover:scale-105"
-                    onClick={() => setIsMobileMenuOpen(false)}
+        {open && (
+          <div className="lg:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-black/90 backdrop-blur-xl rounded-xl border border-white/10 mt-4 shadow-2xl">
+              {navlinks.map(link => {
+                const active = pathname === link.href
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`
+                      block px-3 py-2 rounded-lg text-base font-medium transition-colors duration-200
+                      ${active ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'}
+                    `}
                   >
-                    Login
-                  </Button>
-                </Link>
-                <Link href="/signup" className="flex-1">
-                  <Button
-                    variant="primary"
-                    className="w-full text-sm transition-all duration-300 ease-out hover:scale-105"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Signup
-                  </Button>
-                </Link>
+                    {link.label}
+                  </Link>
+                )
+              })}
+              <div className="pt-4 border-t border-white/10">
+                <div className="flex flex-col gap-3 px-3">
+                  <Link href="/login">
+                    <Button
+                      variant="secondary"
+                      className="w-full py-2.5 text-sm font-medium bg-white/5 hover:bg-white/10 border-white/20 hover:border-white/30 text-white"
+                    >
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/signup">
+                    <Button
+                      variant="primary"
+                      className="w-full py-2.5 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white shadow-lg shadow-purple-500/25"
+                    >
+                      Get Started
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <style jsx>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-5px);
-          }
-        }
-
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-      `}</style>
-    </section>
+        )}
+      </nav>
+    </header>
   )
 }
