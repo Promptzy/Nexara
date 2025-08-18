@@ -24,41 +24,41 @@ jobs:
               core.setFailed('Invalid event trigger - expected repository dispatch');
               return;
             }
-            
+
             // Debug: Log the full client payload structure
             console.log('Client payload structure:', JSON.stringify(context.payload.client_payload, null, 2));
-            
+
             // Get the actor from the comment author (the person who triggered the slash command)
             const actor = context.payload.client_payload.github.payload.comment.user.login;
             const command = context.payload.client_payload.slash_command.command;
             const argsObject = context.payload.client_payload.slash_command.args || {};
-            
+
             // Convert args object to array for compatibility
             const args = argsObject.all ? argsObject.all.trim().split(/\s+/).filter(Boolean) : [];
-            
+
             console.log('✅ Slash command detected');
             console.log('Command:', command);
             console.log('Actor:', actor);
             console.log('Args object:', argsObject);
             console.log('Args array:', args);
-            
+
             // Verify we have all required data
             if (!actor) {
               console.log('❌ Could not determine actor from payload');
               core.setFailed('Missing actor information');
               return;
             }
-            
+
             // Get issue data from the repository dispatch event
             const issue = context.payload.client_payload.github.payload.issue;
             const issueNumber = issue.number;
-            
+
             if (!issue || !issueNumber) {
               console.log('❌ Could not determine issue information');
               core.setFailed('Missing issue information');
               return;
             }
-            
+
             // Check if the issue/PR is already closed
             if (issue.state === 'closed') {
               await github.rest.issues.createComment({
@@ -70,11 +70,11 @@ jobs:
               core.setFailed('Already closed');
               return;
             }
-            
+
             // Authorization check - only allow repository owners and issue/PR authors
             const authorizedUsers = ['Va16hav07', 'Pranjal6955'];
             const isAuthorized = authorizedUsers.includes(actor) || issue.user.login === actor;
-            
+
             if (!isAuthorized) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
@@ -85,12 +85,12 @@ jobs:
               core.setFailed('Unauthorized user');
               return;
             }
-            
+
             // Get optional close message from args
             const closeMessage = args.length > 0 
               ? args.join(' ')
               : `Closed by @${actor} via slash command`;
-            
+
             try {
               // Close the issue or pull request
               await github.rest.issues.update({

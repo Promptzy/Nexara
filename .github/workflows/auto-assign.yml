@@ -22,10 +22,10 @@ jobs:
             const issue_number = context.payload.issue.number;
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            
+
             const commandRegex = /^\/(assign|unassign)(?:\s+@?([\w-]+(?:\s+@?[\w-]+)*))?$/i;
             const match = body.match(commandRegex);
-            
+
             if (!match) {
               console.log("Comment is not a valid /assign or /unassign command.");
               await github.rest.issues.createComment({
@@ -36,11 +36,11 @@ jobs:
               });
               return;
             }
-            
+
             const action = match[1]; // "assign" or "unassign"
             let targets;
             let isSelfAction = false;
-            
+
             if (!match[2]) {
               // No usernames provided — use commenter (self-action)
               targets = [commenter];
@@ -54,11 +54,11 @@ jobs:
               // Check if it's only self-assignment
               isSelfAction = targets.length === 1 && targets[0] === commenter;
             }
-            
+
             console.log(`Performing /${action} for:`, targets);
             console.log(`Is self-action:`, isSelfAction);
             console.log(`Commenter:`, commenter);
-            
+
             try {
               if (action === 'assign') {
                 await github.rest.issues.addAssignees({

@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       force_update:
-        description: 'Force update even if no changes detected'
+        description: "Force update even if no changes detected"
         required: false
-        default: 'false'
+        default: "false"
         type: boolean
 
 permissions:
@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
         run: |
@@ -39,10 +39,10 @@ jobs:
           github-token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const { execSync } = require('child_process');
-            
+
             console.log('🤖 Process Past Contributions Workflow Started');
             console.log('============================================');
-            
+
             try {
               console.log('Starting past contributions processing...');
               execSync(`cd .github/scripts && node fetch-past-contributions.js`, {
@@ -75,4 +75,4 @@ jobs:
           echo "📈 Updated contributor leaderboard with historical data" >> $GITHUB_STEP_SUMMARY
           echo "🎯 All contributors with valid difficulty labels have been tracked" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Note:** This workflow can be run manually anytime to sync past contributions." >> $GITHUB_STEP_SUMMARY 
+          echo "**Note:** This workflow can be run manually anytime to sync past contributions." >> $GITHUB_STEP_SUMMARY

@@ -24,24 +24,24 @@ jobs:
               core.setFailed('Invalid event trigger - expected repository dispatch');
               return;
             }
-            
+
             const actor = context.payload.client_payload.github.payload.comment.user.login;
             const command = context.payload.client_payload.slash_command.command;
-            
+
             console.log('✅ Slash command detected');
             console.log('Command:', command);
             console.log('Actor:', actor);
-            
+
             // Get issue data from the repository dispatch event
             const issue = context.payload.client_payload.github.payload.issue;
             const issueNumber = issue.number;
-            
+
             if (!issue || !issueNumber) {
               console.log('❌ Could not determine issue information');
               core.setFailed('Missing issue information');
               return;
             }
-            
+
             if (!issue.pull_request) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
@@ -52,9 +52,9 @@ jobs:
               core.setFailed('Not a pull request');
               return;
             }
-            
+
             const prNumber = issueNumber;
-            
+
             try {
               // Get PR details
               const pr = await github.rest.pulls.get({
@@ -215,4 +215,4 @@ jobs:
                 body: `❌ Failed to check PR status: ${error.message}`
               });
               core.setFailed(error.message);
-            } 
+            }

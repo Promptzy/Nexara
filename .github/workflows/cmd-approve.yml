@@ -124,38 +124,38 @@ jobs:
                 console.log('Error closing linked issues:', error.message);
               }
             }
-            
+
             // Check if this is a valid slash command dispatch event
             if (!context.payload || !context.payload.client_payload) {
               console.log('❌ This workflow should only be triggered by repository dispatch events');
               core.setFailed('Invalid event trigger - expected repository dispatch');
               return;
             }
-            
+
             // Debug: Log the full client payload structure
             console.log('Client payload structure:', JSON.stringify(context.payload.client_payload, null, 2));
-            
+
             // Get the actor from the comment author (the person who triggered the slash command)
             const actor = context.payload.client_payload.github.payload.comment.user.login;
             const command = context.payload.client_payload.slash_command.command;
             const argsObject = context.payload.client_payload.slash_command.args || {};
-            
+
             // Convert args object to array for compatibility
             const args = argsObject.all ? argsObject.all.trim().split(/\s+/).filter(Boolean) : [];
-            
+
             console.log('✅ Slash command detected');
             console.log('Command:', command);
             console.log('Actor:', actor);
             console.log('Args object:', argsObject);
             console.log('Args array:', args);
-            
+
             // Verify we have all required data
             if (!actor) {
               console.log('❌ Could not determine actor from payload');
               core.setFailed('Missing actor information');
               return;
             }
-            
+
             // Authorization check - only allow repository owners
             const authorizedUsers = ['Va16hav07', 'Pranjal6955'];
             if (!authorizedUsers.includes(actor)) {
@@ -169,17 +169,17 @@ jobs:
               core.setFailed('Unauthorized user');
               return;
             }
-            
+
             // Get issue data from the repository dispatch event
             const issue = context.payload.client_payload.github.payload.issue;
             const issueNumber = issue.number;
-            
+
             if (!issue || !issueNumber) {
               console.log('❌ Could not determine issue information');
               core.setFailed('Missing issue information');
               return;
             }
-            
+
             // Check if this is a pull request
             if (!issue.pull_request) {
               await github.rest.issues.createComment({
@@ -191,9 +191,9 @@ jobs:
               core.setFailed('Not a pull request');
               return;
             }
-            
+
             const prNumber = issueNumber;
-            
+
             try {
               // Check if the PR is still open
               const pr = await github.rest.pulls.get({

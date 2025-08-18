@@ -5,6 +5,7 @@ A robust Node.js backend API server for the Nexara project management platform, 
 ## 🚀 Quick Start
 
 ### Local Development
+
 ```bash
 # Clone and navigate to backend
 cd backend
@@ -25,6 +26,7 @@ npm run dev
 ```
 
 ### Docker Setup
+
 ```bash
 # Navigate to backend
 cd backend
@@ -45,11 +47,13 @@ docker-compose down
 ## 📋 Prerequisites
 
 ### Local Development
+
 - **Node.js** >= 18.0.0
 - **PostgreSQL** >= 13.0
 - **npm** >= 8.0.0
 
 ### Docker Setup
+
 - **Docker** >= 20.0.0
 - **Docker Compose** >= 2.0.0
 
@@ -102,11 +106,13 @@ npm run db:seed
 ## 🏃‍♂️ Running the Server
 
 ### Development Mode
+
 ```bash
 npm run dev
 ```
 
 ### Production Mode
+
 ```bash
 npm start
 ```
@@ -116,14 +122,17 @@ The server will start on `http://localhost:5000` (or your configured PORT).
 ## 📡 API Endpoints
 
 ### Health Check
+
 - **GET** `/health` - Server health status
 
 ### Authentication
+
 - **POST** `/api/auth/register` - User registration
 - **POST** `/api/auth/login` - User login
 - **POST** `/api/auth/logout` - User logout
 
 ### Projects
+
 - **GET** `/api/project` - Get all projects
 - **POST** `/api/project` - Create new project
 - **GET** `/api/project/:id` - Get project by ID
@@ -131,6 +140,7 @@ The server will start on `http://localhost:5000` (or your configured PORT).
 - **DELETE** `/api/project/:id` - Delete project
 
 ### Leaderboard
+
 - **GET** `/api/leaderboard` - Get leaderboard data
 
 ## 🗃️ Database Schema
@@ -214,10 +224,13 @@ The API includes comprehensive error handling:
 ## 📊 Monitoring
 
 ### Health Check
+
 Visit `http://localhost:5000/health` to verify server status.
 
 ### Logs
+
 The server provides detailed console logging for:
+
 - Server startup
 - Database connections
 - Request errors
@@ -239,6 +252,7 @@ npx prisma migrate reset
 ## 🧹 Code Quality
 
 The project includes:
+
 - **Prettier** for code formatting
 - **ESLint** for code linting
 - **Husky** for pre-commit hooks
@@ -247,6 +261,7 @@ The project includes:
 ## 🚀 Deployment
 
 ### Docker Production
+
 ```bash
 # Update .env with production values
 # Set strong JWT_SECRET and POSTGRES_PASSWORD
@@ -259,6 +274,7 @@ docker-compose ps
 ```
 
 ### Manual Deployment
+
 ```bash
 # Set environment variables
 export DATABASE_URL="your-production-db-url"
