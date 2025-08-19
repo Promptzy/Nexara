@@ -23,18 +23,18 @@
 [![Next.js](https://img.shields.io/badge/next.js-13+-black.svg)](https://nextjs.org/)
 [![Automation Status](https://img.shields.io/badge/automation-fully%20active-green.svg)](#-automated-contribution-system)
 
-*Intelligent automation and AI-driven insights for modern development teams*
+_Intelligent automation and AI-driven insights for modern development teams_
+
 </div>
 
-
 ---
-
 
 ## 🤖 Automated Contribution System
 
 **Welcome Contributors!** This repository features a comprehensive automation system that makes contributing effortless:
 
 ### ✨ **What Happens Automatically:**
+
 - 🏷️ **Smart Labeling** - PRs get labeled by type, area, size, and priority
 - 👍 **Auto-Approval** - External PRs are automatically approved to run workflows
 - 🎯 **Quality Checks** - Automatic linting, testing, and build verification
@@ -42,12 +42,14 @@
 - 🔄 **Workflow Execution** - All workflows run for all contributors immediately
 
 ### 🎮 **Manual Commands Available:**
+
 - `/check` - Re-run all quality checks and workflows
-- `/rerun` - Re-run failed workflows and refresh approvals  
+- `/rerun` - Re-run failed workflows and refresh approvals
 - `/label` - Re-trigger smart labeling system
 - Plus [15+ other commands](#available-commands) for advanced management
 
 ### 📈 **For New Contributors:**
+
 1. **Fork the repository** and create your branch
 2. **Make your changes** - the system auto-detects the type and scope
 3. **Open a pull request** - automation kicks in immediately:
@@ -59,6 +61,7 @@
 5. **Get merged** - maintainers can use `/merge` for quick integration
 
 ### 🛠️ **Zero Configuration Required:**
+
 - **No setup needed** - automation works out of the box
 - **All PR types welcome** - features, fixes, docs, tests, refactors
 - **External forks supported** - same experience for everyone
@@ -71,8 +74,9 @@
 This repository includes a powerful GitHub bot that responds to slash commands in issues and pull requests:
 
 ### Available Commands:
+
 - `/assign @username` - Assigns an issue or PR to the mentioned user
-- `/unassign @username` - Unassigns the mentioned user from an issue or PR  
+- `/unassign @username` - Unassigns the mentioned user from an issue or PR
 - `/merge` - Merges a pull request and closes linked issues (restricted to authorized users)
 - `/approve [message]` - Approves a pull request with optional auto-merge
 - `/lgtm [message]` - Approves a pull request with "Looks Good To Me"
@@ -84,12 +88,14 @@ This repository includes a powerful GitHub bot that responds to slash commands i
 - `/feature` - Adds the "type: feature" label to the issue or PR
 
 ### How to Use:
+
 1. **In any issue or pull request**, post a comment with one of the slash commands above
 2. **The bot will react** with an emoji to show it received the command
 3. **The command will execute** and the bot will post a confirmation message
 4. **Check the Actions tab** if a command doesn't work as expected
 
 ### Automated Features:
+
 - **Pull requests are automatically labeled** based on changed files
 - **Size labels** (XS, S, M, L, XL) are added based on the number of lines changed
 - **Component labels** help identify which part of the codebase is affected
@@ -100,6 +106,7 @@ This repository includes a powerful GitHub bot that responds to slash commands i
 - **Manual override** available with `/rerun` and `/check` commands for any PR
 
 ### Workflow Automation:
+
 - **All contributors** get automatic workflow approval and execution
 - **Documentation changes** (.md, docs/, README files) run automatically
 - **All PR types** get automatic approval - welcoming to new contributors
@@ -107,12 +114,15 @@ This repository includes a powerful GitHub bot that responds to slash commands i
 - **Zero-config setup** - works out of the box for all contributions
 
 ### Issue Linking:
+
 When using `/merge` or `/approve` commands, the bot automatically:
+
 - Searches PR title, body, and commit messages for issue references
 - Closes linked issues using patterns like "Closes #123", "Fixes #456", "Resolves #789"
 - Posts a confirmation comment on both the PR and closed issues
 
 ### Security:
+
 - The `/merge` command is restricted to authorized users only
 - All workflow changes require approval from repository maintainers
 - Commands provide clear feedback on success or failure
@@ -125,10 +135,10 @@ When using `/merge` or `/approve` commands, the bot automatically:
 
 Zenjira is like a personal AI assistant for Jira teams. It helps save time and reduce manual work by offering:
 
-* **No-code automation** using n8n (just drag and drop rules!)
-* **AI features** like ticket summarization and sprint planning with GPT‑4
-* **Live dashboards** and visual tools like Gantt charts
-* **Deep integrations** with GitHub/GitLab, Slack, CI/CD tools, and more
+- **No-code automation** using n8n (just drag and drop rules!)
+- **AI features** like ticket summarization and sprint planning with GPT‑4
+- **Live dashboards** and visual tools like Gantt charts
+- **Deep integrations** with GitHub/GitLab, Slack, CI/CD tools, and more
 
 It’s built as a full **web application** — not just a browser extension — meaning teams log into Zenjira just like any other SaaS platform to get started.
 
@@ -138,20 +148,20 @@ It’s built as a full **web application** — not just a browser extension — 
 
 ### Core Features
 
-* **Automation Designer**: Use n8n's drag-and-drop editor to automate Jira events like task transitions or sending Slack notifications.
-* **AI Sprint Planner**: GPT‑4 helps generate sprints based on team capacity and priorities.
-* **Smart Ticket Summaries**: Instantly summarize long issue descriptions with AI.
-* **ChatOps Bot**: Use Slack or Microsoft Teams to ask things like "What are today's blockers?"
-* **Developer Load Balancer**: Distribute tasks more evenly to avoid burnout.
+- **Automation Designer**: Use n8n's drag-and-drop editor to automate Jira events like task transitions or sending Slack notifications.
+- **AI Sprint Planner**: GPT‑4 helps generate sprints based on team capacity and priorities.
+- **Smart Ticket Summaries**: Instantly summarize long issue descriptions with AI.
+- **ChatOps Bot**: Use Slack or Microsoft Teams to ask things like "What are today's blockers?"
+- **Developer Load Balancer**: Distribute tasks more evenly to avoid burnout.
 
 ### Advanced Features
 
-* **Semantic Search**: Use Hugging Face models to search Jira issues based on meaning, not just keywords.
-* **AI Test Case Generator**: Turn bug reports into suggested test cases.
-* **Retrospective Insights**: Get reports on what worked and what didn’t after every sprint.
-* **Gantt and Calendar Views**: Visual tools to see due dates, timelines, and sprint plans.
-* **Cross-Project Heatmap**: Identify bottlenecks and dependencies between multiple projects.
-* **Auto Release Notes**: Generate release notes from closed issues and merged pull requests.
+- **Semantic Search**: Use Hugging Face models to search Jira issues based on meaning, not just keywords.
+- **AI Test Case Generator**: Turn bug reports into suggested test cases.
+- **Retrospective Insights**: Get reports on what worked and what didn’t after every sprint.
+- **Gantt and Calendar Views**: Visual tools to see due dates, timelines, and sprint plans.
+- **Cross-Project Heatmap**: Identify bottlenecks and dependencies between multiple projects.
+- **Auto Release Notes**: Generate release notes from closed issues and merged pull requests.
 
 ---
 
@@ -160,50 +170,50 @@ It’s built as a full **web application** — not just a browser extension — 
 <details>
 <summary><strong>Frontend Architecture</strong></summary>
 
-| Technology | Purpose | Version |
-|------------|---------|---------|
-| **Next.js** | React Framework | 13+ |
-| **TypeScript** | Type Safety | 4.9+ |
-| **Tailwind CSS** | Styling System | 3.x |
-| **shadcn/ui** | Component Library | Latest |
-| **Redux Toolkit** | State Management | 1.9+ |
+| Technology        | Purpose           | Version |
+| ----------------- | ----------------- | ------- |
+| **Next.js**       | React Framework   | 13+     |
+| **TypeScript**    | Type Safety       | 4.9+    |
+| **Tailwind CSS**  | Styling System    | 3.x     |
+| **shadcn/ui**     | Component Library | Latest  |
+| **Redux Toolkit** | State Management  | 1.9+    |
 
 </details>
 
 <details>
 <summary><strong>Backend Infrastructure</strong></summary>
 
-| Technology | Purpose | Implementation |
-|------------|---------|----------------|
-| **Node.js + Express** | Runtime & API Framework | REST/GraphQL |
-| **PostgreSQL** | Primary Database | 14+ |
-| **Redis** | Caching & Sessions | 7+ |
-| **BullMQ** | Job Queue System | Latest |
-| **JWT + OAuth2** | Authentication | Jira Integration |
+| Technology            | Purpose                 | Implementation   |
+| --------------------- | ----------------------- | ---------------- |
+| **Node.js + Express** | Runtime & API Framework | REST/GraphQL     |
+| **PostgreSQL**        | Primary Database        | 14+              |
+| **Redis**             | Caching & Sessions      | 7+               |
+| **BullMQ**            | Job Queue System        | Latest           |
+| **JWT + OAuth2**      | Authentication          | Jira Integration |
 
 </details>
 
 <details>
 <summary><strong>AI & Machine Learning</strong></summary>
 
-| Service | Purpose | Provider |
-|---------|---------|----------|
-| **GPT-4** | Natural Language Processing | OpenAI |
-| **LangChain** | AI Pipeline Management | Community |
-| **Hugging Face** | Semantic Search Models | Transformers |
+| Service          | Purpose                     | Provider     |
+| ---------------- | --------------------------- | ------------ |
+| **GPT-4**        | Natural Language Processing | OpenAI       |
+| **LangChain**    | AI Pipeline Management      | Community    |
+| **Hugging Face** | Semantic Search Models      | Transformers |
 
 </details>
 
 <details>
 <summary><strong>DevOps & Infrastructure</strong></summary>
 
-| Technology | Purpose | Environment |
-|------------|---------|-------------|
-| **Docker** | Containerization | All |
-| **Kubernetes** | Orchestration | Production |
-| **GitHub Actions** | CI/CD Pipeline | All |
-| **AWS EKS** | Managed Kubernetes | Production |
-| **Prometheus + Grafana** | Monitoring & Metrics | Production |
+| Technology               | Purpose              | Environment |
+| ------------------------ | -------------------- | ----------- |
+| **Docker**               | Containerization     | All         |
+| **Kubernetes**           | Orchestration        | Production  |
+| **GitHub Actions**       | CI/CD Pipeline       | All         |
+| **AWS EKS**              | Managed Kubernetes   | Production  |
+| **Prometheus + Grafana** | Monitoring & Metrics | Production  |
 
 </details>
 
@@ -237,7 +247,7 @@ gantt
     dateFormat  MM-DD
     section Phase 1
     Jira Clone Foundation    :active, p1, 08-01, 08-31
-    section Phase 2  
+    section Phase 2
     Automation & AI          :p2, 09-01, 09-30
     section Phase 3
     Advanced Features        :p3, 10-01, 10-31
@@ -245,26 +255,30 @@ gantt
     Testing & Launch         :p4, 11-01, 11-30
 ```
 
-### 🗓 **Phase 1: Jira Clone Foundation** *(Month 1)*
+### 🗓 **Phase 1: Jira Clone Foundation** _(Month 1)_
+
 - [ ] **Core Jira Clone** - Build basic project management features (issues, boards, sprints)
 - [ ] **User Management** - Authentication, user roles, and permissions
 - [ ] **Issue Management** - Create, edit, assign, and track issues with status workflows
 - [ ] **Project Boards** - Kanban boards and basic sprint functionality
 - [ ] **Infrastructure Setup** - Docker, PostgreSQL, Redis, and development environment
 
-### 🔧 **Phase 2: Automation & Intelligence** *(Month 2)*
+### 🔧 **Phase 2: Automation & Intelligence** _(Month 2)_
+
 - [ ] **Automation Engine** - n8n integration and workflow builder for custom automations
 - [ ] **External Jira Integration** - OAuth2 connection to existing Jira instances for migration/sync
 - [ ] **AI Features** - GPT-4 integration for intelligent summaries and planning assistance
 - [ ] **ChatOps Bot** - Slack/Teams integration for team communication and notifications
 
-### 🤖 **Phase 3: Advanced Features** *(Month 3)*
+### 🤖 **Phase 3: Advanced Features** _(Month 3)_
+
 - [ ] **Semantic Search** - Hugging Face model integration for intelligent issue discovery
 - [ ] **VCS Integration** - GitHub/GitLab pull request insights and code-to-issue linking
 - [ ] **Advanced Analytics** - Sprint retrospectives and team performance metrics
 - [ ] **Visual Dashboards** - Gantt charts, burndown charts, and cross-project heatmaps
 
-### 🚀 **Phase 4: Production Ready** *(Month 4)*
+### 🚀 **Phase 4: Production Ready** _(Month 4)_
+
 - [ ] **Quality Assurance** - Comprehensive testing suite (Jest, Cypress)
 - [ ] **Performance Optimization** - Load testing and optimization
 - [ ] **Monitoring & Observability** - Prometheus, Sentry, logging
@@ -282,12 +296,14 @@ gantt
 ### Installation & Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/your-org/Nexara.git
    cd Nexara
    ```
 
 2. **Install dependencies**
+
    ```bash
    # Install all dependencies (root, frontend, and backend)
    npm run install:all
@@ -308,6 +324,7 @@ gantt
 ### Development Commands
 
 #### 🎨 **Frontend (Next.js)**
+
 ```bash
 cd frontend
 
@@ -325,6 +342,7 @@ npm run lint
 ```
 
 #### ⚙️ **Backend (Express API)**
+
 ```bash
 cd backend
 
@@ -345,6 +363,7 @@ npm run format:check
 ```
 
 #### 🔄 **Full Stack Development**
+
 ```bash
 # Option 1: Run both frontend and backend simultaneously (recommended)
 npm run dev        # Runs both servers with auto-reload
@@ -353,11 +372,12 @@ npm run dev        # Runs both servers with auto-reload
 # Terminal 1: Start backend
 npm run dev:backend
 
-# Terminal 2: Start frontend  
+# Terminal 2: Start frontend
 npm run dev:frontend
 ```
 
 #### 🎨 **Code Formatting (Prettier)**
+
 ```bash
 # Format backend code
 npm run format:backend
@@ -373,13 +393,13 @@ npm run format:check
 
 ### API Endpoints
 
-| Endpoint | Method | Description |
-|----------|---------|-------------|
-| `/health` | GET | Server health check |
-| `/api/test` | GET | API connectivity test |
-| `/api/jira/projects` | GET | List Jira projects *(coming soon)* |
-| `/api/automation/workflows` | GET | Automation workflows *(coming soon)* |
-| `/api/ai/summarize` | POST | AI-powered summarization *(coming soon)* |
+| Endpoint                    | Method | Description                              |
+| --------------------------- | ------ | ---------------------------------------- |
+| `/health`                   | GET    | Server health check                      |
+| `/api/test`                 | GET    | API connectivity test                    |
+| `/api/jira/projects`        | GET    | List Jira projects _(coming soon)_       |
+| `/api/automation/workflows` | GET    | Automation workflows _(coming soon)_     |
+| `/api/ai/summarize`         | POST   | AI-powered summarization _(coming soon)_ |
 
 ### Development URLs
 
@@ -393,11 +413,9 @@ npm run format:check
 
 Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) to understand the expected behavior in this community.
 
-
 ## Community Guidelines
 
 📜 Please review our [Community Guidelines](./COMMUNITY_GUIDELINES.md) before contributing.
-
 
 ## 👥 Contributors
 
@@ -407,7 +425,7 @@ We welcome and appreciate all contributions! Our automated contribution tracking
 
 🟢 **Level 1** (4 points) - Bug fixes, documentation, minor improvements  
 🟡 **Level 2** (7 points) - Features, refactoring, moderate complexity  
-🔴 **Level 3** (10 points) - Complex features, architecture changes  
+🔴 **Level 3** (10 points) - Complex features, architecture changes
 
 See the current leaderboard and detailed contribution stats in [CONTRIBUTORS.md](./CONTRIBUTORS.md).
 
@@ -421,12 +439,11 @@ See the current leaderboard and detailed contribution stats in [CONTRIBUTORS.md]
   <img src="https://contrib.rocks/image?repo=Promptzy/Zenjira" alt="Contributors" />
 </a>
 
-*Can't see the contributors graph? [View all contributors on GitHub →](https://github.com/Promptzy/Zenjira/graphs/contributors)*
+_Can't see the contributors graph? [View all contributors on GitHub →](https://github.com/Promptzy/Zenjira/graphs/contributors)_
 
 [![Contributors](https://img.shields.io/github/contributors/Promptzy/Zenjira?style=for-the-badge&color=orange)](https://github.com/Promptzy/Zenjira/graphs/contributors)
 
 </div>
-
 
 ## 📄 License
 
@@ -438,6 +455,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built with ❤️ by the Nexara Team**
 
-*Transforming development workflows, one sprint at a time.*
+_Transforming development workflows, one sprint at a time._
 
 </div>

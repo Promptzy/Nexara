@@ -17,7 +17,7 @@ This repository uses an automated system to track and reward contributions based
 Every pull request should be labeled with one of the following difficulty labels:
 
 - **`level 1`** - Simple bug fixes, documentation updates, minor improvements (4 points)
-- **`level 2`** - Feature implementations, moderate bug fixes, refactoring (7 points)  
+- **`level 2`** - Feature implementations, moderate bug fixes, refactoring (7 points)
 - **`level 3`** - Complex features, architectural changes, performance optimizations (10 points)
 
 ### 🤖 Automated Tracking
@@ -110,6 +110,7 @@ npm install
 ### Permission Issues
 
 The workflow needs these permissions:
+
 - `contents: write` - to update files
 - `pull-requests: read` - to read PR information
 

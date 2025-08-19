@@ -2,9 +2,9 @@ name: PR Quality Gate
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request_target:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 permissions:
   contents: read
@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Check for changes
         id: changes
         run: |
@@ -36,7 +36,7 @@ jobs:
             echo "frontend=false" >> $GITHUB_OUTPUT
             echo "No frontend changes"
           fi
-          
+
           # Check if backend files changed
           if git diff --name-only origin/${{ github.base_ref }}..HEAD | grep -q "^backend/"; then
             echo "backend=true" >> $GITHUB_OUTPUT
@@ -58,12 +58,12 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const { sha } = context.payload.pull_request.head;
-            
+
             console.log('Waiting for frontend checks to complete...');
-            
+
             let attempts = 0;
             const maxAttempts = 60; // 10 minutes max
-            
+
             while (attempts < maxAttempts) {
               const { data: checkRuns } = await github.rest.checks.listForRef({
                 owner,
@@ -91,7 +91,7 @@ jobs:
               attempts++;
               await new Promise(resolve => setTimeout(resolve, 10000)); // Wait 10 seconds
             }
-            
+
             core.setFailed('Frontend checks timed out');
 
   backend-gate:
@@ -106,12 +106,12 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const { sha } = context.payload.pull_request.head;
-            
+
             console.log('Waiting for backend checks to complete...');
-            
+
             let attempts = 0;
             const maxAttempts = 60; // 10 minutes max
-            
+
             while (attempts < maxAttempts) {
               const { data: checkRuns } = await github.rest.checks.listForRef({
                 owner,
@@ -139,7 +139,7 @@ jobs:
               attempts++;
               await new Promise(resolve => setTimeout(resolve, 10000)); // Wait 10 seconds
             }
-            
+
             core.setFailed('Backend checks timed out');
 
   quality-gate-summary:

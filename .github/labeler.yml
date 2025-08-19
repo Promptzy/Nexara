@@ -1,54 +1,64 @@
 # Labeler configuration for automatic PR labeling
 # Format for actions/labeler@v5
 
-'component: frontend':
+"component: frontend":
   - changed-files:
-    - any-glob-to-any-file: 'frontend/**/*'
+      - any-glob-to-any-file: "frontend/**/*"
 
-'component: backend':
+"component: backend":
   - changed-files:
-    - any-glob-to-any-file: 'backend/**/*'
+      - any-glob-to-any-file: "backend/**/*"
 
-'type: documentation':
+"type: documentation":
   - changed-files:
-    - any-glob-to-any-file: ['*.md', 'docs/**/*', 'README*']
+      - any-glob-to-any-file: ["*.md", "docs/**/*", "README*"]
 
-'component: ci/cd':
+"component: ci/cd":
   - changed-files:
-    - any-glob-to-any-file: '.github/**/*'
+      - any-glob-to-any-file: ".github/**/*"
 
-'component: dependencies':
+"component: dependencies":
   - changed-files:
-    - any-glob-to-any-file: ['**/package.json', '**/package-lock.json', '**/yarn.lock']
+      - any-glob-to-any-file:
+          ["**/package.json", "**/package-lock.json", "**/yarn.lock"]
 
-'tech: typescript':
+"tech: typescript":
   - changed-files:
-    - any-glob-to-any-file: ['**/*.ts', '**/*.tsx']
+      - any-glob-to-any-file: ["**/*.ts", "**/*.tsx"]
 
-'tech: javascript':
+"tech: javascript":
   - changed-files:
-    - any-glob-to-any-file: ['**/*.js', '**/*.jsx']
+      - any-glob-to-any-file: ["**/*.js", "**/*.jsx"]
 
-'tech: css':
+"tech: css":
   - changed-files:
-    - any-glob-to-any-file: ['**/*.css', '**/*.scss', '**/*.sass']
+      - any-glob-to-any-file: ["**/*.css", "**/*.scss", "**/*.sass"]
 
-'tech: react':
+"tech: react":
   - changed-files:
-    - any-glob-to-any-file: ['**/components/**/*', '**/app/**/*', '**/*.tsx', '**/*.jsx']
+      - any-glob-to-any-file:
+          ["**/components/**/*", "**/app/**/*", "**/*.tsx", "**/*.jsx"]
 
-'tech: nextjs':
+"tech: nextjs":
   - changed-files:
-    - any-glob-to-any-file: ['frontend/**/*', '**/next.config.*', '**/app/**/*']
+      - any-glob-to-any-file:
+          ["frontend/**/*", "**/next.config.*", "**/app/**/*"]
 
-'tech: nodejs':
+"tech: nodejs":
   - changed-files:
-    - any-glob-to-any-file: ['backend/**/*', '**/server.js', '**/index.js']
+      - any-glob-to-any-file: ["backend/**/*", "**/server.js", "**/index.js"]
 
-'component: api':
+"component: api":
   - changed-files:
-    - any-glob-to-any-file: ['**/api/**/*', '**/routes/**/*', '**/controllers/**/*']
+      - any-glob-to-any-file:
+          ["**/api/**/*", "**/routes/**/*", "**/controllers/**/*"]
 
-'component: database':
+"component: database":
   - changed-files:
-    - any-glob-to-any-file: ['**/migrations/**/*', '**/models/**/*', '**/schemas/**/*', '**/*.sql']
+      - any-glob-to-any-file:
+          [
+            "**/migrations/**/*",
+            "**/models/**/*",
+            "**/schemas/**/*",
+            "**/*.sql",
+          ]

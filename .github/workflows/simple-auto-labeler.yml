@@ -21,9 +21,9 @@ jobs:
             const { owner, repo } = context.repo;
             const pull_number = context.payload.pull_request.number;
             const prAuthor = context.payload.pull_request.user.login;
-            
+
             console.log(`🏷️ Auto-labeling PR #${pull_number} by @${prAuthor}`);
-            
+
             try {
               // Get PR files
               const files = await github.rest.pulls.listFiles({

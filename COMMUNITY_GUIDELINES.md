@@ -74,7 +74,7 @@ For critical or unresolved issues:
 
 ## 🔁 Updates & Revisions
 
-- **Version:** 1.0  
+- **Version:** 1.0
 - **Last Updated:** July 27, 2025
 
 This document will be reviewed periodically. Suggestions are always welcome.

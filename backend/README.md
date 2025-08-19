@@ -4,6 +4,8 @@ A robust Node.js backend API server for the Nexara project management platform, 
 
 ## 🚀 Quick Start
 
+### Local Development
+
 ```bash
 # Clone and navigate to backend
 cd backend
@@ -23,11 +25,37 @@ npm run db:seed
 npm run dev
 ```
 
+### Docker Setup
+
+```bash
+# Navigate to backend
+cd backend
+
+# Update .env file with secure values
+# Change JWT_SECRET and POSTGRES_PASSWORD
+
+# Start services (PostgreSQL + Backend)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
 ## 📋 Prerequisites
+
+### Local Development
 
 - **Node.js** >= 18.0.0
 - **PostgreSQL** >= 13.0
 - **npm** >= 8.0.0
+
+### Docker Setup
+
+- **Docker** >= 20.0.0
+- **Docker Compose** >= 2.0.0
 
 ## 🛠️ Installation
 
@@ -78,11 +106,13 @@ npm run db:seed
 ## 🏃‍♂️ Running the Server
 
 ### Development Mode
+
 ```bash
 npm run dev
 ```
 
 ### Production Mode
+
 ```bash
 npm start
 ```
@@ -92,14 +122,17 @@ The server will start on `http://localhost:5000` (or your configured PORT).
 ## 📡 API Endpoints
 
 ### Health Check
+
 - **GET** `/health` - Server health status
 
 ### Authentication
+
 - **POST** `/api/auth/register` - User registration
 - **POST** `/api/auth/login` - User login
 - **POST** `/api/auth/logout` - User logout
 
 ### Projects
+
 - **GET** `/api/project` - Get all projects
 - **POST** `/api/project` - Create new project
 - **GET** `/api/project/:id` - Get project by ID
@@ -107,6 +140,7 @@ The server will start on `http://localhost:5000` (or your configured PORT).
 - **DELETE** `/api/project/:id` - Delete project
 
 ### Leaderboard
+
 - **GET** `/api/leaderboard` - Get leaderboard data
 
 ## 🗃️ Database Schema
@@ -145,15 +179,18 @@ npm run db:seed
 ```
 backend/
 ├── config/           # Configuration files
-│   ├── database.js   # Database connection
-│   └── env.js        # Environment validation
 ├── controllers/      # Route controllers
 ├── middleware/       # Express middleware
 ├── prisma/          # Database schema and migrations
 ├── routes/          # API route definitions
 ├── services/        # Business logic layer
 ├── utils/           # Utility functions
+├── .env             # Environment variables
 ├── .env.example     # Environment template
+├── .env.docker      # Docker environment template
+├── docker-compose.yml # Docker services configuration
+├── Dockerfile       # Container build instructions
+├── init.sql         # PostgreSQL initialization
 ├── package.json     # Dependencies and scripts
 └── server.js        # Application entry point
 ```
@@ -187,10 +224,13 @@ The API includes comprehensive error handling:
 ## 📊 Monitoring
 
 ### Health Check
+
 Visit `http://localhost:5000/health` to verify server status.
 
 ### Logs
+
 The server provides detailed console logging for:
+
 - Server startup
 - Database connections
 - Request errors
@@ -212,6 +252,7 @@ npx prisma migrate reset
 ## 🧹 Code Quality
 
 The project includes:
+
 - **Prettier** for code formatting
 - **ESLint** for code linting
 - **Husky** for pre-commit hooks
@@ -219,20 +260,33 @@ The project includes:
 
 ## 🚀 Deployment
 
-### Environment Variables
-Ensure all required environment variables are set in production:
-- `DATABASE_URL`
-- `JWT_SECRET`
-- `NODE_ENV=production`
+### Docker Production
 
-### Database
-Run migrations before starting the server:
 ```bash
-npm run db:migrate
+# Update .env with production values
+# Set strong JWT_SECRET and POSTGRES_PASSWORD
+
+# Deploy with Docker Compose
+docker-compose up -d
+
+# Check service status
+docker-compose ps
 ```
 
-### Process Management
-The server handles graceful shutdown on SIGTERM and SIGINT signals.
+### Manual Deployment
+
+```bash
+# Set environment variables
+export DATABASE_URL="your-production-db-url"
+export JWT_SECRET="your-production-jwt-secret"
+export NODE_ENV="production"
+
+# Run migrations
+npm run db:migrate
+
+# Start server
+npm start
+```
 
 ## 🤝 Contributing
 

@@ -6,19 +6,19 @@ on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: 'PR number to track (for testing)'
+        description: "PR number to track (for testing)"
         required: false
         type: string
       username:
-        description: 'Username (for testing)'
+        description: "Username (for testing)"
         required: false
         type: string
       labels:
-        description: 'Comma-separated labels (for testing)'
+        description: "Comma-separated labels (for testing)"
         required: false
         type: string
       process_all_past:
-        description: 'Process all past merged PRs'
+        description: "Process all past merged PRs"
         required: false
         default: false
         type: boolean
@@ -41,7 +41,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Debug workflow inputs
         run: |
@@ -58,7 +58,7 @@ jobs:
       - name: Create scripts directory and basic script if missing
         run: |
           mkdir -p .github/scripts
-          
+
           # Create basic package.json if it doesn't exist
           if [ ! -f .github/scripts/package.json ]; then
             cat > .github/scripts/package.json << 'EOF'
@@ -74,23 +74,23 @@ jobs:
           }
           EOF
           fi
-          
+
           # Create basic contribution tracking script if it doesn't exist
           if [ ! -f .github/scripts/track-contribution.js ]; then
             cat > .github/scripts/track-contribution.js << 'EOF'
           const fs = require('fs');
           const path = require('path');
-          
+
           const username = process.argv[2];
           const labelsString = process.argv[3];
           const prNumber = process.argv[4];
-          
+
           console.log(`Tracking contribution for: ${username}, Labels: ${labelsString}, PR: ${prNumber}`);
-          
+
           // Initialize contributors data
           const contributorsPath = path.join(process.cwd(), '../../contributors.json');
           let contributors = {};
-          
+
           try {
             if (fs.existsSync(contributorsPath)) {
               contributors = JSON.parse(fs.readFileSync(contributorsPath, 'utf8'));
@@ -99,7 +99,7 @@ jobs:
             console.log('Creating new contributors file');
             contributors = {};
           }
-          
+
           // Initialize user if not exists
           if (!contributors[username]) {
             contributors[username] = {
@@ -110,11 +110,11 @@ jobs:
               "points": 0
             };
           }
-          
+
           // Parse labels
           const labels = labelsString ? labelsString.split(',').map(l => l.trim().toLowerCase()) : [];
           console.log('Parsed labels:', labels);
-          
+
           // Update contribution based on labels
           let pointsAdded = 0;
           if (labels.includes('level 1')) {
@@ -129,25 +129,25 @@ jobs:
           } else {
             console.log('No valid difficulty label found, tracking as general contribution');
           }
-          
+
           contributors[username].total_prs++;
           contributors[username].points += pointsAdded;
-          
+
           // Save contributors file
           fs.writeFileSync(contributorsPath, JSON.stringify(contributors, null, 2));
-          
+
           // Update CONTRIBUTORS.md
           const contributorsMarkdownPath = path.join(process.cwd(), '../../CONTRIBUTORS.md');
           updateContributorsMarkdown(contributors, contributorsMarkdownPath);
-          
+
           console.log(`✅ Updated ${username}: +${pointsAdded} points, Total: ${contributors[username].points} points`);
-          
+
           function updateContributorsMarkdown(contributors, filePath) {
             // Sort contributors by points (descending)
             const sortedContributors = Object.entries(contributors)
               .sort(([,a], [,b]) => b.points - a.points)
               .filter(([,data]) => data.total_prs > 0);
-          
+
             let markdown = `# 🏆 Contributors Leaderboard
 
           Thank you to all our amazing contributors! This leaderboard tracks contributions based on merged pull requests.
@@ -230,7 +230,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
+
           # Check if files exist and add them
           if [ -f contributors.json ]; then
             git add contributors.json
@@ -238,7 +238,7 @@ jobs:
           if [ -f CONTRIBUTORS.md ]; then
             git add CONTRIBUTORS.md
           fi
-          
+
           # Check if there are changes to commit
           if git diff --cached --quiet; then
             echo "No changes to commit"

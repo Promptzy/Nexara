@@ -21,15 +21,15 @@ jobs:
             const prNumber = context.payload.pull_request.number;
             const prAuthor = context.payload.pull_request.user.login;
             const headSha = context.payload.pull_request.head.sha;
-            
+
             console.log(`🤖 Auto-approving workflows for PR #${prNumber} by @${prAuthor}`);
-            
+
             // Wait a moment for workflows to be created
             await new Promise(resolve => setTimeout(resolve, 3000));
-            
+
             let approvedCount = 0;
             let totalAttempts = 0;
-            
+
             try {
               // Get workflow runs for this PR
               const workflowRuns = await github.rest.actions.listWorkflowRunsForRepo({

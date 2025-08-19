@@ -14,7 +14,11 @@
     "@actions/github": "^6.0.0",
     "@actions/core": "^1.10.0"
   },
-  "keywords": ["contribution", "tracking", "github"],
+  "keywords": [
+    "contribution",
+    "tracking",
+    "github"
+  ],
   "author": "Zenjira Team",
   "license": "MIT"
 }
