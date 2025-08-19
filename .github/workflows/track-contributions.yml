@@ -35,7 +35,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -188,23 +188,34 @@ jobs:
           npm install
 
       - name: Track contribution
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.process_all_past }}" = "true" ]; then
-            echo "🔄 Processing all past merged PRs feature not implemented yet"
-            echo "✅ Skipping past contributions processing"
-          else
-            # Determine values based on event type
-            if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-              PR_NUMBER="${{ github.event.inputs.pr_number }}"
-              USERNAME="${{ github.event.inputs.username }}"
-              LABELS="${{ github.event.inputs.labels }}"
-            else
-              PR_NUMBER="${{ github.event.pull_request.number }}"
-              USERNAME="${{ github.event.pull_request.user.login }}"
-              LABELS=$(echo '${{ toJson(github.event.pull_request.labels) }}' | jq -r '.[].name' | tr '\n' ',' | sed 's/,$//')
-            fi
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { execSync } = require('child_process');
+            
+            console.log('🤖 Track Contributions Workflow Started');
+            console.log('======================================');
+            console.log('Event type:', context.eventName);
+            
+            // Check if we should process all past contributions
+            if (context.eventName === 'workflow_dispatch' && context.payload.inputs.process_all_past === 'true') {
+              console.log('🔄 Processing all past merged PRs...');
+              try {
+                execSync(`cd .github/scripts && node fetch-past-contributions.js`, {
+                  stdio: 'inherit'
+                });
+                console.log('✅ Past contributions processing completed successfully');
+                return;
+              } catch (error) {
+                console.error('❌ Past contributions processing failed:', error.message);
+                console.error('Error details:', error);
+                core.setFailed(`Failed to process past contributions: ${error.message}`);
+                return;
+              }
+            }
+            
+            let prNumber, username, labels;
             
             echo "Tracking contribution:"
             echo "  PR Number: $PR_NUMBER"
