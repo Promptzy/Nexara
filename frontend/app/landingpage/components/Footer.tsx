@@ -2,66 +2,66 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { 
-  Github, 
-  Twitter, 
-  Linkedin, 
-  Mail, 
-  MessageCircle, 
+import {
+  Github,
+  Twitter,
+  Linkedin,
+  Mail,
+  MessageCircle,
   ArrowUp,
-  Heart 
+  Heart,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function Footer() {
   const footerSections = [
     {
-      title: "Product",
+      title: 'Product',
       links: [
-        { name: "Features", href: "#features" },
-        { name: "Automation", href: "#automation" },
-        { name: "Integrations", href: "#integrations" },
-        { name: "Pricing", href: "#pricing" },
-        { name: "Roadmap", href: "#roadmap" }
-      ]
+        { name: 'Features', href: '#features' },
+        { name: 'Automation', href: '#automation' },
+        { name: 'Integrations', href: '#integrations' },
+        { name: 'Pricing', href: '#pricing' },
+        { name: 'Roadmap', href: '#roadmap' },
+      ],
     },
     {
-      title: "Company",
+      title: 'Company',
       links: [
-        { name: "About", href: "#about" },
-        { name: "Blog", href: "#blog" },
-        { name: "Careers", href: "#careers" },
-        { name: "Press", href: "#press" },
-        { name: "Partners", href: "#partners" }
-      ]
+        { name: 'About', href: '#about' },
+        { name: 'Blog', href: '#blog' },
+        { name: 'Careers', href: '#careers' },
+        { name: 'Press', href: '#press' },
+        { name: 'Partners', href: '#partners' },
+      ],
     },
     {
-      title: "Resources",
+      title: 'Resources',
       links: [
-        { name: "Documentation", href: "#docs" },
-        { name: "Help Center", href: "#help" },
-        { name: "Community", href: "#community" },
-        { name: "Tutorials", href: "#tutorials" },
-        { name: "API Reference", href: "#api" }
-      ]
+        { name: 'Documentation', href: '#docs' },
+        { name: 'Help Center', href: '#help' },
+        { name: 'Community', href: '#community' },
+        { name: 'Tutorials', href: '#tutorials' },
+        { name: 'API Reference', href: '#api' },
+      ],
     },
     {
-      title: "Support",
+      title: 'Support',
       links: [
-        { name: "Contact Us", href: "#contact" },
-        { name: "Status Page", href: "#status" },
-        { name: "Security", href: "#security" },
-        { name: "Privacy Policy", href: "#privacy" },
-        { name: "Terms of Service", href: "#terms" }
-      ]
-    }
+        { name: 'Contact Us', href: '#contact' },
+        { name: 'Status Page', href: '#status' },
+        { name: 'Security', href: '#security' },
+        { name: 'Privacy Policy', href: '#privacy' },
+        { name: 'Terms of Service', href: '#terms' },
+      ],
+    },
   ]
 
   const socialLinks = [
-    { icon: Github, href: "#", label: "GitHub" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Mail, href: "#", label: "Email" }
+    { icon: Github, href: '#', label: 'GitHub' },
+    { icon: Twitter, href: '#', label: 'Twitter' },
+    { icon: Linkedin, href: '#', label: 'LinkedIn' },
+    { icon: Mail, href: '#', label: 'Email' },
   ]
 
   const scrollToTop = () => {
@@ -72,10 +72,10 @@ export default function Footer() {
     <footer className="bg-black text-slate-300 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 to-slate-800/50" />
-      
+
       {/* Animated Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.03)_1px,transparent_1px)] bg-[size:50px_50px]" />
-      
+
       <div className="relative z-10">
         {/* Main Footer Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -91,11 +91,12 @@ export default function Footer() {
                 </span>
               </div>
               <p className="text-slate-400 mb-6 max-w-md">
-                The future of project management. AI-powered automation, intelligent insights, and seamless integrations 
-                to help teams deliver exceptional results.
+                The future of project management. AI-powered automation,
+                intelligent insights, and seamless integrations to help teams
+                deliver exceptional results.
               </p>
               <div className="flex space-x-4">
-                {socialLinks.map((social) => (
+                {socialLinks.map(social => (
                   <Button
                     key={social.label}
                     variant="ghost"
@@ -112,11 +113,13 @@ export default function Footer() {
             </div>
 
             {/* Footer Links */}
-            {footerSections.map((section) => (
+            {footerSections.map(section => (
               <div key={section.title}>
-                <h3 className="text-white font-semibold mb-4">{section.title}</h3>
+                <h3 className="text-white font-semibold mb-4">
+                  {section.title}
+                </h3>
                 <ul className="space-y-3">
-                  {section.links.map((link) => (
+                  {section.links.map(link => (
                     <li key={link.name}>
                       <Link
                         href={link.href}
@@ -144,7 +147,8 @@ export default function Footer() {
                 Stay updated with Nexara
               </h3>
               <p className="text-slate-400 mb-6">
-                Get the latest updates on new features, automation tips, and industry insights delivered to your inbox.
+                Get the latest updates on new features, automation tips, and
+                industry insights delivered to your inbox.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <div className="flex-1 max-w-md">
@@ -172,15 +176,24 @@ export default function Footer() {
                 <Heart className="w-4 h-4 text-red-500 fill-current" />
                 <span>for amazing teams.</span>
               </div>
-              
+
               <div className="flex items-center space-x-6 text-sm">
-                <Link href="#privacy" className="text-slate-400 hover:text-cyan-400 transition-colors duration-200">
+                <Link
+                  href="#privacy"
+                  className="text-slate-400 hover:text-cyan-400 transition-colors duration-200"
+                >
                   Privacy Policy
                 </Link>
-                <Link href="#terms" className="text-slate-400 hover:text-cyan-400 transition-colors duration-200">
+                <Link
+                  href="#terms"
+                  className="text-slate-400 hover:text-cyan-400 transition-colors duration-200"
+                >
                   Terms of Service
                 </Link>
-                <Link href="#cookies" className="text-slate-400 hover:text-cyan-400 transition-colors duration-200">
+                <Link
+                  href="#cookies"
+                  className="text-slate-400 hover:text-cyan-400 transition-colors duration-200"
+                >
                   Cookie Policy
                 </Link>
               </div>

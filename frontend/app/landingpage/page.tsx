@@ -2,7 +2,16 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Home, Zap, Workflow, Link, Star, MessageCircle } from 'lucide-react'
+import {
+  ChevronLeft,
+  ChevronRight,
+  Home,
+  Zap,
+  Workflow,
+  Link,
+  Star,
+  MessageCircle,
+} from 'lucide-react'
 import Hero from './components/Hero'
 import Features from './components/Features'
 import Automation from './components/Automation'
@@ -22,46 +31,46 @@ export default function LandingPage() {
       id: 'hero',
       title: 'Home',
       icon: Home,
-      component: Hero
+      component: Hero,
     },
     {
       id: 'features',
       title: 'Features',
       icon: Zap,
-      component: Features
+      component: Features,
     },
     {
       id: 'automation',
       title: 'Automation',
       icon: Workflow,
-      component: Automation
+      component: Automation,
     },
     {
       id: 'integrations',
       title: 'Integrations',
       icon: Link,
-      component: Integrations
+      component: Integrations,
     },
     {
       id: 'pricing',
       title: 'Pricing',
       icon: Star,
-      component: Pricing
+      component: Pricing,
     },
     {
       id: 'testimonials',
       title: 'Testimonials',
       icon: MessageCircle,
-      component: Testimonials
-    }
+      component: Testimonials,
+    },
   ]
 
   const handlePageChange = (newPage: number) => {
     if (isTransitioning || newPage === currentPage) return
-    
+
     setIsTransitioning(true)
     setCurrentPage(newPage)
-    
+
     // Reset transition state after animation
     setTimeout(() => setIsTransitioning(false), 500)
   }
@@ -115,7 +124,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
-      
+
       {/* Page Navigation */}
       <div className="fixed left-4 top-1/2 transform -translate-y-1/2 z-40 hidden lg:block">
         <div className="flex flex-col space-y-2">
@@ -144,7 +153,7 @@ export default function LandingPage() {
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -100 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
           className="min-h-screen"
         >
           <CurrentComponent />

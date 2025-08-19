@@ -6,7 +6,13 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Zap } from 'lucide-react'
 
 export default function LoginPage() {
@@ -24,9 +30,9 @@ export default function LoginPage() {
     <main className="min-h-screen bg-black relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-black via-slate-900 via-cyan-900/20 to-black" />
-      
+
       {/* Animated Grid Pattern */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.05)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"
         animate={{
           backgroundPosition: ['0% 0%', '100% 100%'],
@@ -34,10 +40,10 @@ export default function LoginPage() {
         transition={{
           duration: 25,
           repeat: Infinity,
-          ease: "linear"
+          ease: 'linear',
         }}
       />
-      
+
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
@@ -50,7 +56,7 @@ export default function LoginPage() {
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: 'easeInOut',
           }}
         />
         <motion.div
@@ -63,7 +69,7 @@ export default function LoginPage() {
           transition={{
             duration: 10,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: 'easeInOut',
           }}
         />
       </div>
@@ -78,7 +84,7 @@ export default function LoginPage() {
             className="flex items-center space-x-2"
           >
             <Link href="/" className="flex items-center space-x-2">
-              <motion.div 
+              <motion.div
                 className="w-8 h-8 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/25"
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 transition={{ duration: 0.2 }}
@@ -98,7 +104,7 @@ export default function LoginPage() {
         <motion.div
           initial={{ opacity: 0, y: 30, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
           className="w-full max-w-md"
         >
           <Card className="bg-gradient-to-br from-slate-900/80 to-slate-800/80 border-slate-700/50 backdrop-blur-sm shadow-2xl shadow-cyan-500/25 overflow-hidden">
@@ -107,9 +113,9 @@ export default function LoginPage() {
               className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/20 to-emerald-500/0 opacity-0 hover:opacity-100 transition-opacity duration-500"
               initial={{ x: '-100%' }}
               whileHover={{ x: '100%' }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
             />
-            
+
             <CardHeader className="text-center pb-6 relative z-10">
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -130,7 +136,10 @@ export default function LoginPage() {
             <CardContent className="relative z-10">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-slate-300 text-sm font-medium">
+                  <Label
+                    htmlFor="email"
+                    className="text-slate-300 text-sm font-medium"
+                  >
                     Email address
                   </Label>
                   <div className="relative">
@@ -140,7 +149,7 @@ export default function LoginPage() {
                       type="email"
                       placeholder="Enter your email"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={e => setEmail(e.target.value)}
                       className="pl-10 bg-slate-800/50 border-slate-700 text-white placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/20 transition-all duration-200"
                       required
                     />
@@ -148,17 +157,20 @@ export default function LoginPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-slate-300 text-sm font-medium">
+                  <Label
+                    htmlFor="password"
+                    className="text-slate-300 text-sm font-medium"
+                  >
                     Password
                   </Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <Input
                       id="password"
-                      type={showPassword ? "text" : "password"}
+                      type={showPassword ? 'text' : 'password'}
                       placeholder="Enter your password"
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={e => setPassword(e.target.value)}
                       className="pl-10 pr-10 bg-slate-800/50 border-slate-700 text-white placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/20 transition-all duration-200"
                       required
                     />
@@ -169,7 +181,11 @@ export default function LoginPage() {
                       className="absolute right-1 top-1/2 transform -translate-y-1/2 w-8 h-8 text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/10"
                       onClick={() => setShowPassword(!showPassword)}
                     >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
                     </Button>
                   </div>
                 </div>
@@ -181,7 +197,10 @@ export default function LoginPage() {
                       type="checkbox"
                       className="w-4 h-4 text-cyan-500 bg-slate-800 border-slate-700 rounded focus:ring-cyan-500/20 focus:ring-2"
                     />
-                    <Label htmlFor="remember" className="text-sm text-slate-300">
+                    <Label
+                      htmlFor="remember"
+                      className="text-sm text-slate-300"
+                    >
                       Remember me
                     </Label>
                   </div>
