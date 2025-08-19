@@ -124,10 +124,10 @@ async function main() {
   
   try {
     // Initialize GitHub client
-    const token = process.env.GITHUB_TOKEN || process.env.PAT_TOKEN;
-    if (!token) {
-      throw new Error('GitHub token not found. Set GITHUB_TOKEN or PAT_TOKEN environment variable.');
-    }
+    const token = process.env.GITHUB_TOKEN;
+if (!token) {
+  throw new Error('GitHub token not found. Set GITHUB_TOKEN environment variable.');
+}
     
     octokit = github.getOctokit(token);
     
