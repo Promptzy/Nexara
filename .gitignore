@@ -37,3 +37,6 @@ coverage/
 
 # TypeScript
 *.tsbuildinfo
+
+node_modules/
+

@@ -114,3 +114,5 @@ tmp/
 temp/
 
 /generated/prisma
+
+node_modules/

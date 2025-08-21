@@ -16,8 +16,10 @@ model User {
   updatedAt    DateTime @updatedAt @map("updated_at")
   isActive     Boolean  @default(true) @map("is_active")
 
-  // reverse relation to Project
+  // relations
   projects Project[]
+  issues   Issue[]   @relation("ReportedIssues")
+  comments Comment[]
 
   @@map("users")
 }
@@ -29,6 +31,7 @@ model Project {
   ownerId     String
   owner       User     @relation(fields: [ownerId], references: [id])
   boards      Board[]
+  issues      Issue[] // 👈 added
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -58,4 +61,35 @@ model Column {
   updatedAt  DateTime @updatedAt
 
   @@map("columns")
+}
+
+model Issue {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  status      String   @default("OPEN")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // relations
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  reporterId String
+  reporter   User   @relation("ReportedIssues", fields: [reporterId], references: [id])
+
+  comments Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  // relations
+  issueId String
+  issue   Issue  @relation(fields: [issueId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 }
