@@ -254,7 +254,6 @@ export default function SignupPage() {
                         <Eye className="w-4 h-4" />
                       ) : (
                         <EyeOff className="w-4 h-4" />
-                        
                       )}
                     </Button>
                   </div>
@@ -292,7 +291,6 @@ export default function SignupPage() {
                       {showConfirmPassword ? (
                         <Eye className="w-4 h-4" />
                       ) : (
-                        
                         <EyeOff className="w-4 h-4" />
                       )}
                     </Button>
