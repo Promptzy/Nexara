@@ -17,7 +17,24 @@ const comparePassword = async (password, hashedPassword) => {
   }
 };
 
+const validatePasswordStrength = (password) => {
+  const isValid =
+    password.length >= 8 &&
+    /[a-z]/.test(password) &&      // at least one lowercase
+    /[A-Z]/.test(password) &&      // at least one uppercase
+    /\d/.test(password) &&         // at least one number
+    /[!@#$%^&*(),.?":{}|<>]/.test(password); // at least one special character
+
+  return {
+    isValid,
+    message: isValid
+      ? 'Password is strong'
+      : 'Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character.',
+  };
+};
+
 module.exports = {
   hashPassword,
   comparePassword,
+  validatePasswordStrength
 };
