@@ -143,7 +143,6 @@ const createIssue = async (req, res) => {
     // Create the issue
     const issue = await issueService.createIssue(projectId, {
       ...req.body,
-      reporterId,
     });
 
     res.status(201).json(issue);
