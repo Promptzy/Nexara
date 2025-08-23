@@ -17,7 +17,7 @@ const createIssue = async (projectId, data) => {
       description: data.description,
       status: data.status || 'OPEN',
       projectId,
-      reporterId: data.reporterId, // abhi user auth se milega
+      reporterId: data.reporterId,
     },
   });
 };
