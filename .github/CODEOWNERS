@@ -1,6 +1,0 @@
-# Add repository owner to CODEOWNERS for organization repository
-.github/workflows/ @Va16hav07 @Pranjal6955 @nitish-002
-.github/workflows/*.yml @Va16hav07 @Pranjal6955 @nitish-002
-.github/workflows/*.yaml @Va16hav07 @Pranjal6955 @nitish-002
-*.yml @Va16hav07 @Pranjal6955 @nitish-002
-*.yaml @Va16hav07 @Pranjal6955 @nitish-002

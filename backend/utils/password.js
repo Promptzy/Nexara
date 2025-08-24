@@ -17,12 +17,12 @@ const comparePassword = async (password, hashedPassword) => {
   }
 };
 
-const validatePasswordStrength = (password) => {
+const validatePasswordStrength = password => {
   const isValid =
     password.length >= 8 &&
-    /[a-z]/.test(password) &&      // at least one lowercase
-    /[A-Z]/.test(password) &&      // at least one uppercase
-    /\d/.test(password) &&         // at least one number
+    /[a-z]/.test(password) && // at least one lowercase
+    /[A-Z]/.test(password) && // at least one uppercase
+    /\d/.test(password) && // at least one number
     /[!@#$%^&*(),.?":{}|<>]/.test(password); // at least one special character
 
   return {
@@ -36,5 +36,5 @@ const validatePasswordStrength = (password) => {
 module.exports = {
   hashPassword,
   comparePassword,
-  validatePasswordStrength
+  validatePasswordStrength,
 };
