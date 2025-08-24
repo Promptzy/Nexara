@@ -1,6 +1,4 @@
----
-name: 🐛 Bug Report
-description: Help us squash bugs by reporting issues
+
 title: "🐛 "
 labels: [bug, needs-triage]
 body:
