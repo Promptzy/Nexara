@@ -385,7 +385,7 @@ export default function CTA() {
               </motion.h3>
               <p className="text-slate-300 mb-6 max-w-2xl mx-auto">
                 Our team is here to help you get started and make the most of
-                Nexara's powerful features.
+                Nexara&pos;s powerful features.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <motion.div

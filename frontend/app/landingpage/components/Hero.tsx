@@ -160,7 +160,7 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.5, ease: 'easeOut' }}
           className="text-xl md:text-2xl text-slate-300 mb-8 max-w-4xl mx-auto leading-relaxed"
         >
-          Nexara combines Jira's powerful project management with AI-driven
+          Nexara combines Jira&pos;s powerful project management with AI-driven
           automation, intelligent insights, and seamless integrations. Build,
           track, and deliver projects faster than ever.
         </motion.p>

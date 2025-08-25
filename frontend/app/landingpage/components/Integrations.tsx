@@ -138,7 +138,7 @@ export default function Integrations() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-xl text-slate-300 max-w-3xl mx-auto"
           >
-            Nexara's MCP server seamlessly integrates with your existing
+            Nexara&pos;s MCP server seamlessly integrates with your existing
             workflow. Connect Slack, GitHub, Figma, and hundreds more to create
             a unified project management experience.
           </motion.p>
@@ -246,7 +246,7 @@ export default function Integrations() {
               How integrations work
             </h3>
             <p className="text-slate-300 max-w-2xl mx-auto">
-              Setting up integrations is simple and secure. Here's how it works:
+              Setting up integrations is simple and secure. Here&pos;s how it works:
             </p>
           </div>
 

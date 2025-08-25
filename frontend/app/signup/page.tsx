@@ -251,9 +251,9 @@ export default function SignupPage() {
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
                         <Eye className="w-4 h-4" />
+                      ) : (
+                        <EyeOff className="w-4 h-4" />
                       )}
                     </Button>
                   </div>
@@ -289,9 +289,9 @@ export default function SignupPage() {
                       }
                     >
                       {showConfirmPassword ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
                         <Eye className="w-4 h-4" />
+                      ) : (
+                        <EyeOff className="w-4 h-4" />
                       )}
                     </Button>
                   </div>
