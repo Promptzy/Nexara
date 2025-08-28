@@ -14,6 +14,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - run: npm ci
       - name: Run ESLint
         run: npx eslint frontend/ --ext .js,.ts,.jsx,.tsx
