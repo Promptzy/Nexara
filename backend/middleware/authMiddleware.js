@@ -19,12 +19,14 @@ const authMiddleware = async (req, res, next) => {
 
     let decoded;
     try {
-      decoded = verifyToken(token);
+      // handle both sync + async verifyToken
+      decoded = await Promise.resolve(verifyToken(token));
     } catch (tokenError) {
       let errorCode = 'INVALID_TOKEN';
       let errorMessage = 'Invalid or malformed token';
 
-      if (tokenError.message === 'Token has expired') {
+      // better way: check error name from jsonwebtoken
+      if (tokenError.name === 'TokenExpiredError') {
         errorCode = 'TOKEN_EXPIRED';
         errorMessage = 'Token has expired. Please login again.';
       }
@@ -35,7 +37,9 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
-    const user = await authService.findUserById(decoded.sub);
+    // support both "sub" and "id"
+    const userId = decoded.sub || decoded.id;
+    const user = await authService.findUserById(userId);
 
     if (!user) {
       return res.status(401).json({
@@ -48,7 +52,7 @@ const authMiddleware = async (req, res, next) => {
     }
 
     req.user = {
-      sub: user.id,
+      id: user.id,
       email: user.email,
       username: user.username,
       iat: decoded.iat,
@@ -71,3 +75,4 @@ const authMiddleware = async (req, res, next) => {
 module.exports = {
   authMiddleware,
 };
+
