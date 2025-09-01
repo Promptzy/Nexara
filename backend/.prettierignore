@@ -19,4 +19,5 @@ build/
 *.log
 
 # Prisma generated files
+
 prisma/migrations/*/migration.sql
