@@ -57,6 +57,7 @@ process.on('SIGTERM', async () => {
   server.close(() => {
     disconnectDatabase().then(() => process.exit(0));
   });
+  
 });
 
 process.on('SIGINT', async () => {
