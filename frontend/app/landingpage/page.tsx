@@ -21,6 +21,7 @@ import Testimonials from './components/Testimonials'
 import CTA from './components/CTA'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import ContactForm from './components/ContactForm'
 
 export default function LandingPage() {
   const [currentPage, setCurrentPage] = useState(0)
@@ -224,6 +225,11 @@ export default function LandingPage() {
       {/* CTA Section - Always Visible */}
       <div className="relative z-30">
         <CTA />
+      </div>
+
+      {/* Contact Form Section */}
+      <div className="relative z-30">
+        <ContactForm />
       </div>
 
       <Footer />
