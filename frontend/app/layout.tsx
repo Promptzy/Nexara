@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { LoadingProvider } from '@/components/providers/LoadingProvider'
 import { ToastProvider } from '@/components/ui/toast'
-import BackToTopInlineButton from '@/components/BackToTopInlineButton'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -35,7 +34,6 @@ export default function RootLayout({
         <LoadingProvider>
           <ToastProvider>
             {children}
-            <BackToTopInlineButton />
           </ToastProvider>
         </LoadingProvider>
       </body>
