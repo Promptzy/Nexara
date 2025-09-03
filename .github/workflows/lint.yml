@@ -28,10 +28,10 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npx eslint . --ext .js,.jsx,.ts,.tsx
+        run: npm run lint
 
       - name: Run Prettier
-        run: npx prettier --check .
+        run: npm run format:check
 
   backend-lint:
     name: Backend Lint & Prettier
@@ -54,7 +54,7 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npx eslint . --ext .js,.ts
+        run: npm run lint
 
       - name: Run Prettier
-        run: npx prettier --check .
+        run: npm run format:check

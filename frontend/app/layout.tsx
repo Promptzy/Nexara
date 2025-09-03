@@ -32,9 +32,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <LoadingProvider>
-          <ToastProvider>
-            {children}
-          </ToastProvider>
+          <ToastProvider>{children}</ToastProvider>
         </LoadingProvider>
       </body>
     </html>

@@ -246,7 +246,8 @@ export default function Integrations() {
               How integrations work
             </h3>
             <p className="text-slate-300 max-w-2xl mx-auto">
-              Setting up integrations is simple and secure. Here&pos;s how it works:
+              Setting up integrations is simple and secure. Here&pos;s how it
+              works:
             </p>
           </div>
 
