@@ -89,7 +89,11 @@ export default function LandingPage() {
   }
 
   // Keyboard navigation
-useEffect(() => {
+   
+
+
+
+  useEffect(() => {
   const handleKeyPress = (e: KeyboardEvent) => {
     const target = e.target as HTMLElement
 
@@ -107,9 +111,9 @@ useEffect(() => {
     }
   }
 
-  window.addEventListener('keydown', handleKeyPress)
-  return () => window.removeEventListener('keydown', handleKeyPress)
-}, [currentPage])
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [currentPage])
 
 
   // Auto-advance (optional - can be disabled)
