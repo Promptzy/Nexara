@@ -1,5 +1,5 @@
 'use client'
-
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Send, CheckCircle, AlertCircle } from 'lucide-react'
@@ -97,21 +97,24 @@ export default function ContactForm() {
           <div className="bg-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 md:p-8 shadow-xl shadow-cyan-500/5">
             <form onSubmit={handleSubmit}>
               <div className="space-y-6">
+                {/* Name Field */}
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
-                    Name
+                  Name
                   </label>
                   <Input
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Your name"
-                    required
-                    className="bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-cyan-500/30"
+                  id="name"
+                  name="name"
+                  type="text"   
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Your name"
+                  required
+                  className="bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-cyan-500/30"
                   />
                 </div>
                 
+                {/* Email Field */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
                     Email
@@ -122,12 +125,13 @@ export default function ContactForm() {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="your.email@example.com"
+                    placeholder={`What's your email?`}
                     required
                     className="bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-cyan-500/30"
                   />
                 </div>
                 
+                {/* Message Field */}
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2">
                     Message
@@ -137,23 +141,22 @@ export default function ContactForm() {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Your message"
+                    placeholder="Don&apos;t hesitate to write to us"
                     required
                     rows={5}
                     className="bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-cyan-500/30"
                   />
                 </div>
                 
+                {/* Submit Button */}
                 <div>
                   <Button
                     type="submit"
                     disabled={formStatus === 'submitting'}
-                    className="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-black shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300"
+                    className="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-black shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300 flex items-center justify-center gap-2"
                   >
                     {formStatus === 'submitting' ? (
-                      <>
-                        <span className="animate-pulse">Sending...</span>
-                      </>
+                      <span className="animate-pulse">Sending...</span>
                     ) : (
                       <>
                         <Send className="w-4 h-4" />

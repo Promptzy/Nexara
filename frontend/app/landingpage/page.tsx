@@ -89,20 +89,28 @@ export default function LandingPage() {
   }
 
   // Keyboard navigation
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' || e.key === ' ') {
-        e.preventDefault()
-        nextPage()
-      } else if (e.key === 'ArrowLeft') {
-        e.preventDefault()
-        prevPage()
-      }
+useEffect(() => {
+  const handleKeyPress = (e: KeyboardEvent) => {
+    const target = e.target as HTMLElement
+
+    // Allow typing in inputs (all types) and textareas
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+      return
     }
 
-    window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [currentPage])
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault()
+      nextPage()
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      prevPage()
+    }
+  }
+
+  window.addEventListener('keydown', handleKeyPress)
+  return () => window.removeEventListener('keydown', handleKeyPress)
+}, [currentPage])
+
 
   // Auto-advance (optional - can be disabled)
   useEffect(() => {

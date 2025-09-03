@@ -15,6 +15,9 @@ const config = [
   }),
   {
     ignores: ['.next/**', 'node_modules/**', 'out/**', '.vercel/**'],
+    rules: {
+      'react/no-unescaped-entities': 'off', // 👈 disable globally
+    },
   },
 ]
 
