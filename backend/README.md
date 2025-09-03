@@ -25,8 +25,6 @@ npm run db:seed
 npm run dev
 ```
 
-
-
 ## 📋 Prerequisites
 
 ### Local Development
@@ -34,8 +32,6 @@ npm run dev
 - **Node.js** >= 18.0.0
 - **PostgreSQL** >= 13.0
 - **npm** >= 8.0.0
-
-
 
 ## 🛠️ Installation
 
@@ -236,8 +232,6 @@ The project includes:
 - **lint-staged** for staged file processing
 
 ## 🚀 Deployment
-
-
 
 ### Manual Deployment
 
