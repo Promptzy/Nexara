@@ -210,7 +210,7 @@ It’s built as a full **web application** — not just a browser extension — 
 
 | Technology               | Purpose              | Environment |
 | ------------------------ | -------------------- | ----------- |
-| **Docker**               | Containerization     | All         |
+| **PostgreSQL**           | Database             | All         |
 | **Kubernetes**           | Orchestration        | Production  |
 | **GitHub Actions**       | CI/CD Pipeline       | All         |
 | **AWS EKS**              | Managed Kubernetes   | Production  |
@@ -262,7 +262,7 @@ gantt
 - [ ] **User Management** - Authentication, user roles, and permissions
 - [ ] **Issue Management** - Create, edit, assign, and track issues with status workflows
 - [ ] **Project Boards** - Kanban boards and basic sprint functionality
-- [ ] **Infrastructure Setup** - Docker, PostgreSQL, Redis, and development environment
+- [ ] **Infrastructure Setup** - PostgreSQL, Redis, and development environment
 
 ### 🔧 **Phase 2: Automation & Intelligence** _(Month 2)_
 

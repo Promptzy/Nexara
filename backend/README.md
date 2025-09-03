@@ -25,24 +25,7 @@ npm run db:seed
 npm run dev
 ```
 
-### Docker Setup
 
-```bash
-# Navigate to backend
-cd backend
-
-# Update .env file with secure values
-# Change JWT_SECRET and POSTGRES_PASSWORD
-
-# Start services (PostgreSQL + Backend)
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
-```
 
 ## 📋 Prerequisites
 
@@ -52,10 +35,7 @@ docker-compose down
 - **PostgreSQL** >= 13.0
 - **npm** >= 8.0.0
 
-### Docker Setup
 
-- **Docker** >= 20.0.0
-- **Docker Compose** >= 2.0.0
 
 ## 🛠️ Installation
 
@@ -187,10 +167,7 @@ backend/
 ├── utils/           # Utility functions
 ├── .env             # Environment variables
 ├── .env.example     # Environment template
-├── .env.docker      # Docker environment template
-├── docker-compose.yml # Docker services configuration
-├── Dockerfile       # Container build instructions
-├── init.sql         # PostgreSQL initialization
+
 ├── package.json     # Dependencies and scripts
 └── server.js        # Application entry point
 ```
@@ -260,18 +237,7 @@ The project includes:
 
 ## 🚀 Deployment
 
-### Docker Production
 
-```bash
-# Update .env with production values
-# Set strong JWT_SECRET and POSTGRES_PASSWORD
-
-# Deploy with Docker Compose
-docker-compose up -d
-
-# Check service status
-docker-compose ps
-```
 
 ### Manual Deployment
 
