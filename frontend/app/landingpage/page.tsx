@@ -89,10 +89,6 @@ export default function LandingPage() {
   }
 
   // Keyboard navigation
-   
-
-
-
   useEffect(() => {
   const handleKeyPress = (e: KeyboardEvent) => {
     const target = e.target as HTMLElement
