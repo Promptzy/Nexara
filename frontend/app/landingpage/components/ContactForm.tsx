@@ -111,14 +111,14 @@ export default function ContactForm() {
                     Name
                   </label>
                   <Input
-                    id="name"
-                    name="name"
-                    type="text"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Your name"
-                    required
-                    className="bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-cyan-500/30"
+                  id="name"
+                  name="name"
+                  type="text"   
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Your name"
+                  required
+                  className="bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-cyan-500/30"
                   />
                 </div>
 
