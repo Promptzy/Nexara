@@ -5,6 +5,7 @@ A Node.js backend server for the Nexara project management platform.
 ## 🚀 Quick Start (5 minutes)
 
 ### What you need:
+
 - **Node.js** (version 18 or higher) - JavaScript runtime
 - **PostgreSQL** (version 13 or higher) - Database
 - **npm** (version 8 or higher) - Package manager
@@ -56,14 +57,17 @@ CORS_ORIGIN="http://localhost:3000"
 ## 📡 API Endpoints
 
 ### Health Check
+
 - **GET** `/health` - Check if server is running
 
 ### User Authentication
+
 - **POST** `/api/auth/register` - Create new user account
 - **POST** `/api/auth/login` - Login user
 - **POST** `/api/auth/logout` - Logout user
 
 ### Project Management
+
 - **GET** `/api/project` - Get all projects
 - **POST** `/api/project` - Create new project
 - **GET** `/api/project/:id` - Get specific project
@@ -71,11 +75,13 @@ CORS_ORIGIN="http://localhost:3000"
 - **DELETE** `/api/project/:id` - Delete project
 
 ### Leaderboard
+
 - **GET** `/api/leaderboard` - Get user rankings
 
 ## 🗃️ Database
 
 **PostgreSQL** is used to store data with these main tables:
+
 - **users** - User accounts and login info
 - **projects** - Project information
 - **boards** - Project boards (like Kanban boards)
@@ -84,11 +90,13 @@ CORS_ORIGIN="http://localhost:3000"
 ## 🏃‍♂️ Running the Server
 
 ### Development (with auto-restart)
+
 ```bash
 npm run dev
 ```
 
 ### Production (for deployment)
+
 ```bash
 npm start
 ```
@@ -143,32 +151,38 @@ backend/
 ## 🚨 Troubleshooting
 
 ### Server won't start?
+
 - Check if port 5000 is available
 - Verify your `.env` file exists and has correct values
 - Make sure PostgreSQL is running
 
 ### Database errors?
+
 - Check your `DATABASE_URL` in `.env`
 - Ensure PostgreSQL is installed and running
 - Run `npm run db:migrate` to create tables
 
 ### Authentication issues?
+
 - Verify your `JWT_SECRET` is set in `.env`
 - Check if token is included in request headers
 
 ## 🔄 Database Management
 
 ### Create new database changes
+
 ```bash
 npx prisma migrate dev --name your_change_name
 ```
 
 ### Apply changes to production
+
 ```bash
 npm run db:migrate
 ```
 
 ### Reset database (development only)
+
 ```bash
 npx prisma migrate reset
 ```
@@ -178,6 +192,7 @@ npx prisma migrate reset
 ### For production deployment:
 
 1. Set environment variables:
+
 ```bash
 export DATABASE_URL="your-production-database-url"
 export JWT_SECRET="your-production-secret"
@@ -185,11 +200,13 @@ export NODE_ENV="production"
 ```
 
 2. Run database setup:
+
 ```bash
 npm run db:migrate
 ```
 
 3. Start server:
+
 ```bash
 npm start
 ```
@@ -217,6 +234,7 @@ npm start
 ---
 
 **Technical Stack:**
+
 - **Node.js** - Server runtime
 - **Express.js** - Web framework
 - **Prisma** - Database toolkit
