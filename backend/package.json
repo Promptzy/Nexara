@@ -12,7 +12,7 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",
     "db:seed": "node prisma/seed.js",
-    "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky; fi"
+    "prepare": "node scripts/prepare-husky.cjs"
   },
   "keywords": [
     "jira",
