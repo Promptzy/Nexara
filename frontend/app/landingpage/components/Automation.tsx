@@ -213,9 +213,9 @@ export default function Automation() {
             transition={{ duration: 1, delay: 0.4, ease: 'easeOut' }}
             className="text-xl text-slate-300 max-w-3xl mx-auto"
           >
-            Build intelligent automation workflows that adapt to your team&apos;s
-            needs. From simple notifications to complex multi-step processes,
-            Nexara makes automation accessible to everyone.
+            Build intelligent automation workflows that adapt to your
+            team&apos;s needs. From simple notifications to complex multi-step
+            processes, Nexara makes automation accessible to everyone.
           </motion.p>
         </div>
 

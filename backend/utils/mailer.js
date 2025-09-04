@@ -28,7 +28,7 @@ const createTransporter = () => {
 const sendEmail = async ({ to, subject, text, html }) => {
   try {
     const transporter = createTransporter();
-    
+
     const mailOptions = {
       from: `"${process.env.EMAIL_FROM_NAME || 'Nexara'}" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
       to,
@@ -36,7 +36,7 @@ const sendEmail = async ({ to, subject, text, html }) => {
       text,
       html: html || undefined,
     };
-    
+
     const info = await transporter.sendMail(mailOptions);
     console.log(`Email sent: ${info.messageId}`);
     return { success: true, messageId: info.messageId };
@@ -55,10 +55,11 @@ const sendEmail = async ({ to, subject, text, html }) => {
  * @returns {Promise<Object>} - Email send result
  */
 const sendContactFormEmail = async ({ name, email, message }) => {
-  const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || process.env.SMTP_USER;
-  
+  const adminEmail =
+    process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || process.env.SMTP_USER;
+
   const subject = `New Contact Form Submission from ${name}`;
-  
+
   const text = `
     New contact form submission:
     
@@ -68,7 +69,7 @@ const sendContactFormEmail = async ({ name, email, message }) => {
     Message:
     ${message}
   `;
-  
+
   const html = `
     <h2>New Contact Form Submission</h2>
     <p><strong>From:</strong> ${name}</p>
@@ -76,7 +77,7 @@ const sendContactFormEmail = async ({ name, email, message }) => {
     <h3>Message:</h3>
     <p>${message.replace(/\n/g, '<br>')}</p>
   `;
-  
+
   return sendEmail({
     to: adminEmail,
     subject,
