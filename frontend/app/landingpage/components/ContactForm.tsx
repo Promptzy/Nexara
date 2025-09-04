@@ -103,7 +103,7 @@ export default function ContactForm() {
                   <Input
                   id="name"
                   name="name"
-                  type="text"   
+                  type="text"
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Your name"
