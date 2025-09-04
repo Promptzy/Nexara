@@ -1,300 +1,243 @@
 # Nexara Backend API
 
-A robust Node.js backend API server for the Nexara project management platform, built with Express.js, Prisma ORM, and PostgreSQL.
+A Node.js backend server for the Nexara project management platform.
 
-## 🚀 Quick Start
+## 🚀 Quick Start (5 minutes)
 
-### Local Development
+### What you need:
+
+- **Node.js** (version 18 or higher) - JavaScript runtime
+- **PostgreSQL** (version 13 or higher) - Database
+- **npm** (version 8 or higher) - Package manager
+
+### Step-by-step setup:
 
 ```bash
-# Clone and navigate to backend
+# 1. Go to the backend folder
 cd backend
 
-# Install dependencies
+# 2. Install required packages
 npm install
 
-# Setup environment
+# 3. Create environment file (copy from example)
 cp .env.example .env
 
-# Setup database
-npm run db:generate
-npm run db:migrate
-npm run db:seed
+# 4. Set up your database
+npm run db:generate    # Creates database client
+npm run db:migrate     # Creates database tables
+npm run db:seed        # Adds sample data
 
-# Start development server
+# 5. Start the server
 npm run dev
 ```
 
-### Docker Setup
+**That's it!** Your server will run on `http://localhost:5000`
 
-```bash
-# Navigate to backend
-cd backend
+## 🔧 Configuration
 
-# Update .env file with secure values
-# Change JWT_SECRET and POSTGRES_PASSWORD
-
-# Start services (PostgreSQL + Backend)
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
-```
-
-## 📋 Prerequisites
-
-### Local Development
-
-- **Node.js** >= 18.0.0
-- **PostgreSQL** >= 13.0
-- **npm** >= 8.0.0
-
-### Docker Setup
-
-- **Docker** >= 20.0.0
-- **Docker Compose** >= 2.0.0
-
-## 🛠️ Installation
-
-### 1. Install Dependencies
-
-```bash
-npm install
-```
-
-### 2. Environment Configuration
-
-Copy the example environment file and configure your settings:
-
-```bash
-cp .env.example .env
-```
-
-Update `.env` with your configuration:
+### Environment Variables (.env file)
 
 ```env
-# Server Configuration
+# Server runs on this port
 PORT=5000
-NODE_ENV=development
 
-# Database Configuration
-DATABASE_URL=postgresql://postgres:your_password@localhost:5432/nexara
+# Database connection (PostgreSQL)
+DATABASE_URL=postgresql://username:password@localhost:5432/nexara
 
-# Authentication
-JWT_SECRET=your-super-secure-jwt-secret-key-here-256-bits-minimum
+# Security keys
+JWT_SECRET=your-secret-key-here
 JWT_EXPIRES_IN=8h
-BCRYPT_SALT_ROUNDS=12
+
+# Frontend URL (for CORS)
 CORS_ORIGIN="http://localhost:3000"
 ```
 
-### 3. Database Setup
-
-```bash
-# Generate Prisma client
-npm run db:generate
-
-# Run database migrations
-npm run db:migrate
-
-# Seed the database (optional)
-npm run db:seed
-```
-
-## 🏃‍♂️ Running the Server
-
-### Development Mode
-
-```bash
-npm run dev
-```
-
-### Production Mode
-
-```bash
-npm start
-```
-
-The server will start on `http://localhost:5000` (or your configured PORT).
+**Important:** Replace `username`, `password`, and `your-secret-key-here` with your actual values.
 
 ## 📡 API Endpoints
 
 ### Health Check
 
-- **GET** `/health` - Server health status
+- **GET** `/health` - Check if server is running
 
-### Authentication
+### User Authentication
 
-- **POST** `/api/auth/register` - User registration
-- **POST** `/api/auth/login` - User login
-- **POST** `/api/auth/logout` - User logout
+- **POST** `/api/auth/register` - Create new user account
+- **POST** `/api/auth/login` - Login user
+- **POST** `/api/auth/logout` - Logout user
 
-### Projects
+### Project Management
 
 - **GET** `/api/project` - Get all projects
 - **POST** `/api/project` - Create new project
-- **GET** `/api/project/:id` - Get project by ID
+- **GET** `/api/project/:id` - Get specific project
 - **PUT** `/api/project/:id` - Update project
 - **DELETE** `/api/project/:id` - Delete project
 
 ### Leaderboard
 
-- **GET** `/api/leaderboard` - Get leaderboard data
+- **GET** `/api/leaderboard` - Get user rankings
 
-## 🗃️ Database Schema
+## 🗃️ Database
 
-The application uses PostgreSQL with Prisma ORM. Key models:
+**PostgreSQL** is used to store data with these main tables:
 
-- **User** - User accounts and authentication
-- **Project** - Project management
-- **Board** - Project boards
-- **Column** - Board columns for task organization
+- **users** - User accounts and login info
+- **projects** - Project information
+- **boards** - Project boards (like Kanban boards)
+- **columns** - Board columns for organizing tasks
 
-## 🧪 Development Scripts
+## 🏃‍♂️ Running the Server
+
+### Development (with auto-restart)
 
 ```bash
-# Start development server with auto-reload
 npm run dev
-
-# Format code with Prettier
-npm run format
-
-# Check code formatting
-npm run format:check
-
-# Generate Prisma client
-npm run db:generate
-
-# Deploy database migrations
-npm run db:migrate
-
-# Seed database with sample data
-npm run db:seed
 ```
 
-## 🔧 Project Structure
-
-```
-backend/
-├── config/           # Configuration files
-├── controllers/      # Route controllers
-├── middleware/       # Express middleware
-├── prisma/          # Database schema and migrations
-├── routes/          # API route definitions
-├── services/        # Business logic layer
-├── utils/           # Utility functions
-├── .env             # Environment variables
-├── .env.example     # Environment template
-├── .env.docker      # Docker environment template
-├── docker-compose.yml # Docker services configuration
-├── Dockerfile       # Container build instructions
-├── init.sql         # PostgreSQL initialization
-├── package.json     # Dependencies and scripts
-└── server.js        # Application entry point
-```
-
-## 🔐 Authentication
-
-The API uses JWT (JSON Web Tokens) for authentication:
-
-1. Register/login to receive a JWT token
-2. Include token in Authorization header: `Bearer <token>`
-3. Tokens expire based on `JWT_EXPIRES_IN` setting
-
-## 🛡️ Security Features
-
-- **CORS** protection
-- **JWT** authentication
-- **bcrypt** password hashing
-- **Input validation** with Joi
-- **Environment variable** validation
-- **Error handling** middleware
-
-## 🚨 Error Handling
-
-The API includes comprehensive error handling:
-
-- **Global error handler** for unhandled errors
-- **404 handler** for unknown routes
-- **Validation errors** for invalid input
-- **Authentication errors** for unauthorized access
-
-## 📊 Monitoring
-
-### Health Check
-
-Visit `http://localhost:5000/health` to verify server status.
-
-### Logs
-
-The server provides detailed console logging for:
-
-- Server startup
-- Database connections
-- Request errors
-- Graceful shutdown
-
-## 🔄 Database Migrations
+### Production (for deployment)
 
 ```bash
-# Create new migration
-npx prisma migrate dev --name migration_name
-
-# Deploy migrations to production
-npm run db:migrate
-
-# Reset database (development only)
-npx prisma migrate reset
-```
-
-## 🧹 Code Quality
-
-The project includes:
-
-- **Prettier** for code formatting
-- **ESLint** for code linting
-- **Husky** for pre-commit hooks
-- **lint-staged** for staged file processing
-
-## 🚀 Deployment
-
-### Docker Production
-
-```bash
-# Update .env with production values
-# Set strong JWT_SECRET and POSTGRES_PASSWORD
-
-# Deploy with Docker Compose
-docker-compose up -d
-
-# Check service status
-docker-compose ps
-```
-
-### Manual Deployment
-
-```bash
-# Set environment variables
-export DATABASE_URL="your-production-db-url"
-export JWT_SECRET="your-production-jwt-secret"
-export NODE_ENV="production"
-
-# Run migrations
-npm run db:migrate
-
-# Start server
 npm start
 ```
 
+## 🛠️ Common Commands
+
+```bash
+# Start development server
+npm run dev
+
+# Format code automatically
+npm run format
+
+# Check if code is properly formatted
+npm run format:check
+
+# Database operations
+npm run db:generate    # Update database client
+npm run db:migrate     # Apply database changes
+npm run db:seed        # Add sample data
+```
+
+## 🔐 Authentication (How it works)
+
+1. **Register/Login** → Get a JWT token
+2. **Use token** → Include in requests: `Authorization: Bearer <token>`
+3. **Token expires** → Based on your `JWT_EXPIRES_IN` setting
+
+## 🛡️ Security Features
+
+- **CORS** - Controls which websites can access your API
+- **JWT** - Secure user authentication tokens
+- **bcrypt** - Encrypts passwords safely
+- **Input validation** - Checks data before processing
+- **Error handling** - Graceful error responses
+
+## 📁 Project Structure
+
+```
+backend/
+├── config/           # Settings and configuration
+├── controllers/      # Handle API requests
+├── middleware/       # Security and validation
+├── prisma/          # Database setup and migrations
+├── routes/          # API endpoint definitions
+├── services/        # Business logic
+├── utils/           # Helper functions
+├── .env             # Your environment settings
+└── server.js        # Main application file
+```
+
+## 🚨 Troubleshooting
+
+### Server won't start?
+
+- Check if port 5000 is available
+- Verify your `.env` file exists and has correct values
+- Make sure PostgreSQL is running
+
+### Database errors?
+
+- Check your `DATABASE_URL` in `.env`
+- Ensure PostgreSQL is installed and running
+- Run `npm run db:migrate` to create tables
+
+### Authentication issues?
+
+- Verify your `JWT_SECRET` is set in `.env`
+- Check if token is included in request headers
+
+## 🔄 Database Management
+
+### Create new database changes
+
+```bash
+npx prisma migrate dev --name your_change_name
+```
+
+### Apply changes to production
+
+```bash
+npm run db:migrate
+```
+
+### Reset database (development only)
+
+```bash
+npx prisma migrate reset
+```
+
+## 🚀 Deployment
+
+### For production deployment:
+
+1. Set environment variables:
+
+```bash
+export DATABASE_URL="your-production-database-url"
+export JWT_SECRET="your-production-secret"
+export NODE_ENV="production"
+```
+
+2. Run database setup:
+
+```bash
+npm run db:migrate
+```
+
+3. Start server:
+
+```bash
+npm start
+```
+
+## 📊 Monitoring
+
+- **Health check**: Visit `http://localhost:5000/health`
+- **Logs**: Check console output for errors and info
+- **Database**: Monitor PostgreSQL for connection issues
+
 ## 🤝 Contributing
 
-1. Follow the existing code style
+1. Follow existing code style
 2. Run `npm run format` before committing
-3. Ensure all tests pass
-4. Update documentation for API changes
+3. Test your changes
+4. Update documentation if needed
 
-## 📝 License
+## 📝 Need Help?
 
-This project is licensed under the MIT License.
+- Check the troubleshooting section above
+- Look at console logs for error messages
+- Verify all environment variables are set correctly
+- Ensure PostgreSQL is running and accessible
+
+---
+
+**Technical Stack:**
+
+- **Node.js** - Server runtime
+- **Express.js** - Web framework
+- **Prisma** - Database toolkit
+- **PostgreSQL** - Database
+- **JWT** - Authentication
+- **bcrypt** - Password hashing
