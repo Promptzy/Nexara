@@ -99,9 +99,7 @@ export default function ContactForm() {
               <div className="space-y-6">
                 {/* Name Field */}
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
-                  Name
-                  </label>
+                  <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">Name</label>
                   <Input
                   id="name"
                   name="name"
